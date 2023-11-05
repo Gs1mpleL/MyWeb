@@ -1,2 +1,11 @@
-package com.wanfeng.myweb.properties;public class PushToIponeProperties {
+package com.wanfeng.myweb.properties;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+@Data
+@Configuration
+@ConfigurationProperties(prefix = "push.iphone")
+public class PushToIphoneProperties {
+    private String baseUrl;
 }

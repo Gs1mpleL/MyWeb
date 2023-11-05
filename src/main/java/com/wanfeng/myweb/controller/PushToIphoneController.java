@@ -1,22 +1,25 @@
 package com.wanfeng.myweb.controller;
 
-import com.wanfeng.myweb.Utils.HttpUtil;
 import com.wanfeng.myweb.service.PushIphoneService;
 import com.wanfeng.myweb.vo.PushIphoneVo;
+import com.wanfeng.myweb.vo.Result;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
 @Api("Iphone推送")
-public class TestController {
+@RestController
+public class PushToIphoneController {
 
     @Autowired
     private PushIphoneService pushIphoneService;
 
     @RequestMapping("/pushToIphone")
-    public void test(PushIphoneVo pushIphoneVo){
-        pushIphoneService.push(pushIphoneVo);
+    public Result<String > test(PushIphoneVo pushIphoneVo){
+        String res = pushIphoneService.push(pushIphoneVo);
+        return Result.ok(res);
     }
 }
