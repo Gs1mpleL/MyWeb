@@ -1,0 +1,6 @@
+server:
+  port: 80
+
+push:
+  iphone:
+    baseUrl: api.day.app/#/
