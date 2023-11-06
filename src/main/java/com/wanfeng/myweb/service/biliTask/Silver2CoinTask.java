@@ -60,7 +60,7 @@ public class Silver2CoinTask implements Task {
      * @return Integer
      */
     public Integer getSilver(){
-        JSONObject jsonObject = BiliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/user/get_user_info");
+        JSONObject jsonObject = biliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/user/get_user_info");
         return Integer.parseInt(jsonObject.getJSONObject("data").getString("silver"));
     }
 }

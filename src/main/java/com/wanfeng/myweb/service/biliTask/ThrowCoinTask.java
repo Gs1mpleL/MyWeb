@@ -93,7 +93,7 @@ public class ThrowCoinTask implements Task {
      * @return JSONObject
      */
     public Integer getReward() {
-        JSONObject jsonObject = BiliRequest.get("https://api.bilibili.com/x/member/web/exp/log");
+        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/member/web/exp/log");
         int count = 0;
         LocalDate today = LocalDate.now();
         String regex = "\\b" + today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\\b";
@@ -121,7 +121,7 @@ public class ThrowCoinTask implements Task {
      * 
      */
     public Integer getCoin() {
-        JSONObject jsonObject = BiliRequest.get("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
+        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
         return (int) (Double.parseDouble(jsonObject.getJSONObject("data").getString("money")));
     }
 
@@ -134,7 +134,7 @@ public class ThrowCoinTask implements Task {
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;
-        JSONObject jsonObject = BiliRequest.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
+        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("archives");
         JSONArray jsonRegions = new JSONArray();
         for (Object object : jsonArray) {

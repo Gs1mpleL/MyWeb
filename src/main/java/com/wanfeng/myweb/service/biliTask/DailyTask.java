@@ -46,7 +46,7 @@ public class DailyTask implements Task{
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;
-        JSONObject jsonObject = BiliRequest.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
+        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("archives");
         JSONArray jsonRegions = new JSONArray();
         for (Object object : jsonArray) {

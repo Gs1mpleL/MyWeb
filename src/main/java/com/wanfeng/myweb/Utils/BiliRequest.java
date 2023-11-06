@@ -36,21 +36,20 @@ public class BiliRequest {
     private BiliProperties biliProperties;
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliRequest.class);
-
     private BiliRequest(){}
 
     /**
      * 发送get请求
      * @param url 请求的地址，包括参数
      */
-    public static JSONObject get(String url){
+    public  JSONObject get(String url){
         HttpClient client = createSSLClientDefault();
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("connection","keep-alive");
         httpGet.addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
         httpGet.addHeader("referer","https://www.bilibili.com/");
-        httpGet.addHeader("Cookie","i-wanna-go-back=-1; buvid_fp_plain=undefined; DedeUserID=287473737; DedeUserID__ckMd5=6119bb91868bfa11; CURRENT_BLACKGAP=0; LIVE_BUVID=AUTO2616590964380964; rpdid=|(mmRk)u~uu0J'uY~|kl|Rmm; CURRENT_PID=c4b2e3e0-ca3c-11ed-b97c-0d30cc0d4e0c; FEED_LIVE_VERSION=V8; hit-new-style-dyn=1; buvid3=5560FB6F-AF10-0493-E00D-516378EA3E1566169infoc; b_nut=1690636066; _uuid=CABC91E2-AAA1-81084-3428-B810244EFA6DC37232infoc; buvid4=D3276578-4407-9E1D-1A12-D1470EB5B04B99252-022072920-aN5fltImCgRRESvvOMIdJsD%2FtyocAbctMgG2OwTErsdOJFoR0lo7jg%3D%3D; b_ut=5; is-2022-channel=1; CURRENT_FNVAL=4048; iflogin_when_web_push=1; hit-dyn-v2=1; CURRENT_QUALITY=64; enable_web_push=ENABLE; header_theme_version=CLOSE; SESSDATA=1cbd89c2%2C1714574541%2C48cff%2Ab1CjD6pUKVZwqbLXLNWWfBGG3m9qEpDkdWyA2ibXJooWrWxBBTIAw7WLLzw2UT1u-d0JcSVjhnSGlBd0Jqd0VqQV9DTnJZa2t0S2VFQ0E4TVVTSG5uUXk4NVFVdFZKQ2hyZzFSdVhJVmhFc0d6TDdFOXgtNEpYNG5WWmJabnBpVWFUMGRPV1J3YXlnIIEC; bili_jct=677dbf072d720a3a129d5fe3d96491f2; PVID=1; home_feed_column=5; browser_resolution=1686-821; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTk0MzQ3MDgsImlhdCI6MTY5OTE3NTQ0OCwicGx0IjotMX0.hEGYtVBZ56I8eRszcKXcffX1lRpb-6jcRZVm1gHj_N8; bili_ticket_expires=1699434648; fingerprint=40e20e9e64dbaa6db6d63b0bc9caea69; b_lsid=F383B234_18BA3F8361E; buvid_fp=40e20e9e64dbaa6db6d63b0bc9caea69; sid=8myev34o; innersign=0; bp_video_offset_287473737=860809470181113877");
-        HttpResponse resp ;
+        httpGet.addHeader("Cookie",biliProperties.getTotalCookie());
+        HttpResponse resp;
         String respContent = null;
         try{
             resp = client.execute(httpGet);

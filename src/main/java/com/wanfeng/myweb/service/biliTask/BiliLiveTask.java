@@ -16,6 +16,9 @@ public class BiliLiveTask implements Task {
     private static final String SUCCESS = "0";
     @Autowired
     private BiliUserData biliUserData;
+
+    @Autowired
+    private BiliRequest biliRequest;
     @Override
     public void run(){
         try{
@@ -42,7 +45,7 @@ public class BiliLiveTask implements Task {
 
      */
     public JSONObject xliveSign(){
-        return BiliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
+        return biliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
     }
 
 }

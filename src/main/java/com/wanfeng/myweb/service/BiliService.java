@@ -44,11 +44,12 @@ public class BiliService {
     private ThrowCoinTask throwCoinTask;
     @Autowired
     private BiliProperties biliProperties;
+    @Autowired
+    private BiliRequest biliRequest;
 
     public void startBiliTask(){
         final List<String> list = new ArrayList<>();
         biliProperties.setCookie(biliProperties.getBiliJct(), biliProperties.getSESSDATA(), biliProperties.getDedeUserID());
-
         if(check()){
             LOGGER.info("用户名: {}", biliUserData.getUname());
             biliUserData.info("用户名: {}", biliUserData.getUname());
@@ -75,7 +76,7 @@ public class BiliService {
      * 检查用户的状态
      */
     public boolean check(){
-        JSONObject jsonObject = BiliRequest.get("https://api.bilibili.com/x/web-interface/nav");
+        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/nav");
         JSONObject object = jsonObject.getJSONObject("data");
         String code = jsonObject.getString("code");
         if(SUCCESS.equals(code)){
