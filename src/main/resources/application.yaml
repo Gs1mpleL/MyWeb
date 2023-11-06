@@ -2,5 +2,16 @@ server:
   port: 80
 
 push:
-  iphone:
-    baseUrl: api.day.app/#/
+  iphone: # IosApp：bark
+    baseUrl: https://api.day.app/4P5DC6jXnLT6Dsm2n9BENe/
+    icon: https://wanfeng-oss.oss-cn-beijing.aliyuncs.com/photos/9bdfc9cc03deddb267edf76f9840f6e7.jpg # 未提供icon时，使用该默认
+
+bili:
+  coin: 5 #每天需要投币的数量。[0,5]。
+  gift: true #送出即将过期礼物。[true,false]
+  s2c: true #银瓜子兑换为硬币。[true,false]
+  autoBiCoin: 1 #月底自动使用B币卷。[{0,自己会使用},{1,给自己充电},{2,兑换成金瓜子}]
+  platform: ios #用户设备的标识[android,ios]
+  DedeUserID:  287473737
+  biliJct: 677dbf072d720a3a129d5fe3d96491f2
+  SESSDATA: 1cbd89c2%2C1714574541%2C48cff%2Ab1CjD6pUKVZwqbLXLNWWfBGG3m9qEpDkdWyA2ibXJooWrWxBBTIAw7WLLzw2UT1u-d0JcSVjhnSGlBd0Jqd0VqQV9DTnJZa2t0S2VFQ0E4TVVTSG5uUXk4NVFVdFZKQ2hyZzFSdVhJVmhFc0d6TDdFOXgtNEpYNG5WWmJabnBpVWFUMGRPV1J3YXlnIIEC
