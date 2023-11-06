@@ -12,7 +12,7 @@ public class BiliController {
     private BiliService biliService;
     @Autowired
     private BiliUserData biliUserData;
-    @RequestMapping("/do")
+    @RequestMapping("/biliTask")
     public Result<String> biliTask(){
         biliService.startBiliTask();
         return Result.ok(biliUserData.getSendMsg());

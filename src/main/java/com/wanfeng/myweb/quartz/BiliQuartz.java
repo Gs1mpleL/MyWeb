@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class BiliQuartz {
     @Autowired
     private BiliService biliService;
-    @Scheduled(cron = "0 7 * * *")
+    @Scheduled(cron = "0 7 * * * *")
     public void startBiliTask(){
        biliService.startBiliTask();
     }
