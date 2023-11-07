@@ -45,7 +45,6 @@ public class CollectVipGift implements Task {
                 vipPrivilege(2);
             }else {
                 LOGGER.info("领取年度大会员礼包 -- {}","失败,每月一号可执行");
-                biliUserData.info("领取年度大会员礼包 -- {}","失败,每月一号可执行");
             }
         } catch (Exception e){
             LOGGER.error("领取年度大会员礼包错误 -- "+e);
