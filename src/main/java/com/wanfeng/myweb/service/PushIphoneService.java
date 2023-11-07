@@ -4,7 +4,6 @@ import com.wanfeng.myweb.Utils.HttpUtil;
 import com.wanfeng.myweb.properties.PushToIphoneProperties;
 import com.wanfeng.myweb.vo.PushIphoneVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class PushIphoneService {
         }
         url+="/";
         url+=pushIphoneVo.getMsg();
-        Map<String,String> map = new HashMap<>();;
+        Map<String,String> map = new HashMap<>();
         if (pushIphoneVo.getGroupName()!= null){
             map.put("group", pushIphoneVo.getGroupName());
         }
