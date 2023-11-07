@@ -39,7 +39,7 @@ public class PushIphoneService {
         if (str.contains("success")){
             return "ok";
         }else {
-            return "error";
+            return "error ";
         }
     }
 
