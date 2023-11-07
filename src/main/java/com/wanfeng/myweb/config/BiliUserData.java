@@ -27,13 +27,15 @@ public class BiliUserData {
     private String sendMsg = "";
 
     public void info(String template, String addMsg){
-        addMsg = template.replace("{}",addMsg);
+        addMsg = template.replace("{}","「" + addMsg + " 」");
+        addMsg = addMsg.replace("--",":");
         sendMsg+="\n";
         sendMsg+=addMsg;
     }
     public void info(String addMsg){
+        addMsg = addMsg.replace("--",":");
         sendMsg+="\n";
-        sendMsg+=addMsg;
+        sendMsg+="「"+addMsg + "」";
     }
 
     private BiliUserData(){}

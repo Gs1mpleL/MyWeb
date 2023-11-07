@@ -29,6 +29,7 @@ public class DailyTask implements Task{
                     regions.getJSONObject(5).getString("cid"), "300");
             LOGGER.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
             biliUserData.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
+            Thread.sleep(1000); // 这样好像分享视频成功率高点
             JSONObject share = share(regions.getJSONObject(5).getString("aid"));
             LOGGER.info("分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
             biliUserData.info("分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
@@ -65,7 +66,6 @@ public class DailyTask implements Task{
      * 模拟观看视频
      * @param aid     视频 aid 号
      * @param cid     视频 cid 号
-     * @param progres 模拟观看的时间
      */
     public JSONObject report(String aid, String cid, String progres) {
         String body = "aid=" + aid
@@ -82,7 +82,7 @@ public class DailyTask implements Task{
 
      */
     public JSONObject share(String aid) {
-        String body = "aid=" + aid + "&csrf=" + biliProperties.getBiliJct();
+        String body = "aid=" + aid + "&csrf=" + biliProperties.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1" ;
         return biliRequest.post("https://api.bilibili.com/x/web-interface/share/add", body);
     }
 }

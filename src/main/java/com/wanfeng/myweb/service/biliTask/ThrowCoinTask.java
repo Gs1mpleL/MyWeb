@@ -45,7 +45,7 @@ public class ThrowCoinTask implements Task {
             int num = (num2 >= num1 ? num1 : num2) >= num3 ? num3 : (num2 >= num1 ? num1 : num2);
             if (num == 0){
                 LOGGER.info("今日已投币 -- 5");
-                biliUserData.info("今日已投币 -- 5");
+                biliUserData.info("今日已投币 -- {}", String.valueOf(5));
                 return;
             }
             /* 获取分区视频信息 */
