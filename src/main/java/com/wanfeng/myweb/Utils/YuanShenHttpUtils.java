@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.config.YuanshenConfig;
 import com.wanfeng.myweb.properties.YuanShenProperties;
-import com.wanfeng.myweb.service.YuanShenService;
 import lombok.Data;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.Header;
@@ -49,7 +48,7 @@ public class YuanShenHttpUtils {
         setSalt(YuanshenConfig.SIGN_SALT);
         return new YuanShenHttpUtils.HeaderBuilder.Builder()
                 .add("Cookie", yuanShenProperties.getCookie())
-//                .add("User-Agent", String.format(yuanShenProperties.getUSER_AGENT_TEMPLATE(), ""))
+                .add("User-Agent", String.format(YuanshenConfig.USER_AGENT_TEMPLATE, getAppVersion()))
                 .add("Referer", YuanshenConfig.refererURL)
                 .add("Accept-Encoding", "gzip, deflate, br")
                 .add("x-rpc-channel", "appstore")
@@ -74,7 +73,7 @@ public class YuanShenHttpUtils {
         JSONObject resultJson = null;
         try {
             URIBuilder uriBuilder = new URIBuilder(url);
-            List<NameValuePair> params = null;
+            List<NameValuePair> params;
             if (data != null && !data.isEmpty()) {
                 params = new ArrayList<>();
                 for (String key : data.keySet()) {
@@ -156,21 +155,17 @@ public class YuanShenHttpUtils {
     public static class HeaderBuilder {
 
         public static class Builder {
-
             private final Map<String, String> header = new HashMap<>();
-
             public Builder add(String name, String value) {
                 this.header.put(name, value);
                 return this;
             }
-
             public Builder addAll(Header[] headers) {
                 for (Header h : headers) {
                     this.header.put(h.getName(), h.getValue());
                 }
                 return this;
             }
-
             public Header[] build() {
                 List<Header> list = new ArrayList<>();
                 for (String key : this.header.keySet()) {
@@ -180,30 +175,25 @@ public class YuanShenHttpUtils {
             }
         }
     }
-
     protected String getDS() {
         String i = (System.currentTimeMillis() / 1000) + "";
         String r = getRandomStr();
         return createDS(getSalt(), i, r);
     }
-
     protected String getDS(String gidsJson) {
         Random random = new Random();
         String i = (System.currentTimeMillis() / 1000) + "";
         String r = String.valueOf(random.nextInt(200000 - 100000) + 100000 + 1);
         return createDS(YuanshenConfig.COMMUNITY_SIGN_SALT, i, r, gidsJson);
     }
-
     private String createDS(String n, String i, String r) {
         String c = DigestUtils.md5Hex("salt=" + n + "&t=" + i + "&r=" + r);
         return String.format("%s,%s,%s", i, r, c);
     }
-
     private String createDS(String n, String i, String r, String b) {
         String c = DigestUtils.md5Hex("salt=" + n + "&t=" + i + "&r=" + r + "&b=" + b + "&q=" + "");
         return String.format("%s,%s,%s", i, r, c);
     }
-
     protected String getRandomStr() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
