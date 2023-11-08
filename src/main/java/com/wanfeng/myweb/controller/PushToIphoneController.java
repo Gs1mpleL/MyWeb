@@ -5,6 +5,7 @@ import com.wanfeng.myweb.vo.PushIphoneVo;
 import com.wanfeng.myweb.vo.Result;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,8 +16,8 @@ public class PushToIphoneController {
     @Autowired
     private PushIphoneService pushIphoneService;
 
-    @RequestMapping("/pushToIphone")
-    public Result<String > test(PushIphoneVo pushIphoneVo){
+    @RequestMapping("/push")
+    public Result<String > push(@RequestBody PushIphoneVo pushIphoneVo){
         String res = pushIphoneService.push(pushIphoneVo);
         return Result.ok(res);
     }

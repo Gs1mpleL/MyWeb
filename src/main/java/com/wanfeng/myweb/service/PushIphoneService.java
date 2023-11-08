@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class PushIphoneService {
@@ -17,7 +18,7 @@ public class PushIphoneService {
     private PushToIphoneProperties pushToIphoneProperties;
     public String push(PushIphoneVo pushIphoneVo){
         String url = pushToIphoneProperties.getBaseUrl();
-        if (pushIphoneVo.getMsg() == null){
+        if (pushIphoneVo.getMsg() == null | Objects.equals(pushIphoneVo.getMsg(), "")){
             return "请输入内容";
         }
         if (pushIphoneVo.getTitle() !=null){

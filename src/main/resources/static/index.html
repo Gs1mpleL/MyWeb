@@ -2,9 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>111</title>
+    <title>晚风的网站</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .container input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-11111
+<a href = "/biliTask"> 哔哩哔哩任务启动</a>
+<br>
+<a href = "/yuanshen">原神任务启动</a>
+<br>
+<div class="container">
+    <h2>推送至Iphone</h2>
+    <input type="text" id="msg" placeholder="请输入消息...">
+    <input type="text" id="title" placeholder="请输入标题...">
+    <button onclick="(push())">发送</button>
+</div>
+<script>
+    function push() {
+        const msg = document.getElementById("msg").value;
+        const title = document.getElementById("title").value;
+
+        // 调用接口并携带msg和title作为参数
+        fetch('/push', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                msg: msg,
+                title: title,
+                groupName: "web"
+            })
+        })  .then(response => response.json())
+            .then(data => {
+                // 处理返回的数据
+                if (data.flag === true) {
+                    alert(data.data);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        // 清空输入框和标题框
+        document.getElementById("msg").value = "";
+        document.getElementById("title").value = "";
+    }
+</script>
 </body>
 </html>
