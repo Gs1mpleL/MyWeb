@@ -34,8 +34,8 @@
 <br>
 <div class="container">
     <h2>推送至Iphone</h2>
-    <input type="text" id="msg" placeholder="请输入消息...">
-    <input type="text" id="title" placeholder="请输入标题...">
+    <label for="msg"></label><input type="text" id="msg" placeholder="请输入消息...">
+    <label for="title"></label><input type="text" id="title" placeholder="请输入标题...">
     <button onclick="(push())">发送</button>
 </div>
 <script>
@@ -44,7 +44,7 @@
         const title = document.getElementById("title").value;
 
         // 调用接口并携带msg和title作为参数
-        fetch('/push', {
+        fetch('/pushIphone', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
