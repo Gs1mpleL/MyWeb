@@ -37,7 +37,7 @@ public class PushIphoneService {
         }
         String str = httpUtil.get(url,map);
         if (str.contains("success")){
-            return "ok";
+            return "推送成功";
         }else {
             return "error ";
         }
