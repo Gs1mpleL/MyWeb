@@ -3,6 +3,7 @@ package com.wanfeng.myweb.controller;
 import com.wanfeng.myweb.service.YuanShenService;
 import com.wanfeng.myweb.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +14,8 @@ import java.util.Map;
 public class YuanshenController {
     @Autowired
     private YuanShenService yuanShenService;
-    @RequestMapping("/yuanshen")
-    public Result<?> d1o(){
+    @GetMapping("/yuanshen")
+    public Result<?> yuanShenTask(){
         List<Map<String, Object>> uid = yuanShenService.doSign();
         return Result.ok(uid);
 

@@ -20,6 +20,7 @@ import java.util.*;
 public class YuanShenService {
     private static final Logger log = LogManager.getLogger(YuanShenService.class.getName());
     private static String msgToIphone = "";
+
     @Autowired
     private YuanShenHttpUtils yuanShenHttpUtils;
     @Autowired
