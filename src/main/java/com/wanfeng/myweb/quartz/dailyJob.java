@@ -3,7 +3,7 @@ package com.wanfeng.myweb.quartz;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.PushIphoneService;
 import com.wanfeng.myweb.service.YuanShenService;
-import com.wanfeng.myweb.vo.PushIphoneVo;
+import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,6 +25,6 @@ public class dailyJob {
     @Scheduled(cron = "0 0 8 * * ? ")
     public void YuanShenSignDailyTask(){
 //        yuanShenService.doSign();
-        pushIphoneService.push(new PushIphoneVo("原神","未签到等待风控结束测试","原神"));
+        pushIphoneService.pushIphone(new PushVO("原神","未签到等待风控结束测试","原神"));
     }
 }

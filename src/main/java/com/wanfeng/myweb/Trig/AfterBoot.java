@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.Trig;
 
 import com.wanfeng.myweb.service.PushIphoneService;
-import com.wanfeng.myweb.vo.PushIphoneVo;
+import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,6 @@ public class AfterBoot implements CommandLineRunner {
     private PushIphoneService pushIphoneService;
     @Override
     public void run(String... args) throws Exception {
-        pushIphoneService.push(new PushIphoneVo("MyWeb","项目启动成功","MyWeb"));
+        pushIphoneService.pushIphone(new PushVO("MyWeb","项目启动成功","MyWeb"));
     }
 }

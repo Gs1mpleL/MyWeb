@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service;
 
 import com.wanfeng.myweb.Utils.HttpUtil;
 import com.wanfeng.myweb.properties.PushToIphoneProperties;
-import com.wanfeng.myweb.vo.PushIphoneVo;
+import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +16,30 @@ public class PushIphoneService {
     private HttpUtil httpUtil;
     @Autowired
     private PushToIphoneProperties pushToIphoneProperties;
-    public String push(PushIphoneVo pushIphoneVo){
-        String url = pushToIphoneProperties.getBaseUrl();
-        if (pushIphoneVo.getMsg() == null | Objects.equals(pushIphoneVo.getMsg(), "")){
+    public String pushIphone(PushVO pushVO){
+        String url = pushToIphoneProperties.getIphoneBaseUrl();
+        return doPush(pushVO,url);
+    }
+    public String pushMac(PushVO pushVO){
+        String url = pushToIphoneProperties.getMacBaseUrl();
+        return doPush(pushVO,url);
+    }
+
+    private String  doPush(PushVO pushVO, String url) {
+        if (pushVO.getMsg() == null | Objects.equals(pushVO.getMsg(), "")){
             return "请输入内容";
         }
-        if (pushIphoneVo.getTitle() !=null){
-            url += pushIphoneVo.getTitle();
+        if (pushVO.getTitle() !=null){
+            url += pushVO.getTitle();
         }
         url+="/";
-        url+=pushIphoneVo.getMsg();
+        url+= pushVO.getMsg();
         Map<String,String> map = new HashMap<>();
-        if (pushIphoneVo.getGroupName()!= null){
-            map.put("group", pushIphoneVo.getGroupName());
+        if (pushVO.getGroupName()!= null){
+            map.put("group", pushVO.getGroupName());
         }
-        if (pushIphoneVo.getIcon() != null){
-            map.put("icon", pushIphoneVo.getIcon());
+        if (pushVO.getIcon() != null){
+            map.put("icon", pushVO.getIcon());
         }else if (pushToIphoneProperties.getIcon()!=null){
             map.put("icon", pushToIphoneProperties.getIcon());
         }

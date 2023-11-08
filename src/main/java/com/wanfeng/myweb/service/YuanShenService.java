@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.wanfeng.myweb.Utils.YuanShenHttpUtils;
 import com.wanfeng.myweb.config.YuanshenConfig;
-import com.wanfeng.myweb.vo.PushIphoneVo;
+import com.wanfeng.myweb.vo.PushVO;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +37,7 @@ public class YuanShenService {
             uidMap.put("msg", uidMap.get("msg") + "\n" + doSign + "\n" + hubSign);
         }
         try {
-            pushIphoneService.push(new PushIphoneVo("原神",msgToIphone,"原神"));
+            pushIphoneService.pushIphone(new PushVO("原神",msgToIphone,"原神"));
         }catch (Exception e){
             log.info("推送iPhone失败");
         }finally {

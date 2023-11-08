@@ -5,9 +5,8 @@ import com.wanfeng.myweb.Utils.BiliRequest;
 
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
-import com.wanfeng.myweb.properties.PushToIphoneProperties;
 import com.wanfeng.myweb.service.biliTask.*;
-import com.wanfeng.myweb.vo.PushIphoneVo;
+import com.wanfeng.myweb.vo.PushVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +103,7 @@ public class BiliService {
         String title = "哔哩哔哩";
         String groupName = "哔哩哔哩";
         try{
-            String pushRep = pushIphoneService.push(new PushIphoneVo(title, sendMsg, groupName));
+            String pushRep = pushIphoneService.pushIphone(new PushVO(title, sendMsg, groupName));
             if(Objects.equals(pushRep, "ok")){
                 LOGGER.info("推送Iphone正常");
                 biliUserData.info("推送Iphone正常");

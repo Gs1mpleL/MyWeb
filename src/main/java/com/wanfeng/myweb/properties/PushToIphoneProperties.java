@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "push.iphone")
 public class PushToIphoneProperties {
-    private String baseUrl;
+    private String iphoneBaseUrl;
+    private String macBaseUrl;
     private String icon;
 }
