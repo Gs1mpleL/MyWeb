@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class ThrowCoinTask implements Task {
     @Autowired
     private DailyTask dailyTask;
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
 
     @Autowired
     private BiliProperties biliProperties;
@@ -88,7 +88,7 @@ public class ThrowCoinTask implements Task {
                 + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
                 + "&csrf=" + biliProperties.getBiliJct();
-        return biliRequest.post("https://api.bilibili.com/x/web-interface/coin/add", body);
+        return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/coin/add", body);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ThrowCoinTask implements Task {
      * @return JSONObject
      */
     public Integer getReward() {
-        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/member/web/exp/log");
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/member/web/exp/log");
         int count = 0;
         LocalDate today = LocalDate.now();
         String regex = "\\b" + today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\\b";
@@ -124,7 +124,7 @@ public class ThrowCoinTask implements Task {
      * 
      */
     public Integer getCoin() {
-        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
         return (int) (Double.parseDouble(jsonObject.getJSONObject("data").getString("money")));
     }
 
@@ -137,7 +137,7 @@ public class ThrowCoinTask implements Task {
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;
-        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("archives");
         JSONArray jsonRegions = new JSONArray();
         for (Object object : jsonArray) {

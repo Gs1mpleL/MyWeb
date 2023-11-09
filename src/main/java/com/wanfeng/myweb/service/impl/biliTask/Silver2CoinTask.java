@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class Silver2CoinTask implements Task {
     @Autowired
     private BiliProperties biliProperties;
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
     @Override
     public void run(){
         if(biliProperties.isS2c()){
@@ -54,7 +54,7 @@ public class Silver2CoinTask implements Task {
      */
     public JSONObject silver2coin(){
         String body = "csrf="+ biliProperties.getBiliJct();
-        return biliRequest.post("https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin", body);
+        return biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin", body);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Silver2CoinTask implements Task {
      * @return Integer
      */
     public Integer getSilver(){
-        JSONObject jsonObject = biliRequest.get("https://api.live.bilibili.com/xlive/revenue/v1/wallet/getStatus");
+        JSONObject jsonObject = biliHttpUtils.get("https://api.live.bilibili.com/xlive/revenue/v1/wallet/getStatus");
         return Integer.parseInt(jsonObject.getJSONObject("data").getString("silver"));
     }
 }

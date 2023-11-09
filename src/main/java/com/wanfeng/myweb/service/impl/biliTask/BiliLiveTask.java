@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class BiliLiveTask implements Task {
     private BiliData biliData;
 
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
     @Override
     public void run(){
         try{
@@ -44,7 +44,7 @@ public class BiliLiveTask implements Task {
      * B站直播进行签到
      */
     public JSONObject xliveSign(){
-        return biliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
+        return biliHttpUtils.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
     }
 
 }

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.wanfeng.myweb.Utils.YuanShenHttpUtils;
+import com.wanfeng.myweb.Utils.HttpUtils.YuanShenHttpUtils;
 import com.wanfeng.myweb.config.YuanshenConfig;
 import com.wanfeng.myweb.service.YuanShenService;
 import com.wanfeng.myweb.vo.PushVO;

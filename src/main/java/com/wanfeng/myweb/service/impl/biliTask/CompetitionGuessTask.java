@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.po.GuessGame;
 import com.wanfeng.myweb.po.GuessTeam;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class CompetitionGuessTask implements Task{
     private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionGuessTask.class);
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
     @Autowired
     private BiliProperties biliProperties;
     @Autowired
@@ -48,7 +48,7 @@ public class CompetitionGuessTask implements Task{
                 + "&count=" + biliProperties.getGuessCoin()
                 + "&is_fav=1"
                 + "&csrf=" + biliProperties.getBiliJct();
-        JSONObject post = biliRequest.post("https://api.bilibili.com/x/esports/guess/add", body);
+        JSONObject post = biliHttpUtils.post("https://api.bilibili.com/x/esports/guess/add", body);
         if (post.getString("code").equals("0")){
             LOGGER.info("在{}中投给{}{}个硬币",guessGame.getTitle(),voteTeam.getTeamName(),biliProperties.getGuessCoin());
             biliData.info("在"+guessGame.getTitle()+"中投给"+voteTeam.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
@@ -60,7 +60,7 @@ public class CompetitionGuessTask implements Task{
 
     private ArrayList<GuessGame>  getGuessingList(){
         ArrayList<GuessGame> guessGameArrayList = new ArrayList<>();
-        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/esports/guess/collection/question?pn=1&ps=50");
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/esports/guess/collection/question?pn=1&ps=50");
         if (jsonObject.getString("code").equals("0")) {
             JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("list");
             for (Object o : jsonArray) {

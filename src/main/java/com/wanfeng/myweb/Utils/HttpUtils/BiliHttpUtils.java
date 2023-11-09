@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.Utils;
+package com.wanfeng.myweb.Utils.HttpUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.properties.BiliProperties;
@@ -31,12 +31,12 @@ import java.security.cert.X509Certificate;
  * 封装的网络请求请求工具类
  */
 @Component
-public class BiliRequest {
+public class BiliHttpUtils {
     @Autowired
     private BiliProperties biliProperties;
     /** 获取日志记录器对象 */
-    private static final Logger LOGGER = LoggerFactory.getLogger(BiliRequest.class);
-    private BiliRequest(){}
+    private static final Logger LOGGER = LoggerFactory.getLogger(BiliHttpUtils.class);
+    private BiliHttpUtils(){}
 
     /**
      * 发送get请求

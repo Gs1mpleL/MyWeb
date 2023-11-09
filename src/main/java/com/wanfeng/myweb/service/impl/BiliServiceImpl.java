@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
@@ -40,7 +40,7 @@ public class BiliServiceImpl implements BiliService {
     @Autowired
     private BiliProperties biliProperties;
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
     @Autowired
     private CompetitionGuessTask competitionGuessTask;
     @Override
@@ -83,7 +83,7 @@ public class BiliServiceImpl implements BiliService {
      * 检查用户的状态
      */
     public boolean check(){
-        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/nav");
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav");
         JSONObject object = jsonObject.getJSONObject("data");
         String code = jsonObject.getString("code");
         String SUCCESS = "0";

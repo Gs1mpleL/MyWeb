@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ public class MangaTask implements Task {
     @Autowired
     private BiliProperties biliProperties;
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
     @Autowired
     private BiliData biliData;
     @Override
@@ -37,7 +37,7 @@ public class MangaTask implements Task {
      */
     public JSONObject mangaClockIn(String platform){
         String body = "platform="+platform;
-        return biliRequest.post("https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn", body);
+        return biliHttpUtils.post("https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn", body);
     }
 }
 

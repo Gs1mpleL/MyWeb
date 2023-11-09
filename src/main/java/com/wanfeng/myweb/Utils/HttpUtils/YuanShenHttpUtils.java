@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.Utils;
+package com.wanfeng.myweb.Utils.HttpUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

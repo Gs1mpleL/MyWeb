@@ -1,6 +1,6 @@
 package com.wanfeng.myweb.service.impl;
 
-import com.wanfeng.myweb.Utils.HttpUtil;
+import com.wanfeng.myweb.Utils.HttpUtils.BaseHttpUtils;
 import com.wanfeng.myweb.properties.PushProperties;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.vo.PushVO;
@@ -14,21 +14,21 @@ import java.util.Objects;
 @Service
 public class PushServiceImpl implements PushService {
     @Autowired
-    private HttpUtil httpUtil;
+    private BaseHttpUtils baseHttpUtils;
     @Autowired
     private PushProperties pushProperties;
     @Override
     public String pushIphone(PushVO pushVO){
         String url = pushProperties.getIphoneBaseUrl();
-        return doPush(pushVO,url);
+        return doPushUsingBark(pushVO,url);
     }
     @Override
     public String pushMac(PushVO pushVO){
         String url = pushProperties.getMacBaseUrl();
-        return doPush(pushVO,url);
+        return doPushUsingBark(pushVO,url);
     }
 
-    private String  doPush(PushVO pushVO, String url) {
+    private String doPushUsingBark(PushVO pushVO, String url) {
         if (pushVO.getMsg() == null | Objects.equals(pushVO.getMsg(), "")){
             return "请输入内容";
         }
@@ -45,7 +45,7 @@ public class PushServiceImpl implements PushService {
         }else if (pushProperties.getIcon()!=null){
             map.put("icon", pushProperties.getIcon());
         }
-        String str = httpUtil.post(url,map);
+        String str = baseHttpUtils.post(url,map);
         if (str.contains("success")){
             return "推送成功";
         }else {

@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ public class DailyTask implements Task{
     @Autowired
     private BiliData biliData;
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
     @Autowired
     private BiliProperties biliProperties;
     @Override
@@ -52,7 +52,7 @@ public class DailyTask implements Task{
                 + "&message=" + comment
                 + "&plat=1"
                 + "&csrf=" + biliProperties.getBiliJct();
-        return biliRequest.post("https://api.bilibili.com/x/v2/reply/add", body);
+        return biliHttpUtils.post("https://api.bilibili.com/x/v2/reply/add", body);
 
     }
     /**
@@ -62,7 +62,7 @@ public class DailyTask implements Task{
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;
-        JSONObject jsonObject = biliRequest.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("archives");
         JSONArray jsonRegions = new JSONArray();
         for (Object object : jsonArray) {
@@ -87,7 +87,7 @@ public class DailyTask implements Task{
                 + "&cid=" + cid
                 + "&progres=" + progres
                 + "&csrf=" + biliProperties.getBiliJct();
-        return biliRequest.post("http://api.bilibili.com/x/v2/history/report", body);
+        return biliHttpUtils.post("http://api.bilibili.com/x/v2/history/report", body);
     }
 
     /**
@@ -98,6 +98,6 @@ public class DailyTask implements Task{
      */
     public JSONObject share(String aid) {
         String body = "aid=" + aid + "&csrf=" + biliProperties.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1" ;
-        return biliRequest.post("https://api.bilibili.com/x/web-interface/share/add", body);
+        return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/share/add", body);
     }
 }

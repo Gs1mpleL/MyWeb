@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ public class CollectVipGift implements Task {
     private BiliData biliData;
 
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
 
     @Autowired
     private BiliProperties biliProperties;
@@ -54,7 +54,7 @@ public class CollectVipGift implements Task {
     public void vipPrivilege(Integer type) {
         String body = "type=" + type
                 + "&csrf=" + biliProperties.getBiliJct();
-        JSONObject jsonObject = biliRequest.post("https://api.bilibili.com/x/vip/privilege/receive", body);
+        JSONObject jsonObject = biliHttpUtils.post("https://api.bilibili.com/x/vip/privilege/receive", body);
         Integer code = jsonObject.getInteger("code");
         if (0 == code) {
             if (type == 1) {

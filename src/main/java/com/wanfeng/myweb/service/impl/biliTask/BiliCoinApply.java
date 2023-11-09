@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.BiliRequest;
+import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class BiliCoinApply implements Task {
     private BiliData biliData;
 
     @Autowired
-    private BiliRequest biliRequest;
+    private BiliHttpUtils biliHttpUtils;
 
     @Autowired
     private BiliProperties biliProperties;
@@ -68,7 +68,7 @@ public class BiliCoinApply implements Task {
                 + "&visit_id=1zn218g8bp8g"
                 + "&csrf=" + biliProperties.getBiliJct();
 
-        JSONObject jsonObject = biliRequest.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
+        JSONObject jsonObject = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
 
         Integer resultCode = jsonObject.getInteger("code");
         if (resultCode == 0) {
@@ -102,7 +102,7 @@ public class BiliCoinApply implements Task {
         String requestBody = "order_id=" + token
                 + "&message=" + "BilibiliTask自动充电"
                 + "&csrf=" + biliProperties.getBiliJct();
-        JSONObject jsonObject = biliRequest.post("http://api.bilibili.com/x/ugcpay/trade/elec/message", requestBody);
+        JSONObject jsonObject = biliHttpUtils.post("http://api.bilibili.com/x/ugcpay/trade/elec/message", requestBody);
         LOGGER.debug(jsonObject.toString());
         biliData.info("充电评论:{}",jsonObject.toString());
     }
@@ -119,7 +119,7 @@ public class BiliCoinApply implements Task {
                 + "&goods_id=1"
                 + "&goods_num=" + couponBalance
                 + "&csrf=" + biliProperties.getBiliJct();
-        JSONObject post = biliRequest.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
+        JSONObject post = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
         String msg ;
         /* json对象的状态码 */
         String code = post.getString("code");
