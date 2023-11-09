@@ -3,7 +3,7 @@ package com.wanfeng.myweb.service.biliTask;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.BiliRequest;
-import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class ThrowCoinTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(ThrowCoinTask.class);
     @Autowired
-    private BiliUserData biliUserData;
+    private BiliData biliData;
 
     @Autowired
     private BiliRequest biliRequest;
@@ -45,7 +45,7 @@ public class ThrowCoinTask implements Task {
             int num = (num2 >= num1 ? num1 : num2) >= num3 ? num3 : (num2 >= num1 ? num1 : num2);
             if (num == 0){
                 LOGGER.info("今日已投币 -- 5");
-                biliUserData.info("今日已投币 -- {}", String.valueOf(5));
+                biliData.info("今日已投币 -- {}", String.valueOf(5));
                 return;
             }
             /* 获取分区视频信息 */
@@ -63,11 +63,11 @@ public class ThrowCoinTask implements Task {
                     msg = json.getString("message");
                 }
                 LOGGER.info("投币给 -- av{} -- {}", aid, msg);
-                biliUserData.info("投币给 -- av{}", aid+"-"+ msg);
+                biliData.info("投币给 -- av{}", aid+"-"+ msg);
             }
         } catch (Exception e) {
             LOGGER.info("投币异常 -- " + e);
-            biliUserData.info("投币异常 -- " + e);
+            biliData.info("投币异常 -- " + e);
         }
     }
 

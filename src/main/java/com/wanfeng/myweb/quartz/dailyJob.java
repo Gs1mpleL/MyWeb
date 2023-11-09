@@ -19,7 +19,7 @@ public class dailyJob {
     private PushIphoneService pushIphoneService;
     @Scheduled(cron = "0 0 8 * * ? ")
     public void BiliDailyTask(){
-       biliService.startBiliTask();
+       biliService.biliTask();
     }
 
     @Scheduled(cron = "0 0 8 * * ? ")

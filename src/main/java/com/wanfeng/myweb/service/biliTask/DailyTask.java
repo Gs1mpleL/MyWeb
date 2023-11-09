@@ -3,7 +3,7 @@ package com.wanfeng.myweb.service.biliTask;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.BiliRequest;
-import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public class DailyTask implements Task{
     private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
     /** 获取DATA对象 */
     @Autowired
-    private BiliUserData biliUserData;
+    private BiliData biliData;
     @Autowired
     private BiliRequest biliRequest;
     @Autowired
@@ -28,20 +28,20 @@ public class DailyTask implements Task{
             JSONObject report = report(regions.getJSONObject(5).getString("aid"),
                     regions.getJSONObject(5).getString("cid"), "300");
             LOGGER.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
-            biliUserData.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
+            biliData.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
             Thread.sleep(1000); // 这样好像分享视频成功率高点
             JSONObject share = share(regions.getJSONObject(5).getString("aid"));
-            LOGGER.info("分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
-            biliUserData.info("分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
+            LOGGER.info("模拟分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
+            biliData.info("模拟分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("每日任务异常 -- " + e);
-            biliUserData.info("每日任务异常 -- " + e);
+            biliData.info("每日任务异常 -- " + e);
         }
     }
 
     /**
      * 获取B站推荐视频
-     *
      * @param ps  代表你要获得几个视频
      * @param rid B站分区推荐视频
      */

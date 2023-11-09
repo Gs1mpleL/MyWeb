@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.BiliRequest;
-import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +18,16 @@ public class MangaTask implements Task {
     @Autowired
     private BiliRequest biliRequest;
     @Autowired
-    private BiliUserData biliUserData;
+    private BiliData biliData;
     @Override
     public void run(){
         try{
             JSONObject jsonObject = mangaClockIn(biliProperties.getPlatform());
             LOGGER.info("漫画签到 -- {}","0".equals(jsonObject.getString("code"))?"成功":"今天已经签过了");
-            biliUserData.info("漫画签到 -- {}","0".equals(jsonObject.getString("code"))?"成功":"今天已经签过了");
+            biliData.info("漫画签到 -- {}","0".equals(jsonObject.getString("code"))?"成功":"今天已经签过了");
         } catch (Exception e){
             LOGGER.error("漫画签到错误 -- "+e);
-            biliUserData.info("漫画签到错误 -- "+e);
+            biliData.info("漫画签到错误 -- "+e);
         }
     }
 

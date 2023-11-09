@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.BiliRequest;
-import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BiliData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class Silver2CoinTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(Silver2CoinTask.class);
     @Autowired
-    private BiliUserData biliUserData;
+    private BiliData biliData;
     @Autowired
     private BiliProperties biliProperties;
     @Autowired
@@ -29,20 +29,21 @@ public class Silver2CoinTask implements Task {
             try{
                 /* 获得银瓜子的数量 */
                 Integer silver = getSilver();
-                LOGGER.info("银瓜子: {}",silver);
-                biliUserData.info("银瓜子: {}", String.valueOf(silver));
+                LOGGER.info("拥有银瓜子数量: {}",silver);
+                biliData.info("拥有银瓜子数量: {}", String.valueOf(silver));
                 /* 如果银瓜子数量小于700没有必要再进行兑换 */
                 if(silver<700){
                     LOGGER.info("银瓜子兑换硬币 -- {}","银瓜子余额不足");
-                    biliUserData.info("银瓜子兑换硬币 -- {}","银瓜子余额不足");
+                    biliData.info("银瓜子兑换硬币 -- {}","银瓜子余额不足");
                 } else{
                     JSONObject jsonObject = silver2coin();
                     LOGGER.warn("银瓜子兑换硬币 -- {}",jsonObject.getString("message"));
-                    biliUserData.info("银瓜子兑换硬币 -- {}",jsonObject.getString("message"));
+                    biliData.info("银瓜子兑换硬币 -- {}",jsonObject.getString("message"));
                 }
             } catch (Exception e){
+                e.printStackTrace();
                 LOGGER.error("银瓜子兑换硬币错误 -- "+e);
-                biliUserData.info("银瓜子兑换硬币错误 -- "+e);
+                biliData.info("银瓜子兑换硬币错误 -- "+e);
             }
         }
     }

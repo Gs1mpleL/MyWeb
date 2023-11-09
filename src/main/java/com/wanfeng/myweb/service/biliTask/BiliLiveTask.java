@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.BiliRequest;
-import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BiliData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class BiliLiveTask implements Task {
     /** 访问成功 */
     private static final String SUCCESS = "0";
     @Autowired
-    private BiliUserData biliUserData;
+    private BiliData biliData;
 
     @Autowired
     private BiliRequest biliRequest;
@@ -31,18 +31,17 @@ public class BiliLiveTask implements Task {
                 msg = json.getString("message");
             }
             LOGGER.info("直播签到 -- {}",msg);
-            biliUserData.info("直播签到 -- {}",msg);
+            biliData.info("直播签到 -- {}",msg);
             /* 直播签到后等待5秒 */
             Thread.sleep(5000);
         } catch (Exception e){
             LOGGER.error("直播签到等待中错误 -- "+e);
-            biliUserData.info("直播签到等待中错误 -- "+e);
+            biliData.info("直播签到等待中错误 -- "+e);
         }
     }
 
     /**
      * B站直播进行签到
-
      */
     public JSONObject xliveSign(){
         return biliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");

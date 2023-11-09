@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Data
-public class BiliUserData {
-
+public class BiliData {
     /** 登录账户的用户名 */
     private String uname;
     /** 登录账户的uid */
@@ -38,5 +37,5 @@ public class BiliUserData {
         sendMsg+="「"+addMsg + "」";
     }
 
-    private BiliUserData(){}
+    private BiliData(){}
 }

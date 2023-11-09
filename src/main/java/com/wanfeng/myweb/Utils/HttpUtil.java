@@ -58,10 +58,11 @@ public class HttpUtil {
     }
 
     public String post(String url, Map<String,String> jsonMap) {
+        HttpEntity<Map<String, String>> mapHttpEntity = generatePostJson(jsonMap);
         ResponseEntity<String> apiResponse = restTemplate.postForEntity
                 (
                         url,
-                        jsonMap,
+                        mapHttpEntity,
                         String.class
                 );
         return apiResponse.getBody();
