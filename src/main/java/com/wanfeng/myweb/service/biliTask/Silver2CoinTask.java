@@ -36,8 +36,9 @@ public class Silver2CoinTask implements Task {
                     LOGGER.info("银瓜子兑换硬币 -- {}","银瓜子余额不足");
                     biliUserData.info("银瓜子兑换硬币 -- {}","银瓜子余额不足");
                 } else{
-                    LOGGER.warn("银瓜子兑换硬币 -- {}",silver2coin().getString("msg"));
-                    biliUserData.info("银瓜子兑换硬币 -- {}",silver2coin().getString("msg"));
+                    JSONObject jsonObject = silver2coin();
+                    LOGGER.warn("银瓜子兑换硬币 -- {}",jsonObject.getString("message"));
+                    biliUserData.info("银瓜子兑换硬币 -- {}",jsonObject.getString("message"));
                 }
             } catch (Exception e){
                 LOGGER.error("银瓜子兑换硬币错误 -- "+e);
@@ -52,7 +53,7 @@ public class Silver2CoinTask implements Task {
      */
     public JSONObject silver2coin(){
         String body = "csrf="+ biliProperties.getBiliJct();
-        return biliRequest.post("https://api.live.bilibili.com/pay/v1/Exchange/silver2coin", body);
+        return biliRequest.post("https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin", body);
     }
 
     /**
@@ -60,7 +61,7 @@ public class Silver2CoinTask implements Task {
      * @return Integer
      */
     public Integer getSilver(){
-        JSONObject jsonObject = biliRequest.get("https://api.live.bilibili.com/xlive/web-ucenter/user/get_user_info");
+        JSONObject jsonObject = biliRequest.get("https://api.live.bilibili.com/xlive/revenue/v1/wallet/getStatus");
         return Integer.parseInt(jsonObject.getJSONObject("data").getString("silver"));
     }
 }

@@ -104,7 +104,7 @@ public class BiliService {
         String groupName = "哔哩哔哩";
         try{
             String pushRep = pushIphoneService.pushIphone(new PushVO(title, sendMsg, groupName));
-            if(Objects.equals(pushRep, "ok")){
+            if(Objects.equals(pushRep, "推送成功")){
                 LOGGER.info("推送Iphone正常");
                 biliUserData.info("推送Iphone正常");
             } else{

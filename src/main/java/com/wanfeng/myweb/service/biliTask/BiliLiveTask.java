@@ -26,7 +26,7 @@ public class BiliLiveTask implements Task {
             String msg ;
             /* 获取json对象的状态码code */
             if(SUCCESS.equals(json.getString("code"))){
-                msg = "获得"+json.getJSONObject("biliData").getString("text");
+                msg = "获得"+json.getJSONObject("data").getString("text");
             } else{
                 msg = json.getString("message");
             }

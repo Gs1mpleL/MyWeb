@@ -63,22 +63,27 @@ public class BiliCoinApply implements Task {
             biliUserData.info("B币卷数量: "+ couponBalance + " -- 无法给自己充电");
             return ;
         }
-        /* 被充电用户的userID */
-        String userId = biliUserData.getMid();
-        String body = "elec_num=" + couponBalance * 10
-                + "&up_mid=" + userId
-                + "&otype=up"
-                + "&oid=" + userId
+        String body = "pay_bp=" + couponBalance * 1000
+                + "&context_id=" + 12299272
+                + "&context_type=11"
+                + "&goods_id=1"
+                + "&goods_num=1"
+                + "&goods_type=2"
+                + "&platform=pc"
+                + "&ios_bp=0"
+                + "&common_bp=" + couponBalance * 1000
+                + "&csrf_token=" + biliProperties.getBiliJct()
+                + "&visit_id=1zn218g8bp8g"
                 + "&csrf=" + biliProperties.getBiliJct();
 
-        JSONObject jsonObject = biliRequest.post("http://api.bilibili.com/x/ugcpay/trade/elec/pay/quick", body);
+        JSONObject jsonObject = biliRequest.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
 
         Integer resultCode = jsonObject.getInteger("code");
         if (resultCode == 0) {
-            JSONObject dataJson = jsonObject.getJSONObject("biliData");
+            JSONObject dataJson = jsonObject.getJSONObject("data");
             LOGGER.debug(dataJson.toString());
             Integer statusCode = dataJson.getInteger("status");
-            if (statusCode == 4) {
+            if (statusCode == 2) {
                 LOGGER.info("月底了，给自己充电成功啦，送的B币券没有浪费啦");
                 biliUserData.info("月底了，给自己充电成功啦，送的B币券没有浪费啦");
                 LOGGER.info("本次给自己充值了: " + couponBalance * 10 + "个电池");
