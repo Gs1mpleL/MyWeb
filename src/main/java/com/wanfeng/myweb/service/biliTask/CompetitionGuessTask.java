@@ -41,7 +41,7 @@ public class CompetitionGuessTask implements Task{
 
     private void doGuess(GuessGame guessGame) {
         // 投币给胜率高的队伍
-        GuessTeam voteTeam = Double.parseDouble(guessGame.getGuessTeam1().getTeamRate())>Double.parseDouble(guessGame.getGuessTeam2().getTeamRate())?guessGame.getGuessTeam1():guessGame.getGuessTeam2();
+        GuessTeam voteTeam = Double.parseDouble(guessGame.getGuessTeam1().getTeamRate())<Double.parseDouble(guessGame.getGuessTeam2().getTeamRate())?guessGame.getGuessTeam1():guessGame.getGuessTeam2();
         String body = "oid=" + guessGame.getContestId()
                 + "&main_id=" + guessGame.getMainId()
                 + "&detail_id=" + voteTeam.getTeamId()

@@ -33,6 +33,12 @@ public class DailyTask implements Task{
             JSONObject share = share(regions.getJSONObject(5).getString("aid"));
             LOGGER.info("模拟分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
             biliData.info("模拟分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
+            String aid = regions.getJSONObject(0).getString("aid");
+            JSONObject commentRet = setComment("我点开了你的视频，我也不知道我在干什么，因为我只是一个机器人", aid);
+            LOGGER.info("视频评论 -- {}", "0".equals(commentRet.getString("code")) ? "成功" : "失败");
+            biliData.info("视频评论 -- {}", "0".equals(commentRet.getString("code")) ? "成功" : "失败");
+
+
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("每日任务异常 -- " + e);
@@ -40,6 +46,15 @@ public class DailyTask implements Task{
         }
     }
 
+    public JSONObject setComment(String comment, String oid){
+        String body = "oid=" + oid
+                + "&type=1"
+                + "&message=" + comment
+                + "&plat=1"
+                + "&csrf=" + biliProperties.getBiliJct();
+        return biliRequest.post("https://api.bilibili.com/x/v2/reply/add", body);
+
+    }
     /**
      * 获取B站推荐视频
      * @param ps  代表你要获得几个视频

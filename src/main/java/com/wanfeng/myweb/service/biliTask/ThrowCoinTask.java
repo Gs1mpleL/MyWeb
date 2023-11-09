@@ -21,7 +21,8 @@ public class ThrowCoinTask implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(ThrowCoinTask.class);
     @Autowired
     private BiliData biliData;
-
+    @Autowired
+    private DailyTask dailyTask;
     @Autowired
     private BiliRequest biliRequest;
 
@@ -53,8 +54,10 @@ public class ThrowCoinTask implements Task {
             /* 给每个视频投 1 个币,点 1 个赞 */
             for (int i = 0; i < num; i++) {
                 /* 视频的aid */
+                System.out.println(regions.getJSONObject(i));
                 String aid = regions.getJSONObject(i).getString("aid");
                 JSONObject json = throwCoin(aid, "1", "1");
+                dailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
                 /* 输出的日志消息 */
                 String msg ;
                 if ("0".equals(json.getString("code"))) {
