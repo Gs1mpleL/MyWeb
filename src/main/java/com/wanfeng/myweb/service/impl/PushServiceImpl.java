@@ -1,7 +1,8 @@
-package com.wanfeng.myweb.service;
+package com.wanfeng.myweb.service.impl;
 
 import com.wanfeng.myweb.Utils.HttpUtil;
-import com.wanfeng.myweb.properties.PushToIphoneProperties;
+import com.wanfeng.myweb.properties.PushProperties;
+import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,17 +12,19 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class PushIphoneService {
+public class PushServiceImpl implements PushService {
     @Autowired
     private HttpUtil httpUtil;
     @Autowired
-    private PushToIphoneProperties pushToIphoneProperties;
+    private PushProperties pushProperties;
+    @Override
     public String pushIphone(PushVO pushVO){
-        String url = pushToIphoneProperties.getIphoneBaseUrl();
+        String url = pushProperties.getIphoneBaseUrl();
         return doPush(pushVO,url);
     }
+    @Override
     public String pushMac(PushVO pushVO){
-        String url = pushToIphoneProperties.getMacBaseUrl();
+        String url = pushProperties.getMacBaseUrl();
         return doPush(pushVO,url);
     }
 
@@ -39,8 +42,8 @@ public class PushIphoneService {
         }
         if (pushVO.getIcon() != null){
             map.put("icon", pushVO.getIcon());
-        }else if (pushToIphoneProperties.getIcon()!=null){
-            map.put("icon", pushToIphoneProperties.getIcon());
+        }else if (pushProperties.getIcon()!=null){
+            map.put("icon", pushProperties.getIcon());
         }
         String str = httpUtil.post(url,map);
         if (str.contains("success")){

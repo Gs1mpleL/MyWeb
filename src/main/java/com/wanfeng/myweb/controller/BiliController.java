@@ -14,7 +14,7 @@ public class BiliController {
     private BiliData biliData;
     @GetMapping("/biliTask")
     public Result<String> biliTask(){
-        biliService.biliTask();
+        biliService.doTask();
         String sendMsg = biliData.getSendMsg();
         biliData.setSendMsg("");
         return Result.ok(sendMsg);

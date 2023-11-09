@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.service.biliTask;
+package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.BiliRequest;

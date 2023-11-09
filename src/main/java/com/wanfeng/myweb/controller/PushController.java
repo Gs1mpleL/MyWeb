@@ -1,6 +1,6 @@
 package com.wanfeng.myweb.controller;
 
-import com.wanfeng.myweb.service.PushIphoneService;
+import com.wanfeng.myweb.service.impl.PushServiceImpl;
 import com.wanfeng.myweb.vo.PushVO;
 import com.wanfeng.myweb.vo.Result;
 import io.swagger.annotations.Api;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PushController {
 
     @Autowired
-    private PushIphoneService pushIphoneService;
+    private PushServiceImpl pushIphoneService;
 
     @PostMapping("/pushIphone")
     public Result<String > pushIphone(@RequestBody PushVO pushVO){

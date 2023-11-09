@@ -1,10 +1,23 @@
-server:
-  port: 80
-
 # 指定启用环境为 开发环境 dev
 spring:
   profiles:
     active: dev
+
+server:
+  port: 80
+
+#开启日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+
+
+
+
+
 
 push:
   iphone: # IosApp：bark
