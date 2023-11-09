@@ -42,6 +42,8 @@ public class BiliService {
     private BiliProperties biliProperties;
     @Autowired
     private BiliRequest biliRequest;
+    @Autowired
+    private CompetitionGuessTask competitionGuessTask;
 
     public void biliTask(){
         biliProperties.setCookie(biliProperties.getBiliJct(), biliProperties.getSESSDATA(), biliProperties.getDedeUserID());
@@ -58,6 +60,7 @@ public class BiliService {
             collectVipGift.run();
             biliCoinApply.run();
             throwCoinTask.run();
+            competitionGuessTask.run();
             biliLiveTask.run();
             biliSend();
         } else {

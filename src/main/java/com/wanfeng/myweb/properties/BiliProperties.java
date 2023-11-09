@@ -27,6 +27,7 @@ public class BiliProperties {
     private String biliJct;
     private String SESSDATA;
     private String totalCookie;
+    private String guessCoin;
     public void setCookie(String biliJct, String SESSDATA, String DedeUserID) {
         this.DedeUserID = DedeUserID;
         this.biliJct = biliJct;
