@@ -1,6 +1,11 @@
 server:
   port: 80
 
+# 指定启用环境为 开发环境 dev
+spring:
+  profiles:
+    active: dev
+
 push:
   iphone: # IosApp：bark
     iphoneBaseUrl: https://api.day.app/4P5DC6jXnLT6Dsm2n9BENe/
@@ -13,7 +18,7 @@ bili:
   s2c: true # 银瓜子兑换为硬币。[true,false]
   autoBiCoin: 1 # 月底自动使用B币卷。[{0,自己会使用},{1,给自己充电},{2,兑换成金瓜子}]
   platform: ios # 用户设备的标识[android,ios]
-  biliJct: 2023e21887cd0049d7f729b8011bfb72 # 在Cookie中的这个字段在别的请求中当作scrf使用
+#  biliJct: 2023e21887cd0049d7f729b8011bfb72 # 在Cookie中的这个字段在别的请求中当作scrf使用
   totalCookie: i-wanna-go-back=-1; buvid_fp_plain=undefined; DedeUserID=287473737; DedeUserID__ckMd5=6119bb91868bfa11; CURRENT_BLACKGAP=0; LIVE_BUVID=AUTO2616590964380964; rpdid=|(mmRk)u~uu0J'uY~|kl|Rmm; CURRENT_PID=c4b2e3e0-ca3c-11ed-b97c-0d30cc0d4e0c; FEED_LIVE_VERSION=V8; hit-new-style-dyn=1; buvid3=5560FB6F-AF10-0493-E00D-516378EA3E1566169infoc; b_nut=1690636066; _uuid=CABC91E2-AAA1-81084-3428-B810244EFA6DC37232infoc; buvid4=D3276578-4407-9E1D-1A12-D1470EB5B04B99252-022072920-aN5fltImCgRRESvvOMIdJsD%2FtyocAbctMgG2OwTErsdOJFoR0lo7jg%3D%3D; b_ut=5; is-2022-channel=1; CURRENT_FNVAL=4048; iflogin_when_web_push=1; hit-dyn-v2=1; CURRENT_QUALITY=64; enable_web_push=ENABLE; header_theme_version=CLOSE; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTk0MzQ3MDgsImlhdCI6MTY5OTE3NTQ0OCwicGx0IjotMX0.hEGYtVBZ56I8eRszcKXcffX1lRpb-6jcRZVm1gHj_N8; bili_ticket_expires=1699434648; fingerprint=40e20e9e64dbaa6db6d63b0bc9caea69; buvid_fp=40e20e9e64dbaa6db6d63b0bc9caea69; PVID=1; SESSDATA=9ca2896c%2C1714843397%2C8944c%2Ab1CjBColGld1wsTJRPoTE8qaPchptLDujmICxGZDUSu7kPe8lCnEtba-8Gzw4ZCxAIhJYSVkRXRkRBa1VycDh0LXBDRU1reS1DQXhHQkJIOTFaYzNQeTItamxwX2I4WHhQbkg0dHBmSHcxYWtDNUdrZ0g1NlcxVGItVFRub0lwTlBzOWZLNzdCbVRRIIEC; bili_jct=2023e21887cd0049d7f729b8011bfb72; sid=70g0aq2x; b_lsid=DF64B382_18BA5F58C03; home_feed_column=4; bp_video_offset_287473737=860896284347727881; innersign=0; bsource=search_baidu; browser_resolution=548-729
   guessCoin: 10
 yuanshen:

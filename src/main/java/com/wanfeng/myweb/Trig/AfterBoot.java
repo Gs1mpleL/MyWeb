@@ -1,5 +1,6 @@
 package com.wanfeng.myweb.Trig;
 
+import com.wanfeng.myweb.config.SystemConfig;
 import com.wanfeng.myweb.service.PushIphoneService;
 import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Component;
 public class AfterBoot implements CommandLineRunner {
     @Autowired
     private PushIphoneService pushIphoneService;
+    @Autowired
+    private SystemConfig systemConfig;
     @Override
     public void run(String... args) throws Exception {
-        pushIphoneService.pushIphone(new PushVO("MyWeb","项目启动成功","MyWeb"));
+        if (systemConfig.getBootAlarm() == 1) {
+            pushIphoneService.pushIphone(new PushVO("MyWeb","项目启动成功","MyWeb"));
+        }
     }
 }

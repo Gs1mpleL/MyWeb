@@ -5,6 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 哔哩哔哩配置
  */
@@ -23,18 +26,19 @@ public class BiliProperties {
     static private String autoBiCoin;
     /** 用户设备的标识 */
     static private String platform;
-    private String DedeUserID;
     private String biliJct;
-    private String SESSDATA;
     private String totalCookie;
     private String guessCoin;
-    public void setCookie(String biliJct, String SESSDATA, String DedeUserID) {
-        this.DedeUserID = DedeUserID;
-        this.biliJct = biliJct;
-        this.SESSDATA = SESSDATA;
-    }
-    public String getCookie(){
-        return "bili_jct="+biliJct+";SESSDATA="+SESSDATA+";DedeUserID="+DedeUserID;
+    /* 根据totalCookie解析出biliJct，因为这个字段用于scrf*/
+    public void setCookie(String totalCookie) throws Exception {
+        String regStr = "bili_jct=(.*?); ";
+        Pattern pattern = Pattern.compile(regStr);
+        Matcher matcher = pattern.matcher(totalCookie);
+        if (matcher.find()) {
+            biliJct = matcher.group(0).replace("bili_jct=","").replace("; ","");
+        }else {
+            throw new Exception("cookie中未解析出bili_jct字段");
+        }
     }
 
     public String getPlatform() {

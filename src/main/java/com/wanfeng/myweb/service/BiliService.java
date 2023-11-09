@@ -46,7 +46,12 @@ public class BiliService {
     private CompetitionGuessTask competitionGuessTask;
 
     public void biliTask(){
-        biliProperties.setCookie(biliProperties.getBiliJct(), biliProperties.getSESSDATA(), biliProperties.getDedeUserID());
+        try {
+            biliProperties.setCookie(biliProperties.getTotalCookie());
+        }catch (Exception e){
+            biliData.setSendMsg(e.getMessage());
+            return;
+        }
         if(check()){
             LOGGER.info("用户名: {}", biliData.getUname());
             biliData.info("用户名: {}", biliData.getUname());
