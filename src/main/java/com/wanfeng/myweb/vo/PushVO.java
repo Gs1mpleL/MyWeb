@@ -20,5 +20,6 @@ public class PushVO {
         this.title = title;
         this.msg = msg;
         this.groupName = groupName;
+
     }
 }
