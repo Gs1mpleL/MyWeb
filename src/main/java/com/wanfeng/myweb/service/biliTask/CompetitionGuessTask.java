@@ -54,7 +54,7 @@ public class CompetitionGuessTask implements Task{
             biliData.info("在"+guessGame.getTitle()+"中投给"+voteTeam.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
         }else {
             LOGGER.info("在{"+guessGame.getTitle()+"}中竞猜: {}",post.getString("message"));
-            biliData.info("在「"+guessGame.getTitle()+"」中竞猜: {}",post.getString("message"));
+            biliData.info("在「"+guessGame.getTitle()+"」竞猜: {}",post.getString("message"));
         }
     }
 
