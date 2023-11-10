@@ -19,6 +19,7 @@ public class PushServiceImpl implements PushService {
     private PushProperties pushProperties;
     @Override
     public String pushIphone(PushVO pushVO){
+
         String url = pushProperties.getIphoneBaseUrl();
         return doPushUsingBark(pushVO,url);
     }
