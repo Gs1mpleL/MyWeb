@@ -2,7 +2,8 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-import com.wanfeng.myweb.config.BiliData;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,10 @@ public class BiliLiveTask implements Task {
     /** 访问成功 */
     private static final String SUCCESS = "0";
     @Autowired
-    private BiliData biliData;
-
-    @Autowired
     private BiliHttpUtils biliHttpUtils;
     @Override
     public void run(){
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         try{
             JSONObject json = xliveSign();
             String msg ;
@@ -31,12 +30,12 @@ public class BiliLiveTask implements Task {
                 msg = json.getString("message");
             }
             LOGGER.info("直播签到 -- {}",msg);
-            biliData.info("直播签到 -- {}",msg);
+            biliUserData.info("直播签到 -- {}",msg);
             /* 直播签到后等待5秒 */
             Thread.sleep(5000);
         } catch (Exception e){
             LOGGER.error("直播签到等待中错误 -- "+e);
-            biliData.info("直播签到等待中错误 -- "+e);
+            biliUserData.info("直播签到等待中错误 -- "+e);
         }
     }
 

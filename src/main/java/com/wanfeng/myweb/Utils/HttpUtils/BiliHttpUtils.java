@@ -1,6 +1,8 @@
 package com.wanfeng.myweb.Utils.HttpUtils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -43,12 +45,13 @@ public class BiliHttpUtils {
      * @param url 请求的地址，包括参数
      */
     public  JSONObject get(String url){
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         HttpClient client = createSSLClientDefault();
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("connection","keep-alive");
         httpGet.addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
         httpGet.addHeader("referer","https://www.bilibili.com/");
-        httpGet.addHeader("Cookie",biliProperties.getTotalCookie()); // 不知道缺哪个字段，索性全部使用
+        httpGet.addHeader("Cookie",biliUserData.getTotalCookie()); // 不知道缺哪个字段，索性全部使用
         HttpResponse resp;
         String respContent = null;
         try{
@@ -69,6 +72,7 @@ public class BiliHttpUtils {
      * @param body 携带的参数
      */
     public JSONObject post(String url , String body){
+BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         StringEntity entityBody = new StringEntity(body,"UTF-8");
         HttpClient client = createSSLClientDefault();
         HttpPost httpPost = new HttpPost(url);
@@ -78,7 +82,7 @@ public class BiliHttpUtils {
         httpPost.addHeader("Content-Type","application/x-www-form-urlencoded");
         httpPost.addHeader("charset","UTF-8");
         httpPost.addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
-        httpPost.addHeader("Cookie", biliProperties.getTotalCookie());
+        httpPost.addHeader("Cookie", biliUserData.getTotalCookie());
         httpPost.setEntity(entityBody);
         HttpResponse resp ;
         String respContent = null;

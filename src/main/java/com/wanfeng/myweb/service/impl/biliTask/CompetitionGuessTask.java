@@ -3,7 +3,8 @@ package com.wanfeng.myweb.service.impl.biliTask;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-import com.wanfeng.myweb.config.BiliData;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.po.GuessGame;
 import com.wanfeng.myweb.po.GuessTeam;
 import com.wanfeng.myweb.properties.BiliProperties;
@@ -20,10 +21,9 @@ public class CompetitionGuessTask implements Task{
     private BiliHttpUtils biliHttpUtils;
     @Autowired
     private BiliProperties biliProperties;
-    @Autowired
-    private BiliData biliData;
     @Override
     public void run() {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         try {
             ArrayList<GuessGame> guessingList = getGuessingList();
             if (guessingList == null || guessingList.size() == 0){
@@ -34,12 +34,13 @@ public class CompetitionGuessTask implements Task{
             }
         }catch (Exception e){
             LOGGER.info("竞猜失败:{}",e.getMessage());
-            biliData.info("竞猜失败:{}",e.getMessage());
+            biliUserData.info("竞猜失败:{}",e.getMessage());
         }
     }
 
 
     private void doGuess(GuessGame guessGame) {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         // 投币给胜率高的队伍
         GuessTeam voteTeam = Double.parseDouble(guessGame.getGuessTeam1().getTeamRate())<Double.parseDouble(guessGame.getGuessTeam2().getTeamRate())?guessGame.getGuessTeam1():guessGame.getGuessTeam2();
         String body = "oid=" + guessGame.getContestId()
@@ -47,14 +48,14 @@ public class CompetitionGuessTask implements Task{
                 + "&detail_id=" + voteTeam.getTeamId()
                 + "&count=" + biliProperties.getGuessCoin()
                 + "&is_fav=1"
-                + "&csrf=" + biliProperties.getBiliJct();
+                + "&csrf=" + biliUserData.getBiliJct();
         JSONObject post = biliHttpUtils.post("https://api.bilibili.com/x/esports/guess/add", body);
         if (post.getString("code").equals("0")){
             LOGGER.info("在{}中投给{}{}个硬币",guessGame.getTitle(),voteTeam.getTeamName(),biliProperties.getGuessCoin());
-            biliData.info("在"+guessGame.getTitle()+"中投给"+voteTeam.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
+            biliUserData.info("在"+guessGame.getTitle()+"中投给"+voteTeam.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
         }else {
             LOGGER.info("在{"+guessGame.getTitle()+"}中竞猜: {}",post.getString("message"));
-            biliData.info("在「"+guessGame.getTitle()+"」竞猜: {}",post.getString("message"));
+            biliUserData.info("在「"+guessGame.getTitle()+"」竞猜: {}",post.getString("message"));
         }
     }
 

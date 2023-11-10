@@ -18,8 +18,8 @@ public class dailyJob {
     @Autowired
     private PushServiceImpl pushIphoneService;
     @Scheduled(cron = "0 0 8 * * ? ")
-    public void BiliDailyTask(){
-       biliService.biliTask();
+    public void BiliDailyTask() throws Exception {
+       biliService.biliTask(true);
     }
 
     @Scheduled(cron = "0 0 8 * * ? ")

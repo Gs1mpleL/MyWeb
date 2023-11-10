@@ -2,7 +2,8 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-import com.wanfeng.myweb.config.BiliData;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,6 @@ public class BiliCoinApply implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliCoinApply.class);
     /** 获取DATA对象 */
     @Autowired
-    private BiliData biliData;
-
-    @Autowired
     private BiliHttpUtils biliHttpUtils;
 
     @Autowired
@@ -32,11 +30,12 @@ public class BiliCoinApply implements Task {
 
     @Override
     public void run() {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         try{
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
             int day = cal.get(Calendar.DATE);
             /* B币券余额 */
-            int couponBalance = Integer.parseInt(biliData.getCouponBalance());
+            int couponBalance = Integer.parseInt(biliUserData.getCouponBalance());
             if (day == END_OF_MONTH && couponBalance > 0) {
                 switch (biliProperties.getAutoBiCoin()){
                     case "1" : doCharge(couponBalance);break;
@@ -46,7 +45,7 @@ public class BiliCoinApply implements Task {
             }
         } catch (Exception e){
             LOGGER.error("使用B币卷部分异常 -- "+e);
-            biliData.info("使用B币卷部分异常 -- "+e);
+            biliUserData.info("使用B币卷部分异常 -- "+e);
         }
     }
 
@@ -55,6 +54,7 @@ public class BiliCoinApply implements Task {
      * 
      */
     public void doCharge(int couponBalance) {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "pay_bp=" + couponBalance * 1000
                 + "&context_id=" + 12299272
                 + "&context_type=11"
@@ -64,9 +64,9 @@ public class BiliCoinApply implements Task {
                 + "&platform=pc"
                 + "&ios_bp=0"
                 + "&common_bp=" + couponBalance * 1000
-                + "&csrf_token=" + biliProperties.getBiliJct()
+                + "&csrf_token=" + biliUserData.getBiliJct()
                 + "&visit_id=1zn218g8bp8g"
-                + "&csrf=" + biliProperties.getBiliJct();
+                + "&csrf=" + biliUserData.getBiliJct();
 
         JSONObject jsonObject = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
 
@@ -77,18 +77,18 @@ public class BiliCoinApply implements Task {
             Integer statusCode = dataJson.getInteger("status");
             if (statusCode == 2) {
                 LOGGER.info("本次给自己充值了: " + couponBalance * 10 + "个电池");
-                biliData.info("本次给自己充值了: 「" + couponBalance * 10 + "」个电池");
+                biliUserData.info("本次给自己充值了: 「" + couponBalance * 10 + "」个电池");
                 /* 获取充电留言token */
                 String orderNo = dataJson.getString("order_id");
                 chargeComments(orderNo);
             } else {
                 LOGGER.warn("充电失败 -- " + dataJson.getString("error_info"));
-                biliData.info("充电失败 -- {}",dataJson.getString("error_info"));
+                biliUserData.info("充电失败 -- {}",dataJson.getString("error_info"));
             }
 
         } else {
             LOGGER.warn("充电失败了啊 -- " + jsonObject);
-            biliData.info("充电失败 {}",jsonObject.toString());
+            biliUserData.info("充电失败 {}",jsonObject.toString());
         }
     }
 
@@ -98,13 +98,13 @@ public class BiliCoinApply implements Task {
      * 
      */
     public void chargeComments(String token) {
-
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String requestBody = "order_id=" + token
                 + "&message=" + "BilibiliTask自动充电"
-                + "&csrf=" + biliProperties.getBiliJct();
+                + "&csrf=" + biliUserData.getBiliJct();
         JSONObject jsonObject = biliHttpUtils.post("http://api.bilibili.com/x/ugcpay/trade/elec/message", requestBody);
         LOGGER.debug(jsonObject.toString());
-        biliData.info("充电评论:{}",jsonObject.toString());
+        biliUserData.info("充电评论:{}",jsonObject.toString());
     }
 
     /**
@@ -112,13 +112,14 @@ public class BiliCoinApply implements Task {
      * @param couponBalance 传入B币卷的数量
      */
     public void doMelonSeed(Integer couponBalance){
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "platform=pc"
                 + "&pay_bp=" + couponBalance * 1000
                 + "&context_id=1"
                 + "&context_type=11"
                 + "&goods_id=1"
                 + "&goods_num=" + couponBalance
-                + "&csrf=" + biliProperties.getBiliJct();
+                + "&csrf=" + biliUserData.getBiliJct();
         JSONObject post = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
         String msg ;
         /* json对象的状态码 */
@@ -129,7 +130,7 @@ public class BiliCoinApply implements Task {
             msg = post.getString("message");
         }
         LOGGER.info("B币卷兑换金瓜子 -- " + msg);
-        biliData.info("B币卷兑换金瓜子 -- " + msg);
+        biliUserData.info("B币卷兑换金瓜子 -- " + msg);
     }
 
 }

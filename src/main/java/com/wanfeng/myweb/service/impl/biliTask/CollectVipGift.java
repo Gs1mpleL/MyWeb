@@ -2,7 +2,8 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-import com.wanfeng.myweb.config.BiliData;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,6 @@ import java.util.TimeZone;
 @Component
 public class CollectVipGift implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectVipGift.class);
-    @Autowired
-    private BiliData biliData;
-
     @Autowired
     private BiliHttpUtils biliHttpUtils;
 
@@ -52,25 +50,26 @@ public class CollectVipGift implements Task {
      * 
      */
     public void vipPrivilege(Integer type) {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "type=" + type
-                + "&csrf=" + biliProperties.getBiliJct();
+                + "&csrf=" + biliUserData.getBiliJct();
         JSONObject jsonObject = biliHttpUtils.post("https://api.bilibili.com/x/vip/privilege/receive", body);
         Integer code = jsonObject.getInteger("code");
         if (0 == code) {
             if (type == 1) {
                 LOGGER.info("领取年度大会员每月赠送的B币券 --{成功}");
-                biliData.info("领取年度大会员每月赠送的B币券 -- 「成功」");
+                biliUserData.info("领取年度大会员每月赠送的B币券 -- 「成功」");
             } else if (type == 2) {
                 LOGGER.info("领取大会员福利/权益 -- {成功}");
-                biliData.info("领取大会员福利/权益 -- 「成功」");
+                biliUserData.info("领取大会员福利/权益 -- 「成功」");
             }
         } else {
             if (type==1){
                 LOGGER.warn("领取年度大会员每月赠送的B币券: {}" ,jsonObject.getString("message"));
-                biliData.info("领取年度大会员每月赠送的B币券: {} " ,jsonObject.getString("message"));
+                biliUserData.info("领取年度大会员每月赠送的B币券: {} " ,jsonObject.getString("message"));
             }else {
                 LOGGER.warn("领取大会员福利: {}" ,jsonObject.getString("message"));
-                biliData.info("领取大会员福利: {} " ,jsonObject.getString("message"));
+                biliUserData.info("领取大会员福利: {} " ,jsonObject.getString("message"));
             }
         }
     }
@@ -81,8 +80,9 @@ public class CollectVipGift implements Task {
      * 
      */
     public String queryVipStatusType() {
-        if (IS_VIP.equals(biliData.getVipStatus())) {
-            return biliData.getVipType();
+BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        if (IS_VIP.equals(biliUserData.getVipStatus())) {
+            return biliUserData.getVipType();
         } else {
             return NOT_VIP;
         }

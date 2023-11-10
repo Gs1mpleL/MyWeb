@@ -3,12 +3,14 @@ package com.wanfeng.myweb.config;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 用户的一些个人信息
  */
-@Component
 @Data
-public class BiliData {
+public class BiliUserData {
     /** 登录账户的用户名 */
     private String uname;
     /** 登录账户的uid */
@@ -24,7 +26,19 @@ public class BiliData {
     /** B币卷余额 */
     private String couponBalance;
     private String sendMsg = "";
-
+    /** 认证 **/
+    private String totalCookie;
+    private String biliJct;
+    public void setCookie(String totalCookie) throws Exception {
+        String regStr = "bili_jct=(.*?); ";
+        Pattern pattern = Pattern.compile(regStr);
+        Matcher matcher = pattern.matcher(totalCookie);
+        if (matcher.find()) {
+            biliJct = matcher.group(0).replace("bili_jct=","").replace("; ","");
+        }else {
+            throw new BizException("cookie中未解析出bili_jct字段");
+        }
+    }
     public void info(String template, String addMsg){
         addMsg = template.replace("{}","「" + addMsg + " 」");
         addMsg = addMsg.replace("--",":");
@@ -37,5 +51,8 @@ public class BiliData {
         sendMsg+="「"+addMsg + "」";
     }
 
-    private BiliData(){}
+    public BiliUserData(String tc) throws Exception {
+        totalCookie = tc;
+        setCookie(tc);
+    }
 }

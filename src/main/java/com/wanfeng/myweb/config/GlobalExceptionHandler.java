@@ -1,6 +1,5 @@
 package com.wanfeng.myweb.config;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import com.wanfeng.myweb.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(BizException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public Result<?> handleUnexpectedServer(Exception ex) {
+    public Result<?> handleUnexpectedServer(BizException ex) {
         logger.error("系统异常：", ex);
-        return Result.fail("系统异常{"+ex.getMessage()+"}");
+        return Result.fail("系统异常{"+ex.getErrorMsg()+"}");
     }
 }

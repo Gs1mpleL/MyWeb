@@ -3,7 +3,8 @@ package com.wanfeng.myweb.service.impl.biliTask;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-import com.wanfeng.myweb.config.BiliData;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,6 @@ public class ThrowCoinTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(ThrowCoinTask.class);
     @Autowired
-    private BiliData biliData;
-    @Autowired
     private DailyTask dailyTask;
     @Autowired
     private BiliHttpUtils biliHttpUtils;
@@ -31,6 +30,7 @@ public class ThrowCoinTask implements Task {
 
     @Override
     public void run() {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         try {
             /* 今天投币获得了多少经验  此版本以及失效*/
             Integer reward = getReward();
@@ -46,7 +46,7 @@ public class ThrowCoinTask implements Task {
             int num = (num2 >= num1 ? num1 : num2) >= num3 ? num3 : (num2 >= num1 ? num1 : num2);
             if (num == 0){
                 LOGGER.info("今日已投币 -- 5");
-                biliData.info("今日已投币 -- {}", String.valueOf(5));
+                biliUserData.info("今日已投币 -- {}", String.valueOf(5));
                 return;
             }
             /* 获取分区视频信息 */
@@ -66,11 +66,11 @@ public class ThrowCoinTask implements Task {
                     msg = json.getString("message");
                 }
                 LOGGER.info("投币给 -- av{} -- {}", aid, msg);
-                biliData.info("投币给 -- av{}", aid+"-"+ msg);
+                biliUserData.info("投币给 -- av{}", aid+"-"+ msg);
             }
         } catch (Exception e) {
             LOGGER.info("投币异常 -- " + e);
-            biliData.info("投币异常 -- " + e);
+            biliUserData.info("投币异常 -- " + e);
         }
     }
 
@@ -82,12 +82,12 @@ public class ThrowCoinTask implements Task {
      * @return JSONObject
      */
     public JSONObject throwCoin(String aid, String num, String selectLike) {
-
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "aid=" + aid
                 + "&multiply=" + num
                 + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
-                + "&csrf=" + biliProperties.getBiliJct();
+                + "&csrf=" + biliUserData.getBiliJct();
         return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/coin/add", body);
     }
 
