@@ -29,7 +29,7 @@ public class BiliUserData {
     /** 认证 **/
     private String totalCookie;
     private String biliJct;
-    public void setCookie(String totalCookie) throws Exception {
+    public void setCookie(String totalCookie) throws BizException {
         String regStr = "bili_jct=(.*?); ";
         Pattern pattern = Pattern.compile(regStr);
         Matcher matcher = pattern.matcher(totalCookie);
@@ -51,7 +51,7 @@ public class BiliUserData {
         sendMsg+="「"+addMsg + "」";
     }
 
-    public BiliUserData(String tc) throws Exception {
+    public BiliUserData(String tc) throws BizException {
         totalCookie = tc;
         setCookie(tc);
     }

@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class MyWebApplicationTests {
+    @Autowired
+    BiliServiceImpl biliService;
     @Test
-    void contextLoads() {
+    void contextLoads() throws Exception {
+        biliService.biliTask(true);
     }
 }

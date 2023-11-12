@@ -5,6 +5,7 @@ import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BizException;
 import com.wanfeng.myweb.properties.BiliProperties;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.impl.biliTask.*;
@@ -43,11 +44,11 @@ public class BiliServiceImpl implements BiliService {
     @Autowired
     private BiliProperties biliProperties;
     @Override
-    public void doTask(String totalCookie) throws Exception {
+    public void doTask(String totalCookie) {
         ThreadLocalUtils.put("biliUserData",new BiliUserData(totalCookie));
         biliTask(false);
     }
-    public void biliTask(boolean isInnerJob) throws Exception {
+    public void biliTask(boolean isInnerJob)  {
         if (isInnerJob){
             ThreadLocalUtils.put("biliUserData",new BiliUserData(biliProperties.getMyTotalCookie()));
         }
@@ -71,7 +72,7 @@ public class BiliServiceImpl implements BiliService {
         } else {
             biliUserData.setSendMsg("账户已失效，请在Secrets重新绑定你的信息");
             biliSend();
-            throw  new RuntimeException("账户已失效，请在Secrets重新绑定你的信息");
+            throw  new BizException("账户已失效，请在Secrets重新绑定你的信息");
         }
     }
 

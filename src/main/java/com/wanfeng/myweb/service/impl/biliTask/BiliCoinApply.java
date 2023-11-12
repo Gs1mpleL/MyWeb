@@ -39,7 +39,7 @@ public class BiliCoinApply implements Task {
             if (day == END_OF_MONTH && couponBalance > 0) {
                 switch (biliProperties.getAutoBiCoin()){
                     case "1" : doCharge(couponBalance);break;
-                    case "2" : doMelonSeed((int) couponBalance);break;
+                    case "2" : doMelonSeed(couponBalance);break;
                     default: break;
                 }
             }
