@@ -11,7 +11,7 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping("test")
+    @GetMapping("/test")
     public Result<?> test(){
         return Result.ok(testService.list());
     }

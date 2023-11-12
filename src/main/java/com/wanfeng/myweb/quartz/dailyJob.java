@@ -24,7 +24,7 @@ public class dailyJob {
 
     @Scheduled(cron = "0 0 8 * * ? ")
     public void YuanShenSignDailyTask(){
-//        yuanShenService.doSign();
-        pushIphoneService.pushIphone(new PushVO("原神","未签到等待风控结束测试","原神"));
+        yuanShenService.doSign();
+//        pushIphoneService.pushIphone(new PushVO("原神","未签到等待风控结束测试","原神"));
     }
 }
