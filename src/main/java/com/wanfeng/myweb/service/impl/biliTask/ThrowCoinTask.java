@@ -44,7 +44,7 @@ public class ThrowCoinTask implements Task {
             num3 = num3 < 0 ? 0 : num3;
             /* 实际需要投 num个硬币 */
             int num = (num2 >= num1 ? num1 : num2) >= num3 ? num3 : (num2 >= num1 ? num1 : num2);
-            if (num == 0){
+            if (num == 0) {
                 LOGGER.info("今日已投币 -- 5");
                 biliUserData.info("今日已投币 -- {}", String.valueOf(5));
                 return;
@@ -59,14 +59,14 @@ public class ThrowCoinTask implements Task {
                 JSONObject json = throwCoin(aid, "1", "1");
                 dailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
                 /* 输出的日志消息 */
-                String msg ;
+                String msg;
                 if ("0".equals(json.getString("code"))) {
                     msg = "硬币-1";
                 } else {
                     msg = json.getString("message");
                 }
                 LOGGER.info("投币给 -- av{} -- {}", aid, msg);
-                biliUserData.info("投币给 -- av{}", aid+"-"+ msg);
+                biliUserData.info("投币给 -- av{}", aid + "-" + msg);
             }
         } catch (Exception e) {
             LOGGER.info("投币异常 -- " + e);
@@ -76,8 +76,9 @@ public class ThrowCoinTask implements Task {
 
     /**
      * 给视频投币
-     * @param aid         视频 aid 号
-     * @param num         投币数量
+     *
+     * @param aid        视频 aid 号
+     * @param num        投币数量
      * @param selectLike 是否点赞
      * @return JSONObject
      */
@@ -93,6 +94,7 @@ public class ThrowCoinTask implements Task {
 
     /**
      * 获取今天投币所得经验
+     *
      * @return JSONObject
      */
     public Integer getReward() {
@@ -106,22 +108,22 @@ public class ThrowCoinTask implements Task {
             String data = obj.toString();
             Matcher matcher = pattern.matcher(data);
             if (matcher.find()) {
-                if (data.contains("视频投币奖励")){
+                if (data.contains("视频投币奖励")) {
                     count++;
                 }
-            }else {
+            } else {
                 break;
             }
         }
 
 
-        return count *10;
+        return count * 10;
     }
 
     /**
      * 获取硬币的剩余数
+     *
      * @return Integer
-     * 
      */
     public Integer getCoin() {
         JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
@@ -130,10 +132,10 @@ public class ThrowCoinTask implements Task {
 
     /**
      * 获取B站分区视频信息
+     *
      * @param ps  获取视频的数量
      * @param rid 分区号
      * @return JSONArray
-     * 
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;

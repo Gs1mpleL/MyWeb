@@ -15,7 +15,7 @@
 <body>
 <h1>Bili Task</h1>
 
-<input type="text" id="totalCookie" placeholder="Enter total cookies">
+<input id="totalCookie" placeholder="Enter total cookies" type="text">
 <button id="myButton" onclick="sendRequest()">Send Request</button>
 
 <script>
@@ -50,10 +50,11 @@
         document.getElementById("myButton").disabled = true;
 
         // 模拟发送请求的过程，并在完成后重新启用按钮
-        setTimeout(function() {
+        setTimeout(function () {
             // 假设请求处理需要2秒钟
             document.getElementById("myButton").disabled = false;
-        }, 5000);    }
+        }, 5000);
+    }
 </script>
 </body>
 </html>

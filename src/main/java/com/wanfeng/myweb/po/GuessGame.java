@@ -16,12 +16,12 @@ public class GuessGame {
         JSONArray questions = jsonObject.getJSONArray("questions");
         JSONObject contest = jsonObject.getJSONObject("contest");
         contestId = contest.getString("id");
-        JSONObject jj = (JSONObject)questions.get(0);
+        JSONObject jj = (JSONObject) questions.get(0);
         mainId = jj.getString("id");
         title = jj.getString("title");
         JSONArray details = jj.getJSONArray("details");
-        JSONObject jjj1 = (JSONObject)details.get(0);
-        JSONObject jjj2 = (JSONObject)details.get(1);
+        JSONObject jjj1 = (JSONObject) details.get(0);
+        JSONObject jjj2 = (JSONObject) details.get(1);
         guessTeam1 = new GuessTeam(jjj1.getString("option"), jjj1.getString("detail_id"), jjj1.getString("odds"));
         guessTeam2 = new GuessTeam(jjj2.getString("option"), jjj2.getString("detail_id"), jjj2.getString("odds"));
     }

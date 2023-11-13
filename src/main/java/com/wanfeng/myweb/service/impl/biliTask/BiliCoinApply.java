@@ -17,41 +17,44 @@ import java.util.TimeZone;
 public class BiliCoinApply implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliCoinApply.class);
-    /** 获取DATA对象 */
-    @Autowired
-    private BiliHttpUtils biliHttpUtils;
-
-    @Autowired
-    private BiliProperties biliProperties;
     /** 28号代表月底 */
     private static final int END_OF_MONTH = 28;
     /** 代表获取到正确的json对象 code */
     private static final String SUCCESS = "0";
+    /** 获取DATA对象 */
+    @Autowired
+    private BiliHttpUtils biliHttpUtils;
+    @Autowired
+    private BiliProperties biliProperties;
 
     @Override
     public void run() {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        try{
+        try {
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
             int day = cal.get(Calendar.DATE);
             /* B币券余额 */
             int couponBalance = Integer.parseInt(biliUserData.getCouponBalance());
             if (day == END_OF_MONTH && couponBalance > 0) {
-                switch (biliProperties.getAutoBiCoin()){
-                    case "1" : doCharge(couponBalance);break;
-                    case "2" : doMelonSeed(couponBalance);break;
-                    default: break;
+                switch (biliProperties.getAutoBiCoin()) {
+                    case "1":
+                        doCharge(couponBalance);
+                        break;
+                    case "2":
+                        doMelonSeed(couponBalance);
+                        break;
+                    default:
+                        break;
                 }
             }
-        } catch (Exception e){
-            LOGGER.error("使用B币卷部分异常 -- "+e);
-            biliUserData.info("使用B币卷部分异常 -- "+e);
+        } catch (Exception e) {
+            LOGGER.error("使用B币卷部分异常 -- " + e);
+            biliUserData.info("使用B币卷部分异常 -- " + e);
         }
     }
 
     /**
      * 月底自动给自己充电。仅充会到期的B币券，低于2的时候不会充
-     * 
      */
     public void doCharge(int couponBalance) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
@@ -83,19 +86,19 @@ public class BiliCoinApply implements Task {
                 chargeComments(orderNo);
             } else {
                 LOGGER.warn("充电失败 -- " + dataJson.getString("error_info"));
-                biliUserData.info("充电失败 -- {}",dataJson.getString("error_info"));
+                biliUserData.info("充电失败 -- {}", dataJson.getString("error_info"));
             }
 
         } else {
             LOGGER.warn("充电失败了啊 -- " + jsonObject);
-            biliUserData.info("充电失败 {}",jsonObject.toString());
+            biliUserData.info("充电失败 {}", jsonObject.toString());
         }
     }
 
     /**
      * 自动充电完，添加一条评论
+     *
      * @param token 订单id
-     * 
      */
     public void chargeComments(String token) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
@@ -104,14 +107,15 @@ public class BiliCoinApply implements Task {
                 + "&csrf=" + biliUserData.getBiliJct();
         JSONObject jsonObject = biliHttpUtils.post("http://api.bilibili.com/x/ugcpay/trade/elec/message", requestBody);
         LOGGER.debug(jsonObject.toString());
-        biliUserData.info("充电评论:{}",jsonObject.toString());
+        biliUserData.info("充电评论:{}", jsonObject.toString());
     }
 
     /**
      * 用B币卷兑换成金瓜子
+     *
      * @param couponBalance 传入B币卷的数量
      */
-    public void doMelonSeed(Integer couponBalance){
+    public void doMelonSeed(Integer couponBalance) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "platform=pc"
                 + "&pay_bp=" + couponBalance * 1000
@@ -121,12 +125,12 @@ public class BiliCoinApply implements Task {
                 + "&goods_num=" + couponBalance
                 + "&csrf=" + biliUserData.getBiliJct();
         JSONObject post = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
-        String msg ;
+        String msg;
         /* json对象的状态码 */
         String code = post.getString("code");
-        if(SUCCESS.equals(code)){
-            msg = "成功将 " + couponBalance + " B币卷兑换成 "+couponBalance*1000+" 金瓜子";
-        } else{
+        if (SUCCESS.equals(code)) {
+            msg = "成功将 " + couponBalance + " B币卷兑换成 " + couponBalance * 1000 + " 金瓜子";
+        } else {
             msg = post.getString("message");
         }
         LOGGER.info("B币卷兑换金瓜子 -- " + msg);

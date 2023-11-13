@@ -7,5 +7,5 @@ import com.wanfeng.myweb.service.TestService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestServiceImpl extends ServiceImpl<TestMapper, TestEntity> implements TestService{
+public class TestServiceImpl extends ServiceImpl<TestMapper, TestEntity> implements TestService {
 }

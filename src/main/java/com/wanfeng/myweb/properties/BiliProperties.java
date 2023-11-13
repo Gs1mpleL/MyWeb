@@ -5,9 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * 哔哩哔哩配置
  */
@@ -18,15 +15,15 @@ import java.util.regex.Pattern;
 public class BiliProperties {
     /** 代表所需要投币的数量 */
     private Integer coin;
-    /** 送出即将过期的礼物 true 默认送出*/
+    /** 送出即将过期的礼物 true 默认送出 */
     private boolean gift;
-    /** 要将银瓜子转换成硬币 true 默认转换*/
+    /** 要将银瓜子转换成硬币 true 默认转换 */
     private boolean s2c;
     /** 自动使用B币卷 */
     private String autoBiCoin;
     /** 用户设备的标识 */
     private String platform;
-    /** 用于后台任务的cookie**/
+    /** 用于后台任务的cookie **/
     private String myTotalCookie;
     /** 竞猜的硬币花费 **/
     private String guessCoin;

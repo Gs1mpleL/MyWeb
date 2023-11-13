@@ -30,7 +30,7 @@ public class BaseHttpUtils {
 
     public String generateRequestParameters(String protocol, String uri, Map<String, String> params) {
         // StringBuilder sb = new StringBuilder(protocol).append("://").append(uri);
-        if (params == null){
+        if (params == null) {
             return uri;
         }
         StringBuilder sb = new StringBuilder(uri);
@@ -45,7 +45,7 @@ public class BaseHttpUtils {
         return uri;
     }
 
-    public String get(String url, Map<String,String> map) {
+    public String get(String url, Map<String, String> map) {
 
         ResponseEntity responseEntity = restTemplate.getForEntity
                 (
@@ -55,7 +55,7 @@ public class BaseHttpUtils {
         return (String) responseEntity.getBody();
     }
 
-    public String post(String url, Map<String,String> jsonMap) {
+    public String post(String url, Map<String, String> jsonMap) {
         HttpEntity<Map<String, String>> mapHttpEntity = generatePostJson(jsonMap);
         ResponseEntity<String> apiResponse = restTemplate.postForEntity
                 (

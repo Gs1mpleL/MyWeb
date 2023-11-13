@@ -17,13 +17,13 @@ public class PushController {
     private PushServiceImpl pushIphoneService;
 
     @PostMapping("/pushIphone")
-    public Result<String > pushIphone(@RequestBody PushVO pushVO){
+    public Result<String> pushIphone(@RequestBody PushVO pushVO) {
         String res = pushIphoneService.pushIphone(pushVO);
         return Result.ok(res);
     }
 
     @PostMapping("/pushMac")
-    public Result<String > pushMac(@RequestBody PushVO pushVO){
+    public Result<String> pushMac(@RequestBody PushVO pushVO) {
         String res = pushIphoneService.pushMac(pushVO);
         return Result.ok(res);
     }

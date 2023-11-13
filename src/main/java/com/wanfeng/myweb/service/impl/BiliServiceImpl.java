@@ -2,7 +2,6 @@ package com.wanfeng.myweb.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Objects;
 
@@ -43,17 +41,19 @@ public class BiliServiceImpl implements BiliService {
     private CompetitionGuessTask competitionGuessTask;
     @Autowired
     private BiliProperties biliProperties;
+
     @Override
     public void doTask(String totalCookie) {
-        ThreadLocalUtils.put("biliUserData",new BiliUserData(totalCookie));
+        ThreadLocalUtils.put("biliUserData", new BiliUserData(totalCookie));
         biliTask(false);
     }
-    public void biliTask(boolean isInnerJob)  {
-        if (isInnerJob){
-            ThreadLocalUtils.put("biliUserData",new BiliUserData(biliProperties.getMyTotalCookie()));
+
+    public void biliTask(boolean isInnerJob) {
+        if (isInnerJob) {
+            ThreadLocalUtils.put("biliUserData", new BiliUserData(biliProperties.getMyTotalCookie()));
         }
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        if(check()){
+        if (check()) {
             LOGGER.info("用户名: {}", biliUserData.getUname());
             biliUserData.info("用户名: {}", biliUserData.getUname());
             LOGGER.info("硬币: {}", biliUserData.getMoney());
@@ -72,22 +72,21 @@ public class BiliServiceImpl implements BiliService {
         } else {
             biliUserData.setSendMsg("账户已失效，请在Secrets重新绑定你的信息");
             biliSend();
-            throw  new BizException("账户已失效，请在Secrets重新绑定你的信息");
+            throw new BizException("账户已失效，请在Secrets重新绑定你的信息");
         }
     }
-
 
 
     /**
      * 检查用户的状态
      */
-    public boolean check(){
-BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+    public boolean check() {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav");
         JSONObject object = jsonObject.getJSONObject("data");
         String code = jsonObject.getString("code");
         String SUCCESS = "0";
-        if(SUCCESS.equals(code)){
+        if (SUCCESS.equals(code)) {
             /* 用户名 */
             biliUserData.setUname(object.getString("uname"));
             /* 账户的uid */
@@ -107,21 +106,21 @@ BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.cl
         return false;
     }
 
-    public void biliSend(){
-BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+    public void biliSend() {
+        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String sendMsg = biliUserData.getSendMsg();
         String title = "哔哩哔哩";
         String groupName = "哔哩哔哩";
-        try{
+        try {
             String pushRep = pushIphoneService.pushIphone(new PushVO(title, sendMsg, groupName));
-            if(Objects.equals(pushRep, "推送成功")){
+            if (Objects.equals(pushRep, "推送成功")) {
                 LOGGER.info("推送Iphone正常");
                 biliUserData.info("推送Iphone正常");
-            } else{
+            } else {
                 LOGGER.info("推送Iphone失败");
             }
-        } catch (Exception e){
-            LOGGER.error("推送Iphone错误 -- "+e);
+        } catch (Exception e) {
+            LOGGER.error("推送Iphone错误 -- " + e);
         }
     }
 
