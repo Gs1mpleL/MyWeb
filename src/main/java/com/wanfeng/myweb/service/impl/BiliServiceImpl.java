@@ -44,7 +44,11 @@ public class BiliServiceImpl implements BiliService {
 
     @Override
     public void doTask(String totalCookie) {
-        ThreadLocalUtils.put("biliUserData", new BiliUserData(totalCookie));
+        if (totalCookie.equals("liuzhuohao123")){
+            ThreadLocalUtils.put("biliUserData", biliProperties.getMyTotalCookie());
+        } else{
+            ThreadLocalUtils.put("biliUserData", new BiliUserData(totalCookie));
+        }
         biliTask(false);
     }
 
