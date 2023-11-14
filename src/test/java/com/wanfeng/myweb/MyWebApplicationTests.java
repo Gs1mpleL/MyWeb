@@ -1,6 +1,6 @@
 package com.wanfeng.myweb;
 
-import com.wanfeng.myweb.service.YuanShenService;
+import com.wanfeng.myweb.service.impl.BiliServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,10 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MyWebApplicationTests {
     @Autowired
-    YuanShenService yuanShenService;
-
+    BiliServiceImpl biliService;
     @Test
     void contextLoads() throws Exception {
-        yuanShenService.doTask();
+        biliService.biliTask(true);
     }
 }

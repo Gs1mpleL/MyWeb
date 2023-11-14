@@ -17,33 +17,32 @@ public class BiliLiveTask implements Task {
     private static final String SUCCESS = "0";
     @Autowired
     private BiliHttpUtils biliHttpUtils;
-
     @Override
-    public void run() {
+    public void run(){
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        try {
+        try{
             JSONObject json = xliveSign();
-            String msg;
+            String msg ;
             /* 获取json对象的状态码code */
-            if (SUCCESS.equals(json.getString("code"))) {
-                msg = "获得" + json.getJSONObject("data").getString("text");
-            } else {
+            if(SUCCESS.equals(json.getString("code"))){
+                msg = "获得"+json.getJSONObject("data").getString("text");
+            } else{
                 msg = json.getString("message");
             }
-            LOGGER.info("直播签到 -- {}", msg);
-            biliUserData.info("直播签到 -- {}", msg);
+            LOGGER.info("直播签到 -- {}",msg);
+            biliUserData.info("直播签到 -- {}",msg);
             /* 直播签到后等待5秒 */
             Thread.sleep(5000);
-        } catch (Exception e) {
-            LOGGER.error("直播签到等待中错误 -- " + e);
-            biliUserData.info("直播签到等待中错误 -- " + e);
+        } catch (Exception e){
+            LOGGER.error("直播签到等待中错误 -- "+e);
+            biliUserData.info("直播签到等待中错误 -- "+e);
         }
     }
 
     /**
      * B站直播进行签到
      */
-    public JSONObject xliveSign() {
+    public JSONObject xliveSign(){
         return biliHttpUtils.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
     }
 

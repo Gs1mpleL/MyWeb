@@ -12,7 +12,7 @@ public class TestController {
     private TestService testService;
 
     @GetMapping("/test")
-    public Result<?> test() {
+    public Result<?> test(){
         return Result.ok(testService.list());
     }
 }

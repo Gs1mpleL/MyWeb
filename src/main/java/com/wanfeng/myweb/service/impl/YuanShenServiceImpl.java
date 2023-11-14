@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class YuanShenServiceImpl implements YuanShenService {
@@ -29,12 +26,10 @@ public class YuanShenServiceImpl implements YuanShenService {
     private YuanShenHttpUtils yuanShenHttpUtils;
     @Autowired
     private PushServiceImpl pushIphoneService;
-
     @Override
     public void doTask() {
         doSign();
     }
-
     public List<Map<String, Object>> doSign() {
         List<Map<String, Object>> uid = getUid();
         for (Map<String, Object> uidMap : uid) {
@@ -46,10 +41,10 @@ public class YuanShenServiceImpl implements YuanShenService {
             uidMap.put("msg", uidMap.get("msg") + "\n" + doSign + "\n" + hubSign);
         }
         try {
-            pushIphoneService.pushIphone(new PushVO("原神", msgToIphone, "原神"));
-        } catch (Exception e) {
+            pushIphoneService.pushIphone(new PushVO("原神",msgToIphone,"原神"));
+        }catch (Exception e){
             log.info("推送iPhone失败");
-        } finally {
+        }finally {
             msgToIphone = "";
         }
         return uid;
@@ -71,14 +66,13 @@ public class YuanShenServiceImpl implements YuanShenService {
             return "原神签到失败：" + signResult.get("message");
         }
     }
-
     public String hubSign(String uid, String region) {
         Map<String, Object> data = new HashMap<>();
         data.put("act_id", YuanshenConfig.ACT_ID);
         data.put("region", region);
         data.put("uid", uid);
         JSONObject signInfoResult = YuanShenHttpUtils.doGet(YuanshenConfig.INFO_URL, yuanShenHttpUtils.getHeaders(""), data);
-        if (signInfoResult == null || signInfoResult.getJSONObject("data") == null) {
+        if (signInfoResult == null || signInfoResult.getJSONObject("data") == null){
             return null;
         }
         LocalDateTime time = LocalDateTime.now();
@@ -96,11 +90,16 @@ public class YuanShenServiceImpl implements YuanShenService {
         return msg.toString();
     }
 
+    @Data
+    public static class Award {
+        private String icon;
+        private String name;
+        private Integer cnt;
+    }
     public Award getAwardInfo(int day) {
         JSONObject awardResult = YuanShenHttpUtils.doGet(YuanshenConfig.AWARD_URL, yuanShenHttpUtils.getHeaders(""));
         JSONArray jsonArray = awardResult.getJSONObject("data").getJSONArray("awards");
-        List<Award> awards = JSON.parseObject(JSON.toJSONString(jsonArray), new TypeReference<List<Award>>() {
-        });
+        List<Award> awards = JSON.parseObject(JSON.toJSONString(jsonArray), new TypeReference<List<Award>>() {});
         return awards.get(day - 1);
     }
 
@@ -112,7 +111,7 @@ public class YuanShenServiceImpl implements YuanShenService {
             if (result == null) {
                 map.put("flag", false);
                 map.put("msg", "获取uid失败，cookie可能有误！");
-                msgToIphone += "获取uid失败，cookie可能有误!\n";
+                msgToIphone+="获取uid失败，cookie可能有误!\n";
                 list.add(map);
                 return list;
             }
@@ -143,13 +142,6 @@ public class YuanShenServiceImpl implements YuanShenService {
             list.add(map);
             return list;
         }
-    }
-
-    @Data
-    public static class Award {
-        private String icon;
-        private String name;
-        private Integer cnt;
     }
 
 

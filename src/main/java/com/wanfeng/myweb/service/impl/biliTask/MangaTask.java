@@ -18,27 +18,25 @@ public class MangaTask implements Task {
     private BiliProperties biliProperties;
     @Autowired
     private BiliHttpUtils biliHttpUtils;
-
     @Override
-    public void run() {
+    public void run(){
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        try {
+        try{
             JSONObject jsonObject = mangaClockIn(biliProperties.getPlatform());
-            LOGGER.info("漫画签到 -- {}", "0".equals(jsonObject.getString("code")) ? "成功" : "今天已经签过了");
-            biliUserData.info("漫画签到 -- {}", "0".equals(jsonObject.getString("code")) ? "成功" : "今天已经签过了");
-        } catch (Exception e) {
-            LOGGER.error("漫画签到错误 -- " + e);
-            biliUserData.info("漫画签到错误 -- " + e);
+            LOGGER.info("漫画签到 -- {}","0".equals(jsonObject.getString("code"))?"成功":"今天已经签过了");
+            biliUserData.info("漫画签到 -- {}","0".equals(jsonObject.getString("code"))?"成功":"今天已经签过了");
+        } catch (Exception e){
+            LOGGER.error("漫画签到错误 -- "+e);
+            biliUserData.info("漫画签到错误 -- "+e);
         }
     }
 
     /**
      * 模拟漫画app签到
-     *
      * @param platform 设备标识
      */
-    public JSONObject mangaClockIn(String platform) {
-        String body = "platform=" + platform;
+    public JSONObject mangaClockIn(String platform){
+        String body = "platform="+platform;
         return biliHttpUtils.post("https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn", body);
     }
 }

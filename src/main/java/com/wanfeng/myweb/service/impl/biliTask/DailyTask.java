@@ -12,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DailyTask implements Task {
+public class DailyTask implements Task{
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
     @Autowired
     private BiliHttpUtils biliHttpUtils;
     @Autowired
     private BiliProperties biliProperties;
-
     @Override
     public void run() {
         try {
@@ -47,7 +46,7 @@ public class DailyTask implements Task {
         }
     }
 
-    public JSONObject setComment(String comment, String oid) {
+    public JSONObject setComment(String comment, String oid){
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "oid=" + oid
                 + "&type=1"
@@ -57,10 +56,8 @@ public class DailyTask implements Task {
         return biliHttpUtils.post("https://api.bilibili.com/x/v2/reply/add", body);
 
     }
-
     /**
      * 获取B站推荐视频
-     *
      * @param ps  代表你要获得几个视频
      * @param rid B站分区推荐视频
      */
@@ -83,9 +80,8 @@ public class DailyTask implements Task {
 
     /**
      * 模拟观看视频
-     *
-     * @param aid 视频 aid 号
-     * @param cid 视频 cid 号
+     * @param aid     视频 aid 号
+     * @param cid     视频 cid 号
      */
     public JSONObject report(String aid, String cid, String progres) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
@@ -100,10 +96,11 @@ public class DailyTask implements Task {
      * 分享指定的视频
      *
      * @param aid 视频的aid
+
      */
     public JSONObject share(String aid) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1";
+        String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1" ;
         return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/share/add", body);
     }
 }

@@ -18,6 +18,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Result<?> handleUnexpectedServer(BizException ex) {
         logger.error("系统异常：", ex);
-        return Result.fail("系统异常{" + ex.getErrorMsg() + "}");
+        return Result.fail("系统异常{"+ex.getErrorMsg()+"}");
     }
 }

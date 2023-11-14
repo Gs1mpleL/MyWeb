@@ -1,6 +1,7 @@
 package com.wanfeng.myweb.config;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,33 +29,30 @@ public class BiliUserData {
     /** 认证 **/
     private String totalCookie;
     private String biliJct;
-
-    public BiliUserData(String tc) throws BizException {
-        totalCookie = tc;
-        setCookie(tc);
-    }
-
     public void setCookie(String totalCookie) throws BizException {
         String regStr = "bili_jct=(.*?); ";
         Pattern pattern = Pattern.compile(regStr);
         Matcher matcher = pattern.matcher(totalCookie);
         if (matcher.find()) {
-            biliJct = matcher.group(0).replace("bili_jct=", "").replace("; ", "");
-        } else {
+            biliJct = matcher.group(0).replace("bili_jct=","").replace("; ","");
+        }else {
             throw new BizException("cookie中未解析出bili_jct字段");
         }
     }
-
-    public void info(String template, String addMsg) {
-        addMsg = template.replace("{}", "「" + addMsg + " 」");
-        addMsg = addMsg.replace("--", ":");
-        sendMsg += "\n";
-        sendMsg += addMsg;
+    public void info(String template, String addMsg){
+        addMsg = template.replace("{}","「" + addMsg + " 」");
+        addMsg = addMsg.replace("--",":");
+        sendMsg+="\n";
+        sendMsg+=addMsg;
+    }
+    public void info(String addMsg){
+        addMsg = addMsg.replace("--",":");
+        sendMsg+="\n";
+        sendMsg+="「"+addMsg + "」";
     }
 
-    public void info(String addMsg) {
-        addMsg = addMsg.replace("--", ":");
-        sendMsg += "\n";
-        sendMsg += "「" + addMsg + "」";
+    public BiliUserData(String tc) throws BizException {
+        totalCookie = tc;
+        setCookie(tc);
     }
 }

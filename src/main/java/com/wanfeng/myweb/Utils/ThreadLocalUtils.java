@@ -10,14 +10,17 @@ import java.util.Map;
 public class ThreadLocalUtils {
 
     /*使用常量定义一个key*/
-    public static final String USER_KEY = "USER_KEY";
+    public static final String  USER_KEY = "USER_KEY";
 
     private static final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 存储
      *
+     * @param key
+     * @param value
      * @return void [返回类型说明]
+     * @author nijia
      * @see [类、类#方法、类#成员]
      */
     public static void put(String key, Object value) {
@@ -32,11 +35,14 @@ public class ThreadLocalUtils {
     /**
      * 取值
      *
+     * @param key
      * @return T [返回类型说明]
+     * @returnt
+     * @author nijia
      * @see [类、类#方法、类嗯#成员]
      */
 
-    public static <T> T get(String key, Class<T> tClass) {
+    public static <T> T get(String key,Class<T> tClass) {
         Map<String, Object> _map = THREAD_LOCAL.get();
 
         if (_map != null) {
