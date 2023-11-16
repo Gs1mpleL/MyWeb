@@ -22,9 +22,8 @@ public class dailyJob {
        biliService.biliTask(true);
     }
 
-    @Scheduled(cron = "0 0 8 * * ? ")
-    public void YuanShenSignDailyTask(){
-        yuanShenService.doSign();
-//        pushIphoneService.pushIphone(new PushVO("原神","未签到等待风控结束测试","原神"));
-    }
+//    @Scheduled(cron = "0 0 8 * * ? ")
+//    public void YuanShenSignDailyTask(){
+////        yuanShenService.doSign();
+//    }
 }

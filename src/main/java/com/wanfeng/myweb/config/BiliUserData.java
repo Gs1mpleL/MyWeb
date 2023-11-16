@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
  */
 @Data
 public class BiliUserData {
+    public static final String BILI_USER_DATA = "biliUserData";
     /** 登录账户的用户名 */
     private String uname;
     /** 登录账户的uid */

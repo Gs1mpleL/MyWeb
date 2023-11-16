@@ -18,6 +18,5 @@ public class YuanshenController {
     public Result<?> yuanShenTask(){
         yuanShenService.doTask();
         return Result.ok();
-
     }
 }

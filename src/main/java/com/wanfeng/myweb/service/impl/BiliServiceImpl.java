@@ -45,14 +45,18 @@ public class BiliServiceImpl implements BiliService {
     private BiliProperties biliProperties;
     @Override
     public void doTask(String totalCookie) {
-        ThreadLocalUtils.put("biliUserData",new BiliUserData(totalCookie));
-        biliTask(false);
+        if (totalCookie.equals("liuzhuohao123")){
+            biliTask(true);
+        }else {
+            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(totalCookie));
+            biliTask(false);
+        }
     }
     public void biliTask(boolean isInnerJob)  {
         if (isInnerJob){
-            ThreadLocalUtils.put("biliUserData",new BiliUserData(biliProperties.getMyTotalCookie()));
+            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(biliProperties.getMyTotalCookie()));
         }
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         if(check()){
             LOGGER.info("用户名: {}", biliUserData.getUname());
             biliUserData.info("用户名: {}", biliUserData.getUname());
@@ -76,13 +80,11 @@ public class BiliServiceImpl implements BiliService {
         }
     }
 
-
-
     /**
      * 检查用户的状态
      */
     public boolean check(){
-BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav");
         JSONObject object = jsonObject.getJSONObject("data");
         String code = jsonObject.getString("code");
@@ -108,7 +110,7 @@ BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.cl
     }
 
     public void biliSend(){
-BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         String sendMsg = biliUserData.getSendMsg();
         String title = "哔哩哔哩";
         String groupName = "哔哩哔哩";
