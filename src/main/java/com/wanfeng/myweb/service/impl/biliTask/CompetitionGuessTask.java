@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Service
@@ -30,10 +33,13 @@ public class CompetitionGuessTask implements Task{
                 return;
             }
             for (GuessGame guessGame : guessingList) {
-                doGuess(guessGame);
+                // 只在比赛前一天进行竞猜
+                if (isOneDayBefore(guessGame.getEndTime())){
+                    doGuess(guessGame);
+                }
             }
         }catch (Exception e){
-            LOGGER.info("竞猜失败:{}",e.getMessage());
+            LOGGER.info("竞猜失败:{}", e.getMessage());
             biliUserData.info("竞猜失败:{}",e.getMessage());
         }
     }
@@ -41,18 +47,26 @@ public class CompetitionGuessTask implements Task{
 
     private void doGuess(GuessGame guessGame) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        ArrayList<GuessTeam> guessOptions = guessGame.getGuessOptions();
+        double odds = Double.parseDouble(guessOptions.get(0).getTeamRate());
+        GuessTeam chooseOpt = guessOptions.get(0);
+        for (GuessTeam guessOption : guessOptions) {
+            if (odds > Double.parseDouble(guessOption.getTeamRate())){
+                odds = Double.parseDouble(guessOption.getTeamRate());
+                chooseOpt = guessOption;
+            }
+        }
         // 投币给胜率高的队伍
-        GuessTeam voteTeam = Double.parseDouble(guessGame.getGuessTeam1().getTeamRate())<Double.parseDouble(guessGame.getGuessTeam2().getTeamRate())?guessGame.getGuessTeam1():guessGame.getGuessTeam2();
         String body = "oid=" + guessGame.getContestId()
                 + "&main_id=" + guessGame.getMainId()
-                + "&detail_id=" + voteTeam.getTeamId()
+                + "&detail_id=" + chooseOpt.getTeamId()
                 + "&count=" + biliProperties.getGuessCoin()
                 + "&is_fav=1"
                 + "&csrf=" + biliUserData.getBiliJct();
         JSONObject post = biliHttpUtils.post("https://api.bilibili.com/x/esports/guess/add", body);
         if (post.getString("code").equals("0")){
-            LOGGER.info("在{}中投给{}{}个硬币",guessGame.getTitle(),voteTeam.getTeamName(),biliProperties.getGuessCoin());
-            biliUserData.info("在"+guessGame.getTitle()+"中投给"+voteTeam.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
+            LOGGER.info("在{}中投给{}{}个硬币",guessGame.getTitle(),chooseOpt.getTeamName(),biliProperties.getGuessCoin());
+            biliUserData.info("在"+guessGame.getTitle()+"中投给"+chooseOpt.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
         }else {
             LOGGER.info("在{"+guessGame.getTitle()+"}中竞猜: {}",post.getString("message"));
             biliUserData.info("在「"+guessGame.getTitle()+"」竞猜: {}",post.getString("message"));
@@ -72,5 +86,17 @@ public class CompetitionGuessTask implements Task{
         }else {
             return null;
         }
+    }
+
+    boolean isOneDayBefore(String timestamp){
+        Instant instant = Instant.ofEpochSecond(Long.parseLong(timestamp));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime dateTime = instant.atZone(ZoneId.of("UTC")).toLocalDateTime();
+        String formattedDateTime = dateTime.format(formatter);
+        LocalDate date = LocalDate.parse(formattedDateTime);
+        LocalDate today = LocalDate.now();
+        LocalDate yesterdayOfEnd = date.minus(Period.ofDays(1));
+        // 判断今天是否是输入日期的前一天
+        return today.equals(yesterdayOfEnd);
     }
 }

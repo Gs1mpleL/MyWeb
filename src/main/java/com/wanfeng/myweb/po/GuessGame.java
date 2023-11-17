@@ -4,15 +4,18 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
 public class GuessGame {
     private String title;
     private String contestId;
     private String mainId;
-    private GuessTeam guessTeam1;
-    private GuessTeam guessTeam2;
+    private ArrayList<GuessTeam> guessOptions;
+    private String endTime;
 
     public GuessGame(JSONObject jsonObject) {
+        guessOptions = new ArrayList<>();
         JSONArray questions = jsonObject.getJSONArray("questions");
         JSONObject contest = jsonObject.getJSONObject("contest");
         contestId = contest.getString("id");
@@ -20,9 +23,10 @@ public class GuessGame {
         mainId = jj.getString("id");
         title = jj.getString("title");
         JSONArray details = jj.getJSONArray("details");
-        JSONObject jjj1 = (JSONObject)details.get(0);
-        JSONObject jjj2 = (JSONObject)details.get(1);
-        guessTeam1 = new GuessTeam(jjj1.getString("option"), jjj1.getString("detail_id"), jjj1.getString("odds"));
-        guessTeam2 = new GuessTeam(jjj2.getString("option"), jjj2.getString("detail_id"), jjj2.getString("odds"));
+        for (Object detail : details) {
+            JSONObject jjj = (JSONObject) detail;
+            guessOptions.add(new GuessTeam(jjj.getString("option"), jjj.getString("detail_id"), jjj.getString("odds")));
+        }
+        endTime = contest.getString("end_time");
     }
 }
