@@ -110,7 +110,7 @@ public class DailyTask implements Task{
             String aid = video.getString("aid");
             String desc = video.getString("desc");
             String title = video.getString("title");
-            String msg = title+"\n"+desc;
+            String msg = title+"\n\n"+desc;
             setComment(msg,aid);
         }
     }
