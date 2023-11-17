@@ -16,19 +16,41 @@
 <h1>Bili Task</h1>
 
 <input type="text" id="totalCookie" placeholder="Enter total cookies">
-<button id="myButton" onclick="sendRequest()">Send Request</button>
+<button id="myButton" onclick="sendRequest()">send</button>
+
+<input type="text" id="updateCookie" placeholder="Enter update cookies">
+<button id="updateButton" onclick="sendUpdate()">update</button>
 
 <script>
-    function sendRequest() {
-        // 获取输入框的值
-        var totalCookie = document.getElementById("totalCookie").value;
-
-        // 创建一个JSON对象
+    function sendUpdate(){
+        var totalCookie = document.getElementById("updateCookie").value;
         var data = {
             totalCookie: totalCookie
         };
-
-        // 发出POST请求
+        fetch("/updateCookie", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
+            });
+        document.getElementById("updateButton").disabled = true;
+        setTimeout(function() {
+            document.getElementById("updateButton").disabled = false;
+        }, 5000);
+    }
+    function sendRequest() {
+        var totalCookie = document.getElementById("totalCookie").value;
+        var data = {
+            totalCookie: totalCookie
+        };
         fetch("/biliTask", {
             method: "POST",
             headers: {
@@ -38,20 +60,13 @@
         })
             .then(response => response.json())
             .then(data => {
-                // 在这里处理服务器返回的响应数据
                 alert(data.message);
             })
             .catch((error) => {
-                // 处理请求过程中的错误
                 alert("Error: " + error.message);
             });
-
-        // 禁用按钮直到得到结果之前
         document.getElementById("myButton").disabled = true;
-
-        // 模拟发送请求的过程，并在完成后重新启用按钮
         setTimeout(function() {
-            // 假设请求处理需要2秒钟
             document.getElementById("myButton").disabled = false;
         }, 5000);    }
 </script>

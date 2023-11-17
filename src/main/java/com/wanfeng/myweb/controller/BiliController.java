@@ -1,5 +1,6 @@
 package com.wanfeng.myweb.controller;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
@@ -25,5 +26,14 @@ public class BiliController {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String sendMsg = biliUserData.getSendMsg()==null? "":biliUserData.getSendMsg();
         return Result.ok(sendMsg);
+    }
+
+    @PostMapping("/updateCookie")
+    public Result<?> updateCookie(@RequestBody BiliVo biliVo){
+        if (biliService.updateCookie(biliVo.getTotalCookie())){
+            return Result.ok("更新成功");
+        }else{
+            return Result.fail("更新失败");
+        }
     }
 }

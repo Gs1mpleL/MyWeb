@@ -3,7 +3,7 @@ package com.wanfeng.myweb.Utils.HttpUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.config.YuanshenConfig;
-import com.wanfeng.myweb.properties.YuanShenProperties;
+import com.wanfeng.myweb.service.SystemConfigService;
 import lombok.Data;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.Header;
@@ -41,13 +41,13 @@ public class YuanShenHttpUtils {
 
     private String type = "5";
     @Autowired
-    private YuanShenProperties yuanShenProperties;
+    private SystemConfigService systemConfigService;
     public Header[] getBasicHeaders() {
         setClientType(YuanshenConfig.SIGN_CLIENT_TYPE);
         setAppVersion(YuanshenConfig.APP_VERSION);
         setSalt(YuanshenConfig.SIGN_SALT);
         return new YuanShenHttpUtils.HeaderBuilder.Builder()
-                .add("Cookie", yuanShenProperties.getCookie())
+                .add("Cookie", systemConfigService.getById(1).getYuanShenCookie())
                 .add("User-Agent", String.format(YuanshenConfig.USER_AGENT_TEMPLATE, getAppVersion()))
                 .add("Referer", YuanshenConfig.refererURL)
                 .add("Accept-Encoding", "gzip, deflate, br")

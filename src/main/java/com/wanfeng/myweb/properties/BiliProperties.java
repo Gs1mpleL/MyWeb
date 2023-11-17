@@ -26,8 +26,6 @@ public class BiliProperties {
     private String autoBiCoin;
     /** 用户设备的标识 */
     private String platform;
-    /** 用于后台任务的cookie**/
-    private String myTotalCookie;
     /** 竞猜的硬币花费 **/
     private String guessCoin;
 }

@@ -1,6 +1,8 @@
 package com.wanfeng.myweb.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.wanfeng.myweb.Entity.SystemConfigEntity;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
@@ -8,6 +10,7 @@ import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
 import com.wanfeng.myweb.properties.BiliProperties;
 import com.wanfeng.myweb.service.BiliService;
+import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.impl.biliTask.*;
 import com.wanfeng.myweb.vo.PushVO;
 import org.slf4j.Logger;
@@ -41,8 +44,9 @@ public class BiliServiceImpl implements BiliService {
     private BiliHttpUtils biliHttpUtils;
     @Autowired
     private CompetitionGuessTask competitionGuessTask;
+
     @Autowired
-    private BiliProperties biliProperties;
+    private SystemConfigService systemConfigService;
     @Override
     public void doTask(String totalCookie) {
         if (totalCookie.equals("liuzhuohao123")){
@@ -52,9 +56,19 @@ public class BiliServiceImpl implements BiliService {
             biliTask(false);
         }
     }
+
+    @Override
+    public boolean updateCookie(String totalCookie) {
+        SystemConfigEntity byId = systemConfigService.getById(1);
+        UpdateWrapper<SystemConfigEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("id",byId.getId());
+        updateWrapper.set("bili_cookie",totalCookie);
+        return systemConfigService.update(updateWrapper);
+    }
+
     public void biliTask(boolean isInnerJob)  {
         if (isInnerJob){
-            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(biliProperties.getMyTotalCookie()));
+            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
         }
         BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         if(check()){

@@ -1,6 +1,7 @@
 package com.wanfeng.myweb;
 
-import com.wanfeng.myweb.service.impl.BiliServiceImpl;
+import com.wanfeng.myweb.service.BiliService;
+import com.wanfeng.myweb.service.SystemConfigService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,9 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MyWebApplicationTests {
     @Autowired
-    BiliServiceImpl biliService;
+    SystemConfigService systemConfigService;
+
+    @Autowired
+    BiliService biliService;
     @Test
     void contextLoads() throws Exception {
-        biliService.biliTask(true);
+//        System.out.println(systemConfigService.getById(1).getBiliCookie());
+//        biliService.doTask("liuzhuohao123");
     }
 }
