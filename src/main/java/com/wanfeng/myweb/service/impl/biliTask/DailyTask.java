@@ -17,8 +17,6 @@ public class DailyTask implements Task{
     private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
     @Autowired
     private BiliHttpUtils biliHttpUtils;
-    @Autowired
-    private BiliProperties biliProperties;
     @Override
     public void run() {
         try {
@@ -54,7 +52,6 @@ public class DailyTask implements Task{
                 + "&plat=1"
                 + "&csrf=" + biliUserData.getBiliJct();
         return biliHttpUtils.post("https://api.bilibili.com/x/v2/reply/add", body);
-
     }
     /**
      * 获取B站推荐视频
@@ -73,6 +70,7 @@ public class DailyTask implements Task{
             cache.put("aid", json.getString("aid"));
             cache.put("bvid", json.getString("bvid"));
             cache.put("cid", json.getString("cid"));
+            cache.put("desc",json.getString("desc"));
             jsonRegions.add(cache);
         }
         return jsonRegions;
@@ -102,5 +100,18 @@ public class DailyTask implements Task{
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1" ;
         return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/share/add", body);
+    }
+
+
+    public void commentTask(){
+        JSONArray regions = getRegions("10", "1");
+        for (int i = 0; i < regions.size(); i++) {
+            JSONObject video = regions.getJSONObject(i);
+            String aid = video.getString("aid");
+            String desc = video.getString("desc");
+            String title = video.getString("title");
+            String msg = title+"\n"+desc;
+            setComment(msg,aid);
+        }
     }
 }
