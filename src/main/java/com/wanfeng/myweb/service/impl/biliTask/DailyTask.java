@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class DailyTask implements Task{
     /** 获取日志记录器对象 */
@@ -103,15 +105,19 @@ public class DailyTask implements Task{
     }
 
 
-    public void commentTask(){
-        JSONArray regions = getRegions("10", "1");
-        for (int i = 0; i < regions.size(); i++) {
-            JSONObject video = regions.getJSONObject(i);
-            String aid = video.getString("aid");
-            String desc = video.getString("desc");
-            String title = video.getString("title");
-            String msg = title+"\n\n"+desc;
-            setComment(msg,aid);
+    public void commentTask() throws InterruptedException {
+        int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
+        for (int typeId : typeList) {
+            JSONArray regions = getRegions("10", String.valueOf(typeId));
+            for (int i = 0; i < regions.size(); i++) {
+                JSONObject video = regions.getJSONObject(i);
+                String aid = video.getString("aid");
+                String desc = video.getString("desc");
+                String title = video.getString("title");
+                String msg = title+"\n\n"+desc;
+                setComment(msg,aid);
+            }
+            Thread.sleep(5000);
         }
     }
 }

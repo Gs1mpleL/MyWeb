@@ -32,7 +32,7 @@ public class dailyJob {
     }
 
     @Scheduled(cron = "0 */5 * * * ?")
-    public void commentTask(){
+    public void commentTask() throws InterruptedException {
         if ( ThreadLocalUtils.get("biliUserData", BiliUserData.class) == null){
             ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
         }
