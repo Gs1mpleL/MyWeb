@@ -34,7 +34,7 @@ public class CompetitionGuessTask implements Task{
             }
             for (GuessGame guessGame : guessingList) {
                 // 只在比赛前一天进行竞猜
-                if (isOneDayBefore(guessGame.getEndTime())){
+                if (isOneDayBeforeOrNow(guessGame.getEndTime())){
                     doGuess(guessGame);
                 }
             }
@@ -88,7 +88,7 @@ public class CompetitionGuessTask implements Task{
         }
     }
 
-    boolean isOneDayBefore(String timestamp){
+    boolean isOneDayBeforeOrNow(String timestamp){
         Instant instant = Instant.ofEpochSecond(Long.parseLong(timestamp));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime dateTime = instant.atZone(ZoneId.of("UTC")).toLocalDateTime();
@@ -96,7 +96,7 @@ public class CompetitionGuessTask implements Task{
         LocalDate date = LocalDate.parse(formattedDateTime);
         LocalDate today = LocalDate.now();
         LocalDate yesterdayOfEnd = date.minus(Period.ofDays(1));
-        // 判断今天是否是输入日期的前一天
-        return today.equals(yesterdayOfEnd);
+        // 判断今天是否是输入日期的前一天或今天
+        return today.equals(yesterdayOfEnd) || today.equals(date);
     }
 }
