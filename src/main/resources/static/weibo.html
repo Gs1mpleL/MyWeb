@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weibo Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h2>Weibo Data</h2>
+<table id="data-table">
+    <thead>
+    <tr>
+        <th>Realpos</th>
+        <th>Word</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    // Handle the /weibo request and display the data in a table
+    function handleWeiboRequest() {
+        fetch('/weibo') // Replace '/weibo' with the actual endpoint to fetch data from
+            .then(response => response.json())
+            .then(data => {
+                data = data.data
+                const table = document.getElementById('data-table');
+                const tbody = table.getElementsByTagName('tbody')[0]; // Get the table body element
+                data.forEach(item => {
+                    const row = tbody.insertRow();
+                    const realposCell = row.insertCell();
+                    const wordCell = row.insertCell();
+                    const url = item.url;
+                    // Add click event handler to the word cell to open the url in a new tab when clicked
+                    wordCell.addEventListener('click', () => {
+                        window.open(encodeURI(url), '_blank'); // Open the url in a new tab (optional)
+                    });
+                    wordCell.textContent = item.word;
+                    realposCell.textContent = item.realpos;
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    handleWeiboRequest(); // Call the function to fetch and display the data when the page loads
+</script>
+</body>
+</html>
