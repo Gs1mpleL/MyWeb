@@ -51,7 +51,7 @@ public class dailyJob {
                 try {
                     dailyTask.commentTask();
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
         });
