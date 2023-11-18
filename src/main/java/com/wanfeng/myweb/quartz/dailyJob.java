@@ -5,7 +5,6 @@ import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.WeiBoService;
 import com.wanfeng.myweb.service.impl.BiliServiceImpl;
-import com.wanfeng.myweb.service.impl.WeiBoServiceImpl;
 import com.wanfeng.myweb.service.impl.biliTask.DailyTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,7 +13,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.jws.Oneway;
 
 
 @Component
