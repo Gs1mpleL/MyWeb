@@ -15,14 +15,14 @@
 <body>
 <h1>Bili Task</h1>
 
-<input type="text" id="totalCookie" placeholder="Enter total cookies">
+<input id="totalCookie" placeholder="Enter total cookies" type="text">
 <button id="myButton" onclick="sendRequest()">send</button>
 
-<input type="text" id="updateCookie" placeholder="Enter update cookies">
+<input id="updateCookie" placeholder="Enter update cookies" type="text">
 <button id="updateButton" onclick="sendUpdate()">update</button>
 
 <script>
-    function sendUpdate(){
+    function sendUpdate() {
         var totalCookie = document.getElementById("updateCookie").value;
         var data = {
             totalCookie: totalCookie
@@ -42,10 +42,11 @@
                 alert("Error: " + error.message);
             });
         document.getElementById("updateButton").disabled = true;
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById("updateButton").disabled = false;
         }, 5000);
     }
+
     function sendRequest() {
         var totalCookie = document.getElementById("totalCookie").value;
         var data = {
@@ -66,9 +67,10 @@
                 alert("Error: " + error.message);
             });
         document.getElementById("myButton").disabled = true;
-        setTimeout(function() {
+        setTimeout(function () {
             document.getElementById("myButton").disabled = false;
-        }, 5000);    }
+        }, 5000);
+    }
 </script>
 </body>
 </html>

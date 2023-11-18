@@ -3,12 +3,14 @@ package com.wanfeng.myweb.config;
 import com.wanfeng.myweb.interceptor.ThreadLocalInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfigurer implements WebMvcConfigurer{
+public class WebConfigurer implements WebMvcConfigurer {
     @Bean
-    public ThreadLocalInterceptor getThreadLocalInterceptor(){
+    public ThreadLocalInterceptor getThreadLocalInterceptor() {
         return new ThreadLocalInterceptor();
     }
 

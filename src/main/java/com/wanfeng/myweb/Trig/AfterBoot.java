@@ -16,10 +16,11 @@ public class AfterBoot implements CommandLineRunner {
     private PushServiceImpl pushIphoneService;
     @Autowired
     private SystemConfig systemConfig;
+
     @Override
     public void run(String... args) throws Exception {
         if (systemConfig.getBootAlarm() == 1) {
-            pushIphoneService.pushIphone(new PushVO("MyWeb","项目启动成功","MyWeb"));
+            pushIphoneService.pushIphone(new PushVO("MyWeb", "项目启动成功", "MyWeb"));
         }
     }
 }

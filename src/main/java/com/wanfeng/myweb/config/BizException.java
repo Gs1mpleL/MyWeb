@@ -3,7 +3,7 @@ package com.wanfeng.myweb.config;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BizException extends RuntimeException{
+public class BizException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

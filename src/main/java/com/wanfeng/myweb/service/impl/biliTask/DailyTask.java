@@ -5,20 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
-import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-
 @Component
-public class DailyTask implements Task{
+public class DailyTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
     @Autowired
     private BiliHttpUtils biliHttpUtils;
+
     @Override
     public void run() {
         try {
@@ -34,7 +32,7 @@ public class DailyTask implements Task{
             biliUserData.info("模拟分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
             String aid = regions.getJSONObject(0).getString("aid");
             JSONObject commentRet = setComment("我点开了你的视频，我也不知道我在干什么，因为我只是一个机器人", aid);
-            LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(commentRet.getString("code")) ? "成功" : "失败",commentRet.getString("message"));
+            LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(commentRet.getString("code")) ? "成功" : "失败", commentRet.getString("message"));
             biliUserData.info("视频评论 -- {}", "0".equals(commentRet.getString("code")) ? "成功" : "失败");
 
 
@@ -46,7 +44,7 @@ public class DailyTask implements Task{
         }
     }
 
-    public JSONObject setComment(String comment, String oid){
+    public JSONObject setComment(String comment, String oid) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "oid=" + oid
                 + "&type=1"
@@ -55,8 +53,10 @@ public class DailyTask implements Task{
                 + "&csrf=" + biliUserData.getBiliJct();
         return biliHttpUtils.post("https://api.bilibili.com/x/v2/reply/add", body);
     }
+
     /**
      * 获取B站推荐视频
+     *
      * @param ps  代表你要获得几个视频
      * @param rid B站分区推荐视频
      */
@@ -72,7 +72,7 @@ public class DailyTask implements Task{
             cache.put("aid", json.getString("aid"));
             cache.put("bvid", json.getString("bvid"));
             cache.put("cid", json.getString("cid"));
-            cache.put("desc",json.getString("desc"));
+            cache.put("desc", json.getString("desc"));
             jsonRegions.add(cache);
         }
         return jsonRegions;
@@ -80,8 +80,9 @@ public class DailyTask implements Task{
 
     /**
      * 模拟观看视频
-     * @param aid     视频 aid 号
-     * @param cid     视频 cid 号
+     *
+     * @param aid 视频 aid 号
+     * @param cid 视频 cid 号
      */
     public JSONObject report(String aid, String cid, String progres) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
@@ -96,11 +97,10 @@ public class DailyTask implements Task{
      * 分享指定的视频
      *
      * @param aid 视频的aid
-
      */
     public JSONObject share(String aid) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1" ;
+        String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1";
         return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/share/add", body);
     }
 
@@ -117,9 +117,9 @@ public class DailyTask implements Task{
                 String aid = video.getString("aid");
                 String desc = video.getString("desc");
                 String title = video.getString("title");
-                String msg = title+"\n\n"+desc;
+                String msg = title + "\n\n" + desc;
                 JSONObject jsonObject = setComment(msg, aid);
-                LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败",jsonObject.getString("message"));
+                LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
                 Thread.sleep(60000);
             }
         }

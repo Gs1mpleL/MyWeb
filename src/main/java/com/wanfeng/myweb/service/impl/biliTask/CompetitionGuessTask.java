@@ -18,29 +18,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Service
-public class CompetitionGuessTask implements Task{
+public class CompetitionGuessTask implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionGuessTask.class);
     @Autowired
     private BiliHttpUtils biliHttpUtils;
     @Autowired
     private BiliProperties biliProperties;
+
     @Override
     public void run() {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         try {
             ArrayList<GuessGame> guessingList = getGuessingList();
-            if (guessingList == null || guessingList.size() == 0){
+            if (guessingList == null || guessingList.size() == 0) {
                 return;
             }
             for (GuessGame guessGame : guessingList) {
                 // 只在比赛前一天进行竞猜
-                if (isOneDayBeforeOrNow(guessGame.getEndTime())){
+                if (isOneDayBeforeOrNow(guessGame.getEndTime())) {
                     doGuess(guessGame);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.info("竞猜失败:{}", e.getMessage());
-            biliUserData.info("竞猜失败:{}",e.getMessage());
+            biliUserData.info("竞猜失败:{}", e.getMessage());
         }
     }
 
@@ -51,7 +52,7 @@ public class CompetitionGuessTask implements Task{
         double odds = Double.parseDouble(guessOptions.get(0).getTeamRate());
         GuessTeam chooseOpt = guessOptions.get(0);
         for (GuessTeam guessOption : guessOptions) {
-            if (odds > Double.parseDouble(guessOption.getTeamRate())){
+            if (odds > Double.parseDouble(guessOption.getTeamRate())) {
                 odds = Double.parseDouble(guessOption.getTeamRate());
                 chooseOpt = guessOption;
             }
@@ -64,16 +65,16 @@ public class CompetitionGuessTask implements Task{
                 + "&is_fav=1"
                 + "&csrf=" + biliUserData.getBiliJct();
         JSONObject post = biliHttpUtils.post("https://api.bilibili.com/x/esports/guess/add", body);
-        if (post.getString("code").equals("0")){
-            LOGGER.info("在{}中投给{}{}个硬币",guessGame.getTitle(),chooseOpt.getTeamName(),biliProperties.getGuessCoin());
-            biliUserData.info("在"+guessGame.getTitle()+"中投给"+chooseOpt.getTeamName()+biliProperties.getGuessCoin()+"个硬币");
-        }else {
-            LOGGER.info("在{"+guessGame.getTitle()+"}中竞猜: {}",post.getString("message"));
-            biliUserData.info("在「"+guessGame.getTitle()+"」竞猜: {}",post.getString("message"));
+        if (post.getString("code").equals("0")) {
+            LOGGER.info("在{}中投给{}{}个硬币", guessGame.getTitle(), chooseOpt.getTeamName(), biliProperties.getGuessCoin());
+            biliUserData.info("在" + guessGame.getTitle() + "中投给" + chooseOpt.getTeamName() + biliProperties.getGuessCoin() + "个硬币");
+        } else {
+            LOGGER.info("在{" + guessGame.getTitle() + "}中竞猜: {}", post.getString("message"));
+            biliUserData.info("在「" + guessGame.getTitle() + "」竞猜: {}", post.getString("message"));
         }
     }
 
-    private ArrayList<GuessGame>  getGuessingList(){
+    private ArrayList<GuessGame> getGuessingList() {
         ArrayList<GuessGame> guessGameArrayList = new ArrayList<>();
         JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/esports/guess/collection/question?pn=1&ps=50");
         if (jsonObject.getString("code").equals("0")) {
@@ -82,13 +83,13 @@ public class CompetitionGuessTask implements Task{
                 JSONObject json = (JSONObject) o;
                 guessGameArrayList.add(new GuessGame(json));
             }
-            return  guessGameArrayList;
-        }else {
+            return guessGameArrayList;
+        } else {
             return null;
         }
     }
 
-    boolean isOneDayBeforeOrNow(String timestamp){
+    boolean isOneDayBeforeOrNow(String timestamp) {
         Instant instant = Instant.ofEpochSecond(Long.parseLong(timestamp));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime dateTime = instant.atZone(ZoneId.of("UTC")).toLocalDateTime();

@@ -19,7 +19,7 @@ public class GuessGame {
         JSONArray questions = jsonObject.getJSONArray("questions");
         JSONObject contest = jsonObject.getJSONObject("contest");
         contestId = contest.getString("id");
-        JSONObject jj = (JSONObject)questions.get(0);
+        JSONObject jj = (JSONObject) questions.get(0);
         mainId = jj.getString("id");
         title = jj.getString("title");
         JSONArray details = jj.getJSONArray("details");

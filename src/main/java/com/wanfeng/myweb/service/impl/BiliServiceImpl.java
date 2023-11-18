@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
-
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
-import com.wanfeng.myweb.properties.BiliProperties;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.impl.biliTask.*;
@@ -17,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Objects;
 
@@ -47,12 +44,13 @@ public class BiliServiceImpl implements BiliService {
 
     @Autowired
     private SystemConfigService systemConfigService;
+
     @Override
     public void doTask(String totalCookie) {
-        if (totalCookie.equals("liuzhuohao123")){
+        if (totalCookie.equals("liuzhuohao123")) {
             biliTask(true);
-        }else {
-            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(totalCookie));
+        } else {
+            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(totalCookie));
             biliTask(false);
         }
     }
@@ -61,17 +59,17 @@ public class BiliServiceImpl implements BiliService {
     public boolean updateCookie(String totalCookie) {
         SystemConfigEntity byId = systemConfigService.getById(1);
         UpdateWrapper<SystemConfigEntity> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("id",byId.getId());
-        updateWrapper.set("bili_cookie",totalCookie);
+        updateWrapper.set("id", byId.getId());
+        updateWrapper.set("bili_cookie", totalCookie);
         return systemConfigService.update(updateWrapper);
     }
 
-    public void biliTask(boolean isInnerJob)  {
-        if (isInnerJob){
-            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA,new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
+    public void biliTask(boolean isInnerJob) {
+        if (isInnerJob) {
+            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
         }
         BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
-        if(check()){
+        if (check()) {
             LOGGER.info("用户名: {}", biliUserData.getUname());
             biliUserData.info("用户名: {}", biliUserData.getUname());
             LOGGER.info("硬币: {}", biliUserData.getMoney());
@@ -90,20 +88,20 @@ public class BiliServiceImpl implements BiliService {
         } else {
             biliUserData.setSendMsg("账户已失效，请在Secrets重新绑定你的信息");
             biliSend();
-            throw  new BizException("账户已失效，请在Secrets重新绑定你的信息");
+            throw new BizException("账户已失效，请在Secrets重新绑定你的信息");
         }
     }
 
     /**
      * 检查用户的状态
      */
-    public boolean check(){
-BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
+    public boolean check() {
+        BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav");
         JSONObject object = jsonObject.getJSONObject("data");
         String code = jsonObject.getString("code");
         String SUCCESS = "0";
-        if(SUCCESS.equals(code)){
+        if (SUCCESS.equals(code)) {
             /* 用户名 */
             biliUserData.setUname(object.getString("uname"));
             /* 账户的uid */
@@ -123,21 +121,21 @@ BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, Bi
         return false;
     }
 
-    public void biliSend(){
-BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
+    public void biliSend() {
+        BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         String sendMsg = biliUserData.getSendMsg();
         String title = "哔哩哔哩";
         String groupName = "哔哩哔哩";
-        try{
+        try {
             String pushRep = pushIphoneService.pushIphone(new PushVO(title, sendMsg, groupName));
-            if(Objects.equals(pushRep, "推送成功")){
+            if (Objects.equals(pushRep, "推送成功")) {
                 LOGGER.info("推送Iphone正常");
                 biliUserData.info("推送Iphone正常");
-            } else{
+            } else {
                 LOGGER.info("推送Iphone失败");
             }
-        } catch (Exception e){
-            LOGGER.error("推送Iphone错误 -- "+e);
+        } catch (Exception e) {
+            LOGGER.error("推送Iphone错误 -- " + e);
         }
     }
 
