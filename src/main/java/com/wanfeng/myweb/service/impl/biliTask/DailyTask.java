@@ -34,7 +34,7 @@ public class DailyTask implements Task{
             biliUserData.info("模拟分享视频 -- {}", "0".equals(share.getString("code")) ? "成功" : "失败");
             String aid = regions.getJSONObject(0).getString("aid");
             JSONObject commentRet = setComment("我点开了你的视频，我也不知道我在干什么，因为我只是一个机器人", aid);
-            LOGGER.info("视频评论 -- {}", "0".equals(commentRet.getString("code")) ? "成功" : "失败");
+            LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(commentRet.getString("code")) ? "成功" : "失败",commentRet.getString("message"));
             biliUserData.info("视频评论 -- {}", "0".equals(commentRet.getString("code")) ? "成功" : "失败");
 
 
@@ -105,6 +105,9 @@ public class DailyTask implements Task{
     }
 
 
+    /**
+     * 每分钟秒评论一条视频
+     */
     public void commentTask() throws InterruptedException {
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
         for (int typeId : typeList) {
@@ -115,9 +118,10 @@ public class DailyTask implements Task{
                 String desc = video.getString("desc");
                 String title = video.getString("title");
                 String msg = title+"\n\n"+desc;
-                setComment(msg,aid);
+                JSONObject jsonObject = setComment(msg, aid);
+                LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败",jsonObject.getString("message"));
+                Thread.sleep(60000);
             }
-            Thread.sleep(5000);
         }
     }
 }
