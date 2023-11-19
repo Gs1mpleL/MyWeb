@@ -4,20 +4,41 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 @Configuration
-public class RestTemplateConfig {
+public class RestTemplateConfig{
+
+    private int timeoutms = 5 * 60 *1000;
+
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        return new RestTemplate(factory);
+    public RestTemplate restTemplate(ClientHttpRequestFactory factory){
+        RestTemplate restTemplate = new RestTemplate(factory);
+        List<HttpMessageConverter<?>> converterList =restTemplate.getMessageConverters();
+        int converterIndex = -1;
+        for (int i=0;i<converterList.size();i++){
+            if(converterList.get(i).getClass() == StringHttpMessageConverter.class){
+                converterIndex = i;
+                break;
+            }
+        }
+        if(converterIndex !=-1) {
+            restTemplate.getMessageConverters().set(converterIndex, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        }
+        return restTemplate;
     }
 
     @Bean
-    public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-        simpleClientHttpRequestFactory.setReadTimeout(5000);
-        simpleClientHttpRequestFactory.setConnectTimeout(15000);
-        return simpleClientHttpRequestFactory;
+    public ClientHttpRequestFactory simpleClientHttpRequestFactory(){
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setReadTimeout(timeoutms);//ms
+        factory.setConnectTimeout(timeoutms);//ms
+        return factory;
     }
 }
+
