@@ -32,16 +32,12 @@ public class YuanShenServiceImpl implements YuanShenService {
 
     @Override
     public void doTask() {
-        doSign();
-    }
-
-    public List<Map<String, Object>> doSign() {
         List<Map<String, Object>> uid = getUid();
         for (Map<String, Object> uidMap : uid) {
             if (!(boolean) uidMap.get("flag")) {
                 continue;
             }
-            String doSign = doSign((String) uidMap.get("uid"), (String) uidMap.get("region"));
+            String doSign = doGetWard((String) uidMap.get("uid"), (String) uidMap.get("region"));
             String hubSign = hubSign((String) uidMap.get("uid"), (String) uidMap.get("region"));
             uidMap.put("msg", uidMap.get("msg") + "\n" + doSign + "\n" + hubSign);
         }
@@ -52,10 +48,9 @@ public class YuanShenServiceImpl implements YuanShenService {
         } finally {
             msgToIphone = "";
         }
-        return uid;
     }
 
-    public String doSign(String uid, String region) {
+    public String doGetWard(String uid, String region) {
         Map<String, Object> data = new HashMap<>();
         data.put("act_id", YuanshenConfig.ACT_ID);
         data.put("region", region);

@@ -106,7 +106,7 @@ public class DailyTask implements Task {
 
 
     /**
-     * 每分钟秒评论一条视频
+     * 每2分钟秒评论一条视频
      */
     public void commentTask() throws InterruptedException {
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
@@ -120,7 +120,7 @@ public class DailyTask implements Task {
                 String msg = title + "\n\n" + desc;
                 JSONObject jsonObject = setComment(msg, aid);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
-                Thread.sleep(60000);
+                Thread.sleep(120000);
             }
         }
     }
