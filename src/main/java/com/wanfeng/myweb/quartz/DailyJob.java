@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class dailyJob {
+public class DailyJob {
     @Autowired
     private BiliServiceImpl biliService;
     @Autowired
@@ -24,8 +24,8 @@ public class dailyJob {
     @Autowired
     private WeatherService weatherService;
 
-    @Scheduled(cron = "0 0 7 * * ?")
-    public void BiliDailyTask() throws Exception {
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void dailyTask() throws Exception {
         biliService.biliTask(true);
         weiBoService.pushNews();
         yuanShenService.doTask();
