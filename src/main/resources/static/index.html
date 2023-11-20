@@ -43,6 +43,7 @@
     </style>
 </head>
 <body>
+<div id="running-time"></div>
 <nav>
     <div class="container">
         <a href="/bilibili.html">
@@ -58,6 +59,29 @@
             </div>
         </a>
     </div>
+    <div id="result-container"></div>
 </nav>
+
+<script>
+    // 获取页面运行时间元素
+    var runningTimeElement = document.getElementById("running-time");
+
+    // 更新页面运行时间函数
+    function updateRunningTime() {
+        // 获取当前时间
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+
+        // 格式化时间，并更新元素内容
+        var formattedTime = hours + ":" + minutes + ":" + seconds;
+        runningTimeElement.textContent = formattedTime;
+
+    }
+
+    // 每隔1秒更新页面运行时间
+    setInterval(updateRunningTime, 1000);
+</script>
 </body>
 </html>
