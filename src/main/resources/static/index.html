@@ -4,71 +4,60 @@
     <meta charset="UTF-8">
     <title>晚风的网站</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
         .container {
-            margin: 0 auto;
-            width: 300px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            flex: 0 0 100%;
+            margin: 10px;
             padding: 20px;
             border: 1px solid #ccc;
+            border-radius: 30px;
+            text-align: center;
         }
 
-        .container input[type="text"] {
-            width: 100%;
-            padding: 5px;
-            margin-bottom: 10px;
+        .item-icon {
+            font-size: 20px;
         }
 
-        .container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .item {
+                flex-direction: column;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-<a href="/bilibili.html"> 哔哩哔哩任务</a>
-<br>
-<a href="/weibo.html"> 微博热搜</a>
-<br>
-<div class="container">
-    <h2>推送至Iphone</h2>
-    <label for="msg"></label><input id="msg" placeholder="请输入消息..." type="text">
-    <label for="title"></label><input id="title" placeholder="请输入标题..." type="text">
-    <button onclick="(push())">发送</button>
-</div>
-<script>
-    function push() {
-        const msg = document.getElementById("msg").value;
-        const title = document.getElementById("title").value;
-
-        // 调用接口并携带msg和title作为参数
-        fetch('/pushIphone', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                msg: msg,
-                title: title,
-                groupName: "web"
-            })
-        }).then(response => response.json())
-            .then(data => {
-                // 处理返回的数据
-                if (data.flag === true) {
-                    alert(data.data);
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
-        // 清空输入框和标题框
-        document.getElementById("msg").value = "";
-        document.getElementById("title").value = "";
-    }
-</script>
+<nav>
+    <div class="container">
+        <a href="/bilibili.html">
+            <div class="item">
+                <i class="item-icon fa fa-bilibili" alt="哔哩哔哩图标"></i>
+                <span class="text">哔哩哔哩</span>
+            </div>
+        </a>
+        <a href="/weibo.html">
+            <div class="item">
+                <i class="item-icon fa fa-weibo" alt="微博热搜图标"></i>
+                <span class="text">微博热搜</span>
+            </div>
+        </a>
+    </div>
+</nav>
 </body>
 </html>
