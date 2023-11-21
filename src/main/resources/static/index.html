@@ -40,9 +40,23 @@
                 width: 100%;
             }
         }
+        .welcome-text {
+            font-size: 20px;
+            color: #ff0000; /* 设置欢迎语的颜色 */
+            text-align: center; /* 设置欢迎语的文本对齐方式 */
+            margin-top: 30px; /* 设置欢迎语与顶部的距离 */
+            animation: fadeInOut 5s infinite; /* 设置动画效果 */
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
+<p class="welcome-text">欢迎来到晚风的网站！</p>
 <nav>
     <div class="container">
         <a href="/bilibili.html">
