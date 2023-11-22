@@ -5,7 +5,44 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+        }
+
+        /* 表单样式 */
+        #question-form {
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        /* 表单输入框样式 */
+        #question-form input[type="text"], #question-form input[type="submit"] {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        #custom-subject{
+            height: 30px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        /* 表单下拉框样式 */
+        #question-form select {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        /* 表单按钮样式 */
+        #question-form button[type="submit"] {
+            height: 30px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         th {
             background-color: #f2f2f2;
@@ -42,11 +79,10 @@
         <th style="width: 1px">Subject</th>
         <th style="width: 50px">Question</th>
     </tr>
-    <!-- 动态生成表格内容 -->
 </table>
 
 <form id="question-form">
-    <input type="text" id="question" placeholder="Enter question" required />
+    <input type="text" id="question" style="size: 1000px" placeholder="Enter question" required />
     <input type="text" id="answer" placeholder="Enter answer" required />
     <select id="subject"></select>
     <button type="submit">Send</button>
