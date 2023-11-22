@@ -51,6 +51,7 @@
     <select id="subject"></select>
     <button type="submit">Send</button>
 </form>
+<input type="text" id="custom-subject" placeholder="Enter custom subject" oninput="updateSubjectOptions()" />
 <script>
     // 打开网页获得科目列表
     fetch('/getSubjectList')
@@ -149,7 +150,15 @@
                 console.error('Error:', error);
             });
     }
-
+    function updateSubjectOptions() {
+        const customSubject = document.getElementById('custom-subject').value;
+        const subjectSelect = document.getElementById('subject');
+        const option = document.createElement('option');
+        option.text = customSubject;
+        option.value = customSubject;
+        subjectSelect.appendChild(option);
+        subjectSelect.selectedIndex = subjectSelect.length - 1; // Select the new option
+    }
     // 创建选项函数
     function createSubjectOptions() {
         fetch('/getSubjectList')
