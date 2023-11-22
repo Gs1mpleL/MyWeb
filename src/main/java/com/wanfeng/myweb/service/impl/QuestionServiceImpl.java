@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEntity> implements QuestionService {
@@ -16,6 +17,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEnt
     private QuestionMapper questionMapper;
     @Override
     public List<QuestionVo> getQuestionList(String subject) {
+        if (Objects.equals(subject, "all")){
+            return questionMapper.getQuestionListAll();
+        }
         return questionMapper.getQuestionList(subject);
     }
 

@@ -36,7 +36,7 @@
         }
 
         /* 表单按钮样式 */
-        #question-form button[type="submit"] {
+        #question-form button[type="submit"] ,button[id="updateButton"],button[id="subjectButton"]{
             height: 30px;
             background-color: #4CAF50;
             color: #fff;
@@ -77,7 +77,8 @@
 <table id="question-table">
     <tr>
         <th style="width: 1px">Subject</th>
-        <th style="width: 50px">Question</th>
+        <th style="width: 80px">Question</th>
+        <th style="width: 10px">Operation</th>
     </tr>
 </table>
 
@@ -89,6 +90,7 @@
 </form>
 <input type="text" id="custom-subject" placeholder="Enter custom subject" oninput="updateSubjectOptions()" />
 <script>
+    getQuestionList("all")
     // 获取下拉框元素
     const subjectSelect = document.getElementById('subject');
     // 打开网页获得科目列表
@@ -103,6 +105,7 @@
             data.forEach(subject => {
                 const subjectButton = document.createElement('button');
                 subjectButton.textContent = subject;
+                subjectButton.id = "subjectButton";
                 subjectButton.addEventListener('click', () => {
                     // 执行新的函数
                     getQuestionList(subject);
@@ -151,9 +154,8 @@
 
     /*-------------------------------------函数部分-------------------------------------*/
     function getQuestionList(subject){
-        let url = "/getQuestionList/";
-        let urlWithParam = `${url}/${subject}`;
-        fetch(urlWithParam)
+        let url = "/getQuestionList/"+subject;
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 const questionTable = document.getElementById('question-table');
@@ -174,8 +176,13 @@
                     questionCell.textContent = question.question;
                     row.appendChild(questionCell);
                     questionCell.addEventListener('click', () => {
-                        questionCell.textContent = question.answer;
-                        questionCell.classList.add("answer-display");
+                        if(questionCell.textContent===question.answer){
+                            questionCell.textContent = question.question;
+                            questionCell.classList.remove("answer-display");
+                        }else {
+                            questionCell.textContent = question.answer;
+                            questionCell.classList.add("answer-display");
+                        }
                     });
                     row.addEventListener("mouseover", function() {
                         this.style.backgroundColor = "#f0f0f0";
@@ -183,13 +190,72 @@
                     row.addEventListener("mouseout", function() {
                         this.style.backgroundColor = "";
                     });
+                    // 创建修改按钮
+                    const buttonCell = document.createElement("td");
+                    const editButton = document.createElement('button');
+                    const deleteButton = document.createElement('button');
+
+                    buttonCell.appendChild(editButton);
+                    buttonCell.appendChild(deleteButton);
+                    row.appendChild(buttonCell);
+                    editButton.textContent = 'update';
+                    editButton.id="updateButton";
+                    editButton.style.textAlign="center";
+                    editButton.style.marginLeft="20px";
+                    deleteButton.textContent = 'delete';
+                    deleteButton.id="updateButton";
+                    deleteButton.style.textAlign="center";
+                    deleteButton.style.marginLeft="20px";
+                    deleteButton.addEventListener('click',()=>{
+                        url = "/deleteQuestion/" + question.id
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'} // 设置数据类型为表单序列化数据
+                        })
+                        questionTable.removeChild(row);
+                    })
+                    editButton.addEventListener('click', () => {
+                        // 弹出一个表单进行设置，这里可以根据需要自定义表单内容及提交方式
+                        const form = document.createElement('form');
+                        form.innerHTML = `
+      <input type="text" name="subject" value="${question.subject}" required>
+      <input type="text" name="question" value="${question.question}" required>
+      <input type="text" name="answer" value="${question.answer}" required>
+      <button type="submit">update</button>
+    `;
+                        document.body.appendChild(form);
+                        form.addEventListener('submit', () => {
+                            // 提交表单时调用/updateQuestion接口携带Json数据
+                            const data ={
+                                id:question.id,
+                                subject:form.elements["subject"].value,
+                                question:form.elements["question"].value,
+                                answer:form.elements["answer"].value,
+                            };
+                            const jsonData = JSON.stringify(data);
+                            fetch('/updateQuestion', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json'}, // 设置数据类型为表单序列化数据
+                                body: jsonData  // 使用表单序列化方式传递数据
+                            })
+                            subjectCell.textContent = data.subject;
+                            questionCell.textContent = data.question;
+                            question.answer = data.answer;
+                            document.body.removeChild(form);
+
+                        });
+                    })
+
                     questionTable.appendChild(row);
                 });
+
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-    }
+        }
+
+
     function updateSubjectOptions() {
         const customSubject = document.getElementById('custom-subject').value;
         const subjectSelect = document.getElementById('subject');

@@ -29,4 +29,15 @@ public class QuestionController {
     public Result<?> getSubjectList(){
         return Result.ok(questionService.getSubjectList());
     }
+    @PostMapping("deleteQuestion/{id}")
+    public Result<?> deleteQuestion(@PathVariable Integer id){
+        return Result.ok(questionService.removeById(id));
+    }
+    @PostMapping("/updateQuestion")
+    public Result<?> updateQuestion(@RequestBody QuestionVo questionVo){
+        System.out.println(questionVo);
+        QuestionEntity questionEntity = new QuestionEntity();
+        BeanUtils.copyProperties(questionVo,questionEntity);
+        return Result.ok(questionService.updateById(questionEntity));
+    }
 }

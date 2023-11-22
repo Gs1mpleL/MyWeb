@@ -10,7 +10,7 @@ import lombok.Data;
 @TableName("question_table")
 public class QuestionEntity {
     @TableId(value = "id", type = IdType.AUTO)
-    private int id;
+    private Integer id;
     @TableField("subject")
     private String subject;
     @TableField("question")
