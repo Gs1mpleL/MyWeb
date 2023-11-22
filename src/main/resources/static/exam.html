@@ -36,6 +36,7 @@
     </style>
 </head>
 <body>
+
 <table id="question-table">
     <tr>
         <th style="width: 1px">Subject</th>
@@ -47,51 +48,43 @@
 <form id="question-form">
     <input type="text" id="question" placeholder="Enter question" required />
     <input type="text" id="answer" placeholder="Enter answer" required />
-    <input type="text" id="subject" placeholder="Enter subject" required />
+    <select id="subject"></select>
     <button type="submit">Send</button>
 </form>
 <script>
-    // 发送GET请求获取问题列表
-    fetch('/getQuestionList')
+    // 打开网页获得科目列表
+    fetch('/getSubjectList')
         .then(response => response.json())
         .then(data => {
-            const questionTable = document.getElementById('question-table');
-
             data = data.data
-            // 遍历问题列表，创建表格行
-            data.forEach(question => {
-                const row = document.createElement('tr');
-                const subjectCell = document.createElement('td');
-                subjectCell.textContent = question.subject;
-                row.appendChild(subjectCell);
-
-                const questionCell = document.createElement('td');
-                questionCell.textContent = question.question;
-                row.appendChild(questionCell);
-                // 当点击question文本时显示answer字段
-                questionCell.addEventListener('click', () => {
-                    questionCell.textContent = question.answer;
-                    questionCell.classList.add("answer-display");
+            // 创建一行按钮
+            const subjectRow = document.createElement('div');
+            subjectRow.classList.add('subject-row');
+            // 遍历subject数组并创建按钮
+            data.forEach(subject => {
+                const subjectButton = document.createElement('button');
+                subjectButton.textContent = subject;
+                subjectButton.addEventListener('click', () => {
+                    // 执行新的函数
+                    getQuestionList(subject);
                 });
-                row.addEventListener("mouseover", function() {
-                    this.style.backgroundColor = "#f0f0f0";
-                });
-                row.addEventListener("mouseout", function() {
-                    this.style.backgroundColor = "";
-                });
-                questionTable.appendChild(row);
+                // 将按钮添加到行中
+                subjectRow.appendChild(subjectButton);
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
 
+            // 将行添加到网页中
+            document.body.appendChild(subjectRow);
+        })
+        .catch(error => console.error('Error:', error));
+    // 获取下拉框元素
+    const subjectSelect = document.getElementById('subject');
+    // 调用函数，动态生成选项内容
+    createSubjectOptions();
     document.addEventListener('DOMContentLoaded', function() {
         var form = document.getElementById('question-form');
         var questionInput = document.getElementById('question');
         var answerInput = document.getElementById('answer');
         var subjectInput = document.getElementById('subject');
-        var table = document.getElementById('question-table');
 
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // 阻止表单默认提交行为
@@ -114,6 +107,63 @@
             xhr.send(jsonData);
         });
     });
+
+    /*-------------------------------------函数部分-------------------------------------*/
+    function getQuestionList(subject){
+        let url = "/getQuestionList/";
+        let urlWithParam = `${url}/${subject}`;
+        fetch(urlWithParam)
+            .then(response => response.json())
+            .then(data => {
+                const questionTable = document.getElementById('question-table');
+                if (document.querySelector('table tr') !== null) {
+                    const table = document.querySelector('table');
+                    const rows = table.querySelectorAll('tr:not(:first-child)');
+                    rows.forEach(row => {
+                        table.removeChild(row);
+                    });
+                }
+                data = data.data
+                data.forEach(question => {
+                    const row = document.createElement('tr');
+                    const subjectCell = document.createElement('td');
+                    subjectCell.textContent = question.subject;
+                    row.appendChild(subjectCell);
+                    const questionCell = document.createElement('td');
+                    questionCell.textContent = question.question;
+                    row.appendChild(questionCell);
+                    questionCell.addEventListener('click', () => {
+                        questionCell.textContent = question.answer;
+                        questionCell.classList.add("answer-display");
+                    });
+                    row.addEventListener("mouseover", function() {
+                        this.style.backgroundColor = "#f0f0f0";
+                    });
+                    row.addEventListener("mouseout", function() {
+                        this.style.backgroundColor = "";
+                    });
+                    questionTable.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // 创建选项函数
+    function createSubjectOptions() {
+        fetch('/getSubjectList')
+            .then(response => response.json())
+            .then(data => {
+                subjectList = data.data
+                subjectList.forEach(option => {
+                    // 创建选项元素
+                    const optionElement = document.createElement('option');
+                    optionElement.text = option;
+                    // 将选项添加到下拉框中
+                    subjectSelect.appendChild(optionElement);
+        })});
+    }
 </script>
 </body>
 </html>

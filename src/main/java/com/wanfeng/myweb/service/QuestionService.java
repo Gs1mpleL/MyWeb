@@ -7,5 +7,6 @@ import com.wanfeng.myweb.vo.QuestionVo;
 import java.util.List;
 
 public interface QuestionService extends IService<QuestionEntity> {
-    List<QuestionVo> getQuestionList();
+    List<QuestionVo> getQuestionList(String subject);
+    List<String> getSubjectList();
 }

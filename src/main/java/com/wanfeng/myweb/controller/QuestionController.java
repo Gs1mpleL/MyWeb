@@ -6,10 +6,7 @@ import com.wanfeng.myweb.vo.QuestionVo;
 import com.wanfeng.myweb.vo.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,9 +14,9 @@ import java.util.List;
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
-    @GetMapping("/getQuestionList")
-    public Result<List<QuestionVo>> getQuestionList(){
-        return Result.ok(questionService.getQuestionList());
+    @GetMapping("/getQuestionList/{subject}")
+    public Result<List<QuestionVo>> getQuestionList(@PathVariable String subject){
+        return Result.ok(questionService.getQuestionList(subject));
     }
 
     @PostMapping("/addQuestion")
@@ -27,5 +24,9 @@ public class QuestionController {
         QuestionEntity questionEntity = new QuestionEntity();
         BeanUtils.copyProperties(questionVo,questionEntity);
         return Result.ok(questionService.save(questionEntity));
+    }
+    @GetMapping("/getSubjectList")
+    public Result<?> getSubjectList(){
+        return Result.ok(questionService.getSubjectList());
     }
 }

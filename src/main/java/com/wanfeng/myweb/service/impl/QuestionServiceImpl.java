@@ -15,7 +15,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEnt
     @Autowired
     private QuestionMapper questionMapper;
     @Override
-    public List<QuestionVo> getQuestionList() {
-        return questionMapper.getQuestionList();
+    public List<QuestionVo> getQuestionList(String subject) {
+        return questionMapper.getQuestionList(subject);
+    }
+
+    @Override
+    public List<String> getSubjectList() {
+        return questionMapper.getSubjectList();
     }
 }
