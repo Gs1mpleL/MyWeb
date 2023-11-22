@@ -89,6 +89,8 @@
 </form>
 <input type="text" id="custom-subject" placeholder="Enter custom subject" oninput="updateSubjectOptions()" />
 <script>
+    // 获取下拉框元素
+    const subjectSelect = document.getElementById('subject');
     // 打开网页获得科目列表
     fetch('/getSubjectList')
         .then(response => response.json())
@@ -107,16 +109,18 @@
                 });
                 // 将按钮添加到行中
                 subjectRow.appendChild(subjectButton);
+                // 创建选项元素
+                const optionElement = document.createElement('option');
+                optionElement.text = subject;
+                // 将选项添加到下拉框中
+                subjectSelect.appendChild(optionElement);
             });
-
             // 将行添加到网页中
             document.body.appendChild(subjectRow);
+
         })
         .catch(error => console.error('Error:', error));
-    // 获取下拉框元素
-    const subjectSelect = document.getElementById('subject');
     // 调用函数，动态生成选项内容
-    createSubjectOptions();
     document.addEventListener('DOMContentLoaded', function() {
         var form = document.getElementById('question-form');
         var questionInput = document.getElementById('question');
@@ -195,20 +199,7 @@
         subjectSelect.appendChild(option);
         subjectSelect.selectedIndex = subjectSelect.length - 1; // Select the new option
     }
-    // 创建选项函数
-    function createSubjectOptions() {
-        fetch('/getSubjectList')
-            .then(response => response.json())
-            .then(data => {
-                subjectList = data.data
-                subjectList.forEach(option => {
-                    // 创建选项元素
-                    const optionElement = document.createElement('option');
-                    optionElement.text = option;
-                    // 将选项添加到下拉框中
-                    subjectSelect.appendChild(optionElement);
-        })});
-    }
+
 </script>
 </body>
 </html>
