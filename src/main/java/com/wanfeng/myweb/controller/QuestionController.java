@@ -18,6 +18,15 @@ public class QuestionController {
     public Result<List<QuestionVo>> getQuestionList(@PathVariable String subject){
         return Result.ok(questionService.getQuestionList(subject));
     }
+    @GetMapping("/getOneQuestion/{subject}")
+    public Result<List<QuestionVo>> getOneQuestion(@PathVariable String subject){
+        return Result.ok(questionService.getOneQuestion(subject));
+    }
+    @GetMapping("/searchByKeywords/{keyword}")
+    public Result<List<QuestionVo>> searchByKeywords(@PathVariable String keyword){
+        List<QuestionVo> questionVos = questionService.searchByKeywords(keyword);
+        return Result.ok(questionVos);
+    }
 
     @PostMapping("/addQuestion")
     public Result<?> addQuestion(@RequestBody QuestionVo questionVo){

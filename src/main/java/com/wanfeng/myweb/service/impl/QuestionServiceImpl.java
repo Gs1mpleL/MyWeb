@@ -27,4 +27,14 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEnt
     public List<String> getSubjectList() {
         return questionMapper.getSubjectList();
     }
+
+    @Override
+    public List<QuestionVo> getOneQuestion(String subject) {
+        return questionMapper.getOneQuestion(subject);
+    }
+
+    @Override
+    public List<QuestionVo> searchByKeywords(String keyword) {
+        return questionMapper.searchByKeywords(keyword);
+    }
 }

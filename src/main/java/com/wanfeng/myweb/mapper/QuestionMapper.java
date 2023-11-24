@@ -18,4 +18,8 @@ public interface QuestionMapper extends BaseMapper<QuestionEntity> {
 
     @Select("SELECT DISTINCT subject FROM question_table")
     List<String> getSubjectList();
+    @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND() LIMIT 1")
+    List<QuestionVo> getOneQuestion(String subject);
+    @Select("SELECT * FROM question_table where question LIKE CONCAT('%', #{keyword}, '%') OR answer LIKE CONCAT('%', #{keyword}, '%')")
+    List<QuestionVo> searchByKeywords(String keyword);
 }
