@@ -90,7 +90,7 @@
 </form>
 <form id="searchForm">
     <input type="text" id="searchText" style="size: 1000px" placeholder="Enter KeyWords" required />
-    <button type="submit" onclick="searchByKeywords()">Search</button>
+    <button type="submit">Search</button>
 </form>
 <script>
     // 用于测试Test按钮
@@ -100,7 +100,7 @@
     // 打开网页获得科目列表并生成按钮
     setSubjectData();
     initUpdateForm();
-
+    searchFormAddListen();
 
     /*-------------------------------------函数部分-------------------------------------*/
     function initUpdateForm() {
@@ -298,11 +298,22 @@
         subjectSelect.appendChild(option);
         subjectSelect.selectedIndex = subjectSelect.length - 1; // Select the new option
     }
-    function searchByKeywords(){
-        var searchKeyword = document.getElementById('searchText').value;
-        let url = "/searchByKeywords/" + searchKeyword;
-        fetch(url).then(respone=>respone.json()).then(data=>{
-            generateTable(data);
+    function searchFormAddListen() {
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+            var keyword = document.getElementById('searchText').value;
+            var url = '/searchByKeywords/' + keyword;
+
+            fetch(url) // 使用fetch API发送请求
+                .then(response => response.json()) // 将响应解析为JSON
+                .then(data => {
+                    // 在这里处理返回的JSON数据
+                    console.log(data);
+                    generateTable(data);
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
         });
     }
 </script>

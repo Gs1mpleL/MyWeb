@@ -24,8 +24,7 @@ public class QuestionController {
     }
     @GetMapping("/searchByKeywords/{keyword}")
     public Result<List<QuestionVo>> searchByKeywords(@PathVariable String keyword){
-        List<QuestionVo> questionVos = questionService.searchByKeywords(keyword);
-        return Result.ok(questionVos);
+        return Result.ok(questionService.searchByKeywords(keyword));
     }
 
     @PostMapping("/addQuestion")
