@@ -20,6 +20,11 @@ public class PushVO {
         this.title = title;
         this.msg = msg;
         this.groupName = groupName;
+    }
 
+    public PushVO(String msg){
+        this.title = "Notice";
+        this.groupName = "Notice";
+        this.msg = msg;
     }
 }

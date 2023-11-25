@@ -38,13 +38,10 @@ public class ThreadLocalUtils {
 
     public static <T> T get(String key, Class<T> tClass) {
         Map<String, Object> _map = THREAD_LOCAL.get();
-
         if (_map != null) {
             return tClass.cast(_map.get(key));
-
         }
-
-        return null;
+        return tClass.cast(new Object());
     }
 
     public static void release() {
