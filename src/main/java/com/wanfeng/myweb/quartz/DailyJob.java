@@ -40,7 +40,7 @@ public class DailyJob {
         dailyTask.commentTask();
     }
 
-    @Scheduled(cron = "0 30 7 * * ?")
+    @Scheduled(cron = "0 0 8 * * ?")
     public void noticeTask1(){
         // 目标日期
         LocalDate targetDate = LocalDate.of(2023, 12, 23);
@@ -54,7 +54,7 @@ public class DailyJob {
         pushService.pushIphone(new PushVO("你已经坚持了2年了,最后还剩" + daysUntil+"天了，再坚持一下吧！"));
     }
 
-    @Scheduled(cron = "0 30 13 * * ?")
+    @Scheduled(cron = "0 0 14 * * ?")
     public void noticeTask2(){
         // 目标日期
         LocalDate targetDate = LocalDate.of(2023, 12, 23);
