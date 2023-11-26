@@ -1,9 +1,8 @@
 package com.wanfeng.myweb.quartz;
 
-import com.wanfeng.myweb.service.PushService;
-import com.wanfeng.myweb.service.WeatherService;
-import com.wanfeng.myweb.service.WeiBoService;
-import com.wanfeng.myweb.service.YuanShenService;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.service.*;
 import com.wanfeng.myweb.service.impl.BiliServiceImpl;
 import com.wanfeng.myweb.service.impl.biliTask.DailyTask;
 import com.wanfeng.myweb.vo.PushVO;
@@ -31,15 +30,22 @@ public class DailyJob {
 
     @Autowired
     private PushService pushService;
-    @Scheduled(cron = "0 0 6 * * ?")
-    public void dailyTask() throws Exception {
-        biliService.biliTask(true);
+
+    @Autowired
+    private SystemConfigService systemConfigService;
+
+    @Scheduled(cron = "0 0 7 * * ?")
+    public void dailyTask1() throws Exception {
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
         weiBoService.pushNews();
         yuanShenService.doTask();
         weatherService.pushWeather();
         dailyTask.commentTask();
     }
-
+    @Scheduled(cron = "0 0 19 * * ?")
+    public void dailyTask2() throws Exception {
+        biliService.biliTask(true);
+    }
     @Scheduled(cron = "0 0 8 * * ?")
     public void noticeTask1(){
         // 目标日期
