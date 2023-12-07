@@ -21,7 +21,7 @@
 
 <input id="updateCookie" placeholder="Enter update cookies" type="text">
 <button id="updateButton" onclick="sendUpdate()">update</button>
-
+<div id="res"></div>
 <script>
     function sendUpdate() {
         var totalCookie = document.getElementById("updateCookie").value;
@@ -62,7 +62,8 @@
         })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
+                var elementById = document.getElementById("res");
+                elementById.innerText = data.data;
             })
             .catch((error) => {
                 alert("Error: " + error.message);

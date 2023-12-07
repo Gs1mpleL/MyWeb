@@ -55,6 +55,7 @@ public class YuanShenServiceImpl implements YuanShenService {
         data.put("act_id", YuanshenConfig.ACT_ID);
         data.put("region", region);
         data.put("uid", uid);
+        data.put("lang","zh-cn");
         JSONObject signResult = YuanShenHttpUtils.doPost(YuanshenConfig.SIGN_URL, yuanShenHttpUtils.getHeaders(""), data);
         if (signResult.getInteger("retcode") == 0) {
             log.info("原神签到成功：{}", signResult.get("message"));
