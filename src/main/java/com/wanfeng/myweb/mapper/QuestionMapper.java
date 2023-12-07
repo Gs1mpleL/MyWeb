@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface QuestionMapper extends BaseMapper<QuestionEntity> {
 //    @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND()")
-    @Select("SELECT * FROM question_table where subject=#{subject}")
+    @Select("SELECT * FROM question_table where subject=#{subject} LIMIT 20")
     List<QuestionVo> getQuestionList(String subject);
 
     @Select("SELECT * FROM question_table ORDER BY RAND() LIMIT 15")
