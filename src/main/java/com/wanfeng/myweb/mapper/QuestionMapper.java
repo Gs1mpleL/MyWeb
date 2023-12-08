@@ -11,11 +11,11 @@ import java.util.List;
 @Mapper
 public interface QuestionMapper extends BaseMapper<QuestionEntity> {
 //    @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND()")
-    @Select("SELECT * FROM question_table where subject=#{subject} LIMIT 20")
+    @Select("SELECT * FROM question_table where subject=#{subject} LIMIT 50")
     List<QuestionVo> getQuestionList(String subject);
 
-    @Select("SELECT * FROM question_table ORDER BY RAND() LIMIT 40")
-    List<QuestionVo> getQuestionListAll();
+    @Select("SELECT * FROM question_table ORDER BY RAND() LIMIT 5")
+    List<QuestionVo> getQuestionListRand();
 
     @Select("SELECT DISTINCT subject FROM question_table")
     List<String> getSubjectList();

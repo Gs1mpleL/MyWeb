@@ -18,7 +18,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEnt
     @Override
     public List<QuestionVo> getQuestionList(String subject) {
         if (Objects.equals(subject, "all")){
-            return questionMapper.getQuestionListAll();
+            return questionMapper.getQuestionListRand();
         }
         return questionMapper.getQuestionList(subject);
     }
