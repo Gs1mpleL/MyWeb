@@ -117,7 +117,7 @@ public class DailyTask implements Task {
                 String aid = video.getString("aid");
                 String desc = video.getString("desc");
                 String title = video.getString("title");
-                String msg = title + "\n\n" + desc;
+                String msg = title + "\n\n" + desc + "\n \n md气死我了，我要带着这个咸鱼骗子的id走遍全b站！\n B站id:@喵了个咪姑,咸鱼id:喵了个咪";
                 JSONObject jsonObject = setComment(msg, aid);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
                 Thread.sleep(120000);

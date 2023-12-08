@@ -139,5 +139,11 @@ public class BiliServiceImpl implements BiliService {
         }
     }
 
+    public void getReply(){
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
+        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/msgfeed/reply?platform=web&build=0&mobi_app=web");
+        String string = jsonObject.getJSONObject("data").getString("items");
+        System.out.println(string);
+    }
 
 }
