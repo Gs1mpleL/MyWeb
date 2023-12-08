@@ -132,7 +132,6 @@ public class DailyTask implements Task {
                 formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
                 String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev +"\n[间时]->" + formatDateTime;
                 JSONObject jsonObject = setComment(total, aid);
-                System.out.println(total);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
                 LocalTime now1 = LocalTime.now();
                 if (isAmTask && now1.isAfter(LocalTime.of(13, 40))) {
