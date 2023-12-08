@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
+
 @Component
 public class DailyTask implements Task {
     /** 获取日志记录器对象 */
@@ -108,7 +110,7 @@ public class DailyTask implements Task {
     /**
      * 每2分钟秒评论一条视频
      */
-    public void commentTask() throws InterruptedException {
+    public void commentTask(boolean isAmTask) throws InterruptedException {
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
         for (int typeId : typeList) {
             JSONArray regions = getRegions("10", String.valueOf(typeId));
@@ -120,6 +122,10 @@ public class DailyTask implements Task {
                 String msg = title + "\n\n" + desc + "\n \n md气死我了，我要带着这个咸鱼骗子的id走遍全b站！\n B站id:@喵了个咪姑,咸鱼id:喵了个咪";
                 JSONObject jsonObject = setComment(msg, aid);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
+                LocalTime now = LocalTime.now();
+                if (isAmTask && now.isAfter(LocalTime.of(13, 40))) {
+                    return;
+                }
                 Thread.sleep(120000);
             }
         }
