@@ -12,7 +12,7 @@ import java.util.List;
 public interface QuestionMapper extends BaseMapper<QuestionEntity> {
 //    @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND()")
     @Select("SELECT * FROM question_table where subject=#{subject} LIMIT 50")
-    List<QuestionVo> getQuestionList(String subject);
+    List<QuestionVo> getQuestionListBySubject(String subject);
 
     @Select("SELECT * FROM question_table ORDER BY RAND() LIMIT 5")
     List<QuestionVo> getQuestionListRand();

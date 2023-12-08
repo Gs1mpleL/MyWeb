@@ -28,23 +28,11 @@ class MyWebApplicationTests {
     private SystemConfigService systemConfigService;
     @Autowired
     private QuestionService questionService;
+
     @Test
     void test() throws InterruptedException {
-        List<QuestionEntity> list = questionService.list(new QueryWrapper<QuestionEntity>().eq("subject", "英语单词"));
-        StringBuilder need = new StringBuilder();
-        System.out.println(list.size() + "总单词数");
-        List<QuestionEntity> needUpdateList = new ArrayList<>();
-        for (QuestionEntity questionEntity : list) {
-            if (Objects.equals(questionEntity.getAnswer(), "1")){
-                String question = questionEntity.getQuestion();
-                String ans = BaiduFanYi.getTranslateResult(question);
-                questionEntity.setAnswer(ans);
-                Thread.sleep(1000);
-                needUpdateList.add(questionEntity);
-            }
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
 
-        }
-
-        questionService.updateBatchById(needUpdateList);
+        dailyTask.commentTask(false);
     }
 }

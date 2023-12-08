@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class DailyTask implements Task {
@@ -116,14 +118,24 @@ public class DailyTask implements Task {
             JSONArray regions = getRegions("10", String.valueOf(typeId));
             for (int i = 0; i < regions.size(); i++) {
                 JSONObject video = regions.getJSONObject(i);
+                System.out.println(video);
                 String aid = video.getString("aid");
                 String desc = video.getString("desc");
                 String title = video.getString("title");
-                String msg = title + "\n\n" + desc + "\n \n md气死我了，我要带着这个咸鱼骗子的id走遍全b站！\n B站id:@喵了个咪姑,咸鱼id:喵了个咪";
-                JSONObject jsonObject = setComment(msg, aid);
+                StringBuilder titleSb = new StringBuilder(title);
+                String titleRev = titleSb.reverse().toString();
+                StringBuilder descSb = new StringBuilder(desc);
+                String descRev = descSb.reverse().toString();
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String formatDateTime = now.format(formatter);
+                formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
+                String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev +"\n[间时]->" + formatDateTime;
+                JSONObject jsonObject = setComment(total, aid);
+                System.out.println(total);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
-                LocalTime now = LocalTime.now();
-                if (isAmTask && now.isAfter(LocalTime.of(13, 40))) {
+                LocalTime now1 = LocalTime.now();
+                if (isAmTask && now1.isAfter(LocalTime.of(13, 40))) {
                     return;
                 }
                 Thread.sleep(120000);

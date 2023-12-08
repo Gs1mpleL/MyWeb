@@ -20,7 +20,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEnt
         if (Objects.equals(subject, "all")){
             return questionMapper.getQuestionListRand();
         }
-        return questionMapper.getQuestionList(subject);
+        return questionMapper.getQuestionListBySubject(subject);
     }
 
     @Override
