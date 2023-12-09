@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.service.SystemConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class DailyTask implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
     @Autowired
     private BiliHttpUtils biliHttpUtils;
+    @Autowired
+    private SystemConfigService systemConfigService;
 
     @Override
     public void run() {
@@ -113,6 +116,7 @@ public class DailyTask implements Task {
      * 每2分钟秒评论一条视频
      */
     public void commentTask() throws InterruptedException {
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
         for (int typeId : typeList) {
             JSONArray regions = getRegions("10", String.valueOf(typeId));
@@ -130,6 +134,8 @@ public class DailyTask implements Task {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formatDateTime = now.format(formatter);
                 formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
+                JSONObject videoState = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/web-interface/archive/stat?" + "aid=" + aid);
+                System.out.println(videoState);
                 String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev + "\n[间时]->" + formatDateTime;
                 JSONObject jsonObject = setComment(total, aid);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));

@@ -40,8 +40,8 @@ public class YuanShenHttpUtils {
             .setSocketTimeout(60000)
             .setRedirectsEnabled(true)
             .build();
-    private String clientType = "";
-    private String appVersion = "";
+    private String clientType = "5";
+    private String appVersion = "2.65.2";
     private String salt = "";
     private String type = "5";
     @Autowired
@@ -141,9 +141,9 @@ public class YuanShenHttpUtils {
                 .add("x-rpc-channel", "appstore")
                 .add("accept-language", "zh-CN,zh;q=0.9,ja-JP;q=0.8,ja;q=0.7,en-US;q=0.6,en;q=0.5")
                 .add("accept-encoding", "gzip, deflate")
-                .add("accept-encoding", "gzip, deflate")
-                .add("x-requested-with", "com.mihoyo.hyperion")
-                .add("Host", "api-takumi.mihoyo.com").build();
+//                .add("x-requested-with", "com.mihoyo.hyperion")
+                .add("Host", "api-takumi.mihoyo.com")
+                .add("Origin","https://act.mihoyo.com").build();
     }
 
     public Header[] getHeaders(String dsType) {
@@ -151,6 +151,7 @@ public class YuanShenHttpUtils {
                 .add("x-rpc-device_id", UUID.randomUUID().toString().replace("-", "").toUpperCase())
                 .add("Content-Type", "application/json;charset=UTF-8")
                 .add("x-rpc-client_type", getClientType())
+                .add("x-rpc-client_signgame", "hk4e")
                 .add("x-rpc-app_version", getAppVersion())
                 .add("DS", getDS()).addAll(getBasicHeaders()).build();
     }

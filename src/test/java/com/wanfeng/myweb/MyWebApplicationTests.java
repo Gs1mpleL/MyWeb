@@ -20,10 +20,9 @@ class MyWebApplicationTests {
     private static final Logger LOGGER = LoggerFactory.getLogger(MyWebApplicationTests.class);
 
     @Autowired
-    YuanShenService yuanShenService;
-
+    DailyTask dailyTask;
     @Test
     void test() throws Exception {
-        yuanShenService.signTaskStart();
+        dailyTask.commentTask();
     }
 }
