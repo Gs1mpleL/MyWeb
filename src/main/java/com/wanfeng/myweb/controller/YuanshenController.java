@@ -13,7 +13,7 @@ public class YuanshenController {
 
     @GetMapping("/yuanshen")
     public Result<?> yuanShenTask() {
-        yuanShenService.doTask();
+        yuanShenService.signTaskStart();
         return Result.ok();
     }
 }

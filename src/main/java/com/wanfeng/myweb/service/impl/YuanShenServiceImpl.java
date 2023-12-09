@@ -31,7 +31,7 @@ public class YuanShenServiceImpl implements YuanShenService {
     private PushServiceImpl pushIphoneService;
 
     @Override
-    public void doTask() {
+    public void signTaskStart() {
         List<Map<String, Object>> uid = getUid();
         for (Map<String, Object> uidMap : uid) {
             if (!(boolean) uidMap.get("flag")) {
