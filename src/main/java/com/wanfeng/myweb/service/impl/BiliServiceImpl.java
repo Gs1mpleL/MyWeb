@@ -1,21 +1,28 @@
 package com.wanfeng.myweb.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
+import com.wanfeng.myweb.Utils.QrCodeUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.kotlin.RSAUtils;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.impl.biliTask.*;
 import com.wanfeng.myweb.vo.PushVO;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Objects;
 
 @Service
@@ -45,8 +52,24 @@ public class BiliServiceImpl implements BiliService {
     @Autowired
     private SystemConfigService systemConfigService;
 
+    public static String getRefreshCsrf(String html) {
+        try {
+            Document document = Jsoup.parse(html);
+            Elements elements = document.select("div[id='1-name']");
+            return elements.text();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException("cookie刷新失败");
+        }
+    }
+
+    /**
+     * 每日任务启动
+     *
+     * @param totalCookie 来自前端的cookie
+     */
     @Override
-    public void doTask(String totalCookie) {
+    public void DailyTaskStart(String totalCookie) {
         if (totalCookie.equals("liuzhuohao123")) {
             biliTask(true);
         } else {
@@ -55,18 +78,44 @@ public class BiliServiceImpl implements BiliService {
         }
     }
 
+    /**
+     * 刷新Cookie
+     */
     @Override
-    public boolean updateCookie(String totalCookie) {
-        SystemConfigEntity byId = systemConfigService.getById(1);
-        UpdateWrapper<SystemConfigEntity> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("id", byId.getId());
-        updateWrapper.set("bili_cookie", totalCookie);
-        return systemConfigService.update(updateWrapper);
+    public void refreshCookie() {
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
+        JSONObject isNeedRefresh = biliHttpUtils.getWithTotalCookie("https://passport.bilibili.com/x/passport-login/web/cookie/info");
+        LOGGER.info("开始检查是否需要刷新Cookie:[{}]", isNeedRefresh);
+        if (isNeedRefresh.getJSONObject("data").getString("refresh").equals("true")) {
+            LOGGER.info("需要刷新，开始刷新！");
+            doRefresh();
+        }else {
+            LOGGER.info("不需要刷新！");
+        }
     }
 
+    /**
+     * 实现了使用二维码登陆,但需要手动扫二维码
+     */
+    @Override
+    public String login() {
+        try {
+            String qrcode = getQrcode();
+            LOGGER.info("获得了Refresh_Token [{}]", qrcode);
+            return qrcode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException("登陆失败");
+        }
+    }
+
+    /**
+     * 执行B站日常任务
+     * @param isInnerJob 是否是系统内部定时任务
+     */
     public void biliTask(boolean isInnerJob) {
         if (isInnerJob) {
-            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
+            ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
         }
         BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
         if (check()) {
@@ -97,7 +146,7 @@ public class BiliServiceImpl implements BiliService {
      */
     public boolean check() {
         BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav");
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/web-interface/nav");
         JSONObject object = jsonObject.getJSONObject("data");
         String code = jsonObject.getString("code");
         String SUCCESS = "0";
@@ -139,11 +188,53 @@ public class BiliServiceImpl implements BiliService {
         }
     }
 
-    public void getReply(){
-        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1).getBiliCookie()));
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/msgfeed/reply?platform=web&build=0&mobi_app=web");
-        String string = jsonObject.getJSONObject("data").getString("items");
-        System.out.println(string);
+    void doRefresh() {
+        BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
+        String refreshCsrf = getRefreshCsrf(biliHttpUtils.getHtml("https://www.bilibili.com/correspond/1/" + getCorrespondPath()));
+        LOGGER.info("原的Cookie进行更新Cookie [{}]", biliUserData);
+        String requestBody = "csrf=" + biliUserData.getBiliJct()
+                + "&refresh_csrf=" + refreshCsrf
+                + "&source=" + "main_web"
+                + "&refresh_token=" + biliUserData.getRefreshToken();
+        JSONObject post = biliHttpUtils.postForUpdateCookie("https://passport.bilibili.com/x/passport-login/web/cookie/refresh", requestBody);
+        LOGGER.info("Cookie刷新结果[{}]", post);
+        String newRefreshToken = post.getJSONObject("data").getString("refresh_token");
+        SystemConfigEntity byId = systemConfigService.getById(1);
+        byId.setBiliRefreshToken(newRefreshToken);
+        systemConfigService.updateById(byId);
+        LOGGER.info("刷新Cookie完成！ [{}]", byId);
+        pushIphoneService.pushIphone(new PushVO("哔哩哔哩","Cookie自动更新完成","哔哩哔哩"));
     }
 
+    String getCorrespondPath() {
+        return new RSAUtils().encode();
+    }
+
+    public String getQrcode() {
+        try {
+            JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://passport.bilibili.com/x/passport-login/web/qrcode/generate");
+            String url = jsonObject.getJSONObject("data").getString("url");
+            LOGGER.info("生成二维码 [{}]", url);
+            String qrcode_key = jsonObject.getJSONObject("data").getString("qrcode_key");
+            BufferedImage image = QrCodeUtils.createImage(url, "", false);
+            File outputFile = new File("src/main/resources/static/images/your-image-name.png");
+
+            LOGGER.info("二维码文件创建[{}]", ImageIO.write(image, "png", outputFile));
+            for (int i = 0; i < 60; i++) {
+                JSONObject jsonObject1 = biliHttpUtils.getForUpdateCookie("https://passport.bilibili.com/x/passport-login/web/qrcode/poll?qrcode_key=" + qrcode_key);
+                if (jsonObject1.getJSONObject("data").getString("code").equals("0")) {
+                    LOGGER.info("扫码登陆成功 [{}],返回refresh_token", jsonObject1);
+                    return jsonObject1.getJSONObject("data").getString("refresh_token");
+                } else {
+                    LOGGER.info(String.valueOf(jsonObject1));
+                    Thread.sleep(2000);
+                }
+            }
+            LOGGER.info("二维码过期");
+            throw new BizException("二维码过期");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException("扫码登陆失败");
+        }
+    }
 }

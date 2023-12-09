@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface QuestionService extends IService<QuestionEntity> {
     List<QuestionVo> getQuestionList(String subject);
+
     List<String> getSubjectList();
 
     List<QuestionVo> getOneQuestion(String subject);

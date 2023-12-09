@@ -12,30 +12,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
-public class RestTemplateConfig{
-
-    private int timeoutms = 5 * 60 *1000;
+public class RestTemplateConfig {
 
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory){
+    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
         RestTemplate restTemplate = new RestTemplate(factory);
-        List<HttpMessageConverter<?>> converterList =restTemplate.getMessageConverters();
+        List<HttpMessageConverter<?>> converterList = restTemplate.getMessageConverters();
         int converterIndex = -1;
-        for (int i=0;i<converterList.size();i++){
-            if(converterList.get(i).getClass() == StringHttpMessageConverter.class){
+        for (int i = 0; i < converterList.size(); i++) {
+            if (converterList.get(i).getClass() == StringHttpMessageConverter.class) {
                 converterIndex = i;
                 break;
             }
         }
-        if(converterIndex !=-1) {
+        if (converterIndex != -1) {
             restTemplate.getMessageConverters().set(converterIndex, new StringHttpMessageConverter(StandardCharsets.UTF_8));
         }
         return restTemplate;
     }
 
     @Bean
-    public ClientHttpRequestFactory simpleClientHttpRequestFactory(){
+    public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        int timeoutms = 5 * 60 * 1000;
         factory.setReadTimeout(timeoutms);//ms
         factory.setConnectTimeout(timeoutms);//ms
         return factory;

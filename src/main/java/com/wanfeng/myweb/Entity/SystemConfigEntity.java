@@ -15,4 +15,6 @@ public class SystemConfigEntity {
     private String biliCookie;
     @TableField(value = "yuan_shen_cookie")
     private String yuanShenCookie;
+    @TableField(value = "bili_refresh_token")
+    private String biliRefreshToken;
 }

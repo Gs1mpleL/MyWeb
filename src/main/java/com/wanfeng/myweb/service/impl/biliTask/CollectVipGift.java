@@ -52,7 +52,7 @@ public class CollectVipGift implements Task {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "type=" + type
                 + "&csrf=" + biliUserData.getBiliJct();
-        JSONObject jsonObject = biliHttpUtils.post("https://api.bilibili.com/x/vip/privilege/receive", body);
+        JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/vip/privilege/receive", body);
         Integer code = jsonObject.getInteger("code");
         if (0 == code) {
             if (type == 1) {

@@ -15,9 +15,10 @@ import java.util.Objects;
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEntity> implements QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
+
     @Override
     public List<QuestionVo> getQuestionList(String subject) {
-        if (Objects.equals(subject, "all")){
+        if (Objects.equals(subject, "all")) {
             return questionMapper.getQuestionListRand();
         }
         return questionMapper.getQuestionListBySubject(subject);

@@ -12,7 +12,7 @@ public class WeiBoController {
     WeiBoService weiBoService;
 
     @RequestMapping("/weibo")
-    public Result<?> getHot(){
+    public Result<?> getHot() {
         return Result.ok(weiBoService.getHotList());
     }
 }

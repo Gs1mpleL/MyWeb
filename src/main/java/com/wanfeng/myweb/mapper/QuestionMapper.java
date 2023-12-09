@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface QuestionMapper extends BaseMapper<QuestionEntity> {
-//    @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND()")
+    //    @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND()")
     @Select("SELECT * FROM question_table where subject=#{subject} LIMIT 50")
     List<QuestionVo> getQuestionListBySubject(String subject);
 
@@ -19,8 +19,10 @@ public interface QuestionMapper extends BaseMapper<QuestionEntity> {
 
     @Select("SELECT DISTINCT subject FROM question_table")
     List<String> getSubjectList();
+
     @Select("SELECT * FROM question_table where subject=#{subject} ORDER BY RAND() LIMIT 3")
     List<QuestionVo> getOneQuestion(String subject);
+
     @Select("SELECT * FROM question_table where question LIKE CONCAT('%', #{keyword}, '%') OR answer LIKE CONCAT('%', #{keyword}, '%')")
     List<QuestionVo> searchByKeywords(String keyword);
 }

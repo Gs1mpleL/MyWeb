@@ -1,5 +1,6 @@
 package com.wanfeng.myweb.config;
 
+import com.wanfeng.myweb.Entity.SystemConfigEntity;
 import lombok.Data;
 
 import java.util.regex.Matcher;
@@ -29,10 +30,23 @@ public class BiliUserData {
     /** 认证 **/
     private String totalCookie;
     private String biliJct;
+    private String refreshToken;
 
-    public BiliUserData(String tc) throws BizException {
-        totalCookie = tc;
-        setCookie(tc);
+    /**
+     * token可刷新
+     */
+    public BiliUserData(SystemConfigEntity systemConfig) throws BizException {
+        totalCookie = systemConfig.getBiliCookie();
+        setCookie(systemConfig.getBiliCookie());
+        this.refreshToken = systemConfig.getBiliRefreshToken();
+    }
+
+    /**
+     * 只设置cookie，不能刷新token
+     */
+    public BiliUserData(String totalCookieFromWeb) throws BizException {
+        totalCookie = totalCookieFromWeb;
+        setCookie(totalCookieFromWeb);
     }
 
     public void setCookie(String totalCookie) throws BizException {

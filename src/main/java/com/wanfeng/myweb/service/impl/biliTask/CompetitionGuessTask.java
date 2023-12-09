@@ -64,7 +64,7 @@ public class CompetitionGuessTask implements Task {
                 + "&count=" + biliProperties.getGuessCoin()
                 + "&is_fav=1"
                 + "&csrf=" + biliUserData.getBiliJct();
-        JSONObject post = biliHttpUtils.post("https://api.bilibili.com/x/esports/guess/add", body);
+        JSONObject post = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/esports/guess/add", body);
         if (post.getString("code").equals("0")) {
             LOGGER.info("在{}中投给{}{}个硬币", guessGame.getTitle(), chooseOpt.getTeamName(), biliProperties.getGuessCoin());
             biliUserData.info("在" + guessGame.getTitle() + "中投给" + chooseOpt.getTeamName() + biliProperties.getGuessCoin() + "个硬币");
@@ -76,7 +76,7 @@ public class CompetitionGuessTask implements Task {
 
     private ArrayList<GuessGame> getGuessingList() {
         ArrayList<GuessGame> guessGameArrayList = new ArrayList<>();
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/esports/guess/collection/question?pn=1&ps=50");
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/esports/guess/collection/question?pn=1&ps=50");
         if (jsonObject.getString("code").equals("0")) {
             JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("list");
             for (Object o : jsonArray) {

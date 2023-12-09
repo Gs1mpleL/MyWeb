@@ -22,7 +22,7 @@ public class PushVO {
         this.groupName = groupName;
     }
 
-    public PushVO(String msg){
+    public PushVO(String msg) {
         this.title = "Notice";
         this.groupName = "Notice";
         this.msg = msg;

@@ -97,7 +97,7 @@ public class ThrowCoinTask implements Task {
                 + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
                 + "&csrf=" + biliUserData.getBiliJct();
-        return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/coin/add", body);
+        return biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/web-interface/coin/add", body);
     }
 
     /**
@@ -106,7 +106,7 @@ public class ThrowCoinTask implements Task {
      * @return JSONObject
      */
     public Integer getReward() {
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/member/web/exp/log");
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/member/web/exp/log");
         int count = 0;
         LocalDate today = LocalDate.now();
         String regex = "\\b" + today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "\\b";
@@ -134,7 +134,7 @@ public class ThrowCoinTask implements Task {
      * @return Integer
      */
     public Integer getCoin() {
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/web-interface/nav?build=0&mobi_app=web");
         return (int) (Double.parseDouble(jsonObject.getJSONObject("data").getString("money")));
     }
 
@@ -147,7 +147,7 @@ public class ThrowCoinTask implements Task {
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("archives");
         JSONArray jsonRegions = new JSONArray();
         for (Object object : jsonArray) {

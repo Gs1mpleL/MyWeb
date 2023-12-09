@@ -39,7 +39,7 @@ public class MangaTask implements Task {
      */
     public JSONObject mangaClockIn(String platform) {
         String body = "platform=" + platform;
-        return biliHttpUtils.post("https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn", body);
+        return biliHttpUtils.postWithTotalCookie("https://manga.bilibili.com/twirp/activity.v1.Activity/ClockIn", body);
     }
 }
 

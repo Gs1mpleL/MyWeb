@@ -21,22 +21,6 @@ public class WeatherServiceImpl implements WeatherService {
     private BaseHttpUtils baseHttpUtils;
     @Autowired
     private PushService pushService;
-    @Override
-    public void pushWeather() {
-        List<WeatherInfo> weatherList = getWeatherList();
-        StringBuilder pushMsg = new StringBuilder();
-        for (WeatherInfo weatherInfo : weatherList) {
-            pushMsg.append(weatherInfo.getDate()).append(":").append(weatherInfo.getWeather()).append(" ").append(weatherInfo.getTemperature()).append("\n");
-        }
-        String msg = pushMsg.substring(0, pushMsg.length() - 1).toString();
-        pushService.pushIphone(new PushVO("近日天气",msg,"近日天气"));
-    }
-
-    public List<WeatherInfo> getWeatherList(){
-        String url = "http://www.weather.com.cn/weather/101100701.shtml";
-        String html  = baseHttpUtils.get(url, null);
-        return parseWeatherInfo(html);
-    }
 
     public static List<WeatherInfo> parseWeatherInfo(String html) {
         List<WeatherInfo> weatherInfos = new ArrayList<>();
@@ -53,5 +37,22 @@ public class WeatherServiceImpl implements WeatherService {
             e.printStackTrace();
         }
         return weatherInfos;
+    }
+
+    @Override
+    public void pushWeather() {
+        List<WeatherInfo> weatherList = getWeatherList();
+        StringBuilder pushMsg = new StringBuilder();
+        for (WeatherInfo weatherInfo : weatherList) {
+            pushMsg.append(weatherInfo.getDate()).append(":").append(weatherInfo.getWeather()).append(" ").append(weatherInfo.getTemperature()).append("\n");
+        }
+        String msg = pushMsg.substring(0, pushMsg.length() - 1).toString();
+        pushService.pushIphone(new PushVO("近日天气", msg, "近日天气"));
+    }
+
+    public List<WeatherInfo> getWeatherList() {
+        String url = "http://www.weather.com.cn/weather/101100701.shtml";
+        String html = baseHttpUtils.get(url, null);
+        return parseWeatherInfo(html);
     }
 }

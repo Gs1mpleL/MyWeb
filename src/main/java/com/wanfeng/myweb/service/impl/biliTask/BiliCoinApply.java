@@ -71,7 +71,7 @@ public class BiliCoinApply implements Task {
                 + "&visit_id=1zn218g8bp8g"
                 + "&csrf=" + biliUserData.getBiliJct();
 
-        JSONObject jsonObject = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
+        JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
 
         Integer resultCode = jsonObject.getInteger("code");
         if (resultCode == 0) {
@@ -105,7 +105,7 @@ public class BiliCoinApply implements Task {
         String requestBody = "order_id=" + token
                 + "&message=" + "BilibiliTask自动充电"
                 + "&csrf=" + biliUserData.getBiliJct();
-        JSONObject jsonObject = biliHttpUtils.post("http://api.bilibili.com/x/ugcpay/trade/elec/message", requestBody);
+        JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("http://api.bilibili.com/x/ugcpay/trade/elec/message", requestBody);
         LOGGER.debug(jsonObject.toString());
         biliUserData.info("充电评论:{}", jsonObject.toString());
     }
@@ -124,7 +124,7 @@ public class BiliCoinApply implements Task {
                 + "&goods_id=1"
                 + "&goods_num=" + couponBalance
                 + "&csrf=" + biliUserData.getBiliJct();
-        JSONObject post = biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
+        JSONObject post = biliHttpUtils.postWithTotalCookie("https://api.live.bilibili.com/xlive/revenue/v1/order/createOrder", body);
         String msg;
         /* json对象的状态码 */
         String code = post.getString("code");

@@ -21,18 +21,9 @@ public class BiliController {
         if (biliVo == null || biliVo.getTotalCookie().equals("")) {
             throw new BizException("totalCookie为空");
         }
-        biliService.doTask(biliVo.getTotalCookie());
+        biliService.DailyTaskStart(biliVo.getTotalCookie());
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String sendMsg = biliUserData.getSendMsg() == null ? "" : biliUserData.getSendMsg();
         return Result.ok(sendMsg);
-    }
-
-    @PostMapping("/updateCookie")
-    public Result<?> updateCookie(@RequestBody BiliVo biliVo) {
-        if (biliService.updateCookie(biliVo.getTotalCookie())) {
-            return Result.ok("更新成功");
-        } else {
-            return Result.fail("更新失败");
-        }
     }
 }

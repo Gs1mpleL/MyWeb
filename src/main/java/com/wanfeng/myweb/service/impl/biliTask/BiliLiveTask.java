@@ -44,7 +44,7 @@ public class BiliLiveTask implements Task {
      * B站直播进行签到
      */
     public JSONObject xliveSign() {
-        return biliHttpUtils.get("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
+        return biliHttpUtils.getWithTotalCookie("https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign");
     }
 
 }

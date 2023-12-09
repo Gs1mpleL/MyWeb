@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wanfeng.myweb.service.QuestionService;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +19,8 @@ public class QuestionEntity {
     private String question;
     @TableField("answer")
     private String answer;
-    public QuestionEntity(String subject, String question, String answer){
+
+    public QuestionEntity(String subject, String question, String answer) {
         this.subject = subject;
         this.question = question;
         this.answer = answer;

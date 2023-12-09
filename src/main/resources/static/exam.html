@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta charset="UTF-8">
     <title>Question List</title>
     <style>
@@ -32,7 +32,7 @@
         }
 
         /* 表单按钮样式 */
-        button[type="submit"] ,button[id="updateButton"],button[id="subjectButton"],button[id='deleteButton']{
+        button[type="submit"], button[id="updateButton"], button[id="subjectButton"], button[id='deleteButton'] {
             height: 30px;
             background-color: #4CAF50;
             color: #fff;
@@ -40,12 +40,15 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        button[id=deleteButton]{
+
+        button[id=deleteButton] {
             background-color: #fd0000;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         form {
             margin-top: 20px;
             height: 40px;
@@ -54,17 +57,20 @@
 
         table {
             width: 100%;
-            table-layout: fixed;  /* 设置表格布局为固定宽度 */
+            table-layout: fixed; /* 设置表格布局为固定宽度 */
             border-collapse: collapse;
         }
+
         th, td {
             border: 1px solid black;
             padding: 8px;
             text-align: center;
         }
+
         .question-cell {
             cursor: pointer;
         }
+
         .answer-display {
             color: green;
             font-weight: bold;
@@ -83,14 +89,14 @@
 </table>
 
 <form id="question-form">
-    <input type="text" id="question" style="size: 1000px" placeholder="Enter question" required />
-    <input type="text" id="answer" placeholder="Enter answer" required />
+    <input id="question" placeholder="Enter question" required style="size: 1000px" type="text"/>
+    <input id="answer" placeholder="Enter answer" required type="text"/>
     <select id="subject"></select>
-    <input type="text" id="custom-subject" placeholder="Enter custom subject" oninput="updateSubjectOptions()" />
+    <input id="custom-subject" oninput="updateSubjectOptions()" placeholder="Enter custom subject" type="text"/>
     <button type="submit">Send</button>
 </form>
 <form id="searchForm">
-    <input type="text" id="searchText" style="size: 1000px" placeholder="Enter KeyWords" required />
+    <input id="searchText" placeholder="Enter KeyWords" required style="size: 1000px" type="text"/>
     <button type="submit">Search</button>
 </form>
 <script>
@@ -135,6 +141,7 @@
             });
         });
     }
+
     function setSubjectData() {
         fetch('/getSubjectList')
             .then(response => response.json())
@@ -144,6 +151,7 @@
             })
             .catch(error => console.error('Error:', error));
     }
+
     function generateSubjectButton(data) {
         // 获取下拉框元素
         const subjectSelect = document.getElementById('subject');
@@ -182,6 +190,7 @@
         const elementById = document.getElementById("subject_button");
         elementById.appendChild(subjectRow);
     }
+
     function generateTable(data) {
         const questionTable = document.getElementById('question-table');
         if (document.querySelector('table tr') !== null) {
@@ -274,12 +283,13 @@
             questionTable.appendChild(row);
         });
     }
-    function getQuestionList(subject,isOne){
+
+    function getQuestionList(subject, isOne) {
         let url;
-        if (isOne){
-            url= "/getOneQuestion/"+subject
-        }else {
-            url = "/getQuestionList/"+subject;
+        if (isOne) {
+            url = "/getOneQuestion/" + subject
+        } else {
+            url = "/getQuestionList/" + subject;
         }
         fetch(url)
             .then(response => response.json())
@@ -289,7 +299,8 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-        }
+    }
+
     function updateSubjectOptions() {
         const customSubject = document.getElementById('custom-subject').value;
         const subjectSelect = document.getElementById('subject');
@@ -299,6 +310,7 @@
         subjectSelect.appendChild(option);
         subjectSelect.selectedIndex = subjectSelect.length - 1; // Select the new option
     }
+
     function searchFormAddListen() {
         document.getElementById('searchForm').addEventListener('submit', function (event) {
             event.preventDefault(); // 阻止表单默认提交行为

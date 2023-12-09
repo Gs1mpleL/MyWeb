@@ -12,6 +12,7 @@ public class BaiduFanYi {
     private static final String TRANS_API_HOST = "http://api.fanyi.baidu.com/api/trans/vip/translate";
     private static String appid = "20210801000903395";
     private static String securityKey = "j7qDDoErQpwLUqoelwgw";
+
     // 发送查询
     public static String getTranslateResult(String query) {
         Map<String, Object> params = new HashMap();

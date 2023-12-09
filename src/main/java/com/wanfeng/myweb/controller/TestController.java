@@ -1,18 +1,30 @@
 package com.wanfeng.myweb.controller;
 
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.service.BiliService;
+import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.TestService;
+import com.wanfeng.myweb.vo.BiliVo;
 import com.wanfeng.myweb.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
     @Autowired
     private TestService testService;
+    @Autowired
+    private BiliService biliService;
+    @Autowired
+    private SystemConfigService systemConfigService;
 
-    @GetMapping("/test")
-    public Result<?> test() {
-        return Result.ok(testService.list());
+    @PostMapping("/test")
+    public Result<?> test(@RequestBody BiliVo biliVo) {
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
+        biliService.login();
+        return Result.ok();
     }
 }

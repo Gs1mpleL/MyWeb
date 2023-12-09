@@ -55,7 +55,7 @@ public class DailyTask implements Task {
                 + "&message=" + comment
                 + "&plat=1"
                 + "&csrf=" + biliUserData.getBiliJct();
-        return biliHttpUtils.post("https://api.bilibili.com/x/v2/reply/add", body);
+        return biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/v2/reply/add", body);
     }
 
     /**
@@ -66,7 +66,7 @@ public class DailyTask implements Task {
      */
     public JSONArray getRegions(String ps, String rid) {
         String params = "?ps=" + ps + "&rid=" + rid;
-        JSONObject jsonObject = biliHttpUtils.get("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/web-interface/dynamic/region" + params);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("archives");
         JSONArray jsonRegions = new JSONArray();
         for (Object object : jsonArray) {
@@ -94,7 +94,7 @@ public class DailyTask implements Task {
                 + "&cid=" + cid
                 + "&progres=" + progres
                 + "&csrf=" + biliUserData.getBiliJct();
-        return biliHttpUtils.post("http://api.bilibili.com/x/v2/history/report", body);
+        return biliHttpUtils.postWithTotalCookie("http://api.bilibili.com/x/v2/history/report", body);
     }
 
     /**
@@ -105,14 +105,14 @@ public class DailyTask implements Task {
     public JSONObject share(String aid) {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1";
-        return biliHttpUtils.post("https://api.bilibili.com/x/web-interface/share/add", body);
+        return biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/web-interface/share/add", body);
     }
 
 
     /**
      * 每2分钟秒评论一条视频
      */
-    public void commentTask(boolean isAmTask) throws InterruptedException {
+    public void commentTask() throws InterruptedException {
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
         for (int typeId : typeList) {
             JSONArray regions = getRegions("10", String.valueOf(typeId));
@@ -130,13 +130,9 @@ public class DailyTask implements Task {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formatDateTime = now.format(formatter);
                 formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
-                String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev +"\n[间时]->" + formatDateTime;
+                String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev + "\n[间时]->" + formatDateTime;
                 JSONObject jsonObject = setComment(total, aid);
                 LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
-                LocalTime now1 = LocalTime.now();
-                if (isAmTask && now1.isAfter(LocalTime.of(13, 40))) {
-                    return;
-                }
                 Thread.sleep(120000);
             }
         }

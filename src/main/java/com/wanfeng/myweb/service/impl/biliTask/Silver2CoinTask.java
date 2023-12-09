@@ -56,7 +56,7 @@ public class Silver2CoinTask implements Task {
     public JSONObject silver2coin() {
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
         String body = "csrf=" + biliUserData.getBiliJct();
-        return biliHttpUtils.post("https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin", body);
+        return biliHttpUtils.postWithTotalCookie("https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin", body);
     }
 
     /**
@@ -65,7 +65,7 @@ public class Silver2CoinTask implements Task {
      * @return Integer
      */
     public Integer getSilver() {
-        JSONObject jsonObject = biliHttpUtils.get("https://api.live.bilibili.com/xlive/revenue/v1/wallet/getStatus");
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.live.bilibili.com/xlive/revenue/v1/wallet/getStatus");
         return Integer.parseInt(jsonObject.getJSONObject("data").getString("silver"));
     }
 }

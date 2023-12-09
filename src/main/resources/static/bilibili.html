@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Bili Task</title>
     <style>
         input {
@@ -16,38 +16,10 @@
 <body>
 <h1>Bili Task</h1>
 
-<input id="totalCookie" placeholder="Enter total cookies" type="text">
-<button id="myButton" onclick="sendRequest()">send</button>
-
-<input id="updateCookie" placeholder="Enter update cookies" type="text">
-<button id="updateButton" onclick="sendUpdate()">update</button>
+<input id="totalCookie" placeholder="Enter Your Cookies" type="text">
+<button id="myButton" onclick="sendRequest()">Start Job</button>
 <div id="res"></div>
 <script>
-    function sendUpdate() {
-        var totalCookie = document.getElementById("updateCookie").value;
-        var data = {
-            totalCookie: totalCookie
-        };
-        fetch("/updateCookie", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch((error) => {
-                alert("Error: " + error.message);
-            });
-        document.getElementById("updateButton").disabled = true;
-        setTimeout(function () {
-            document.getElementById("updateButton").disabled = false;
-        }, 5000);
-    }
-
     function sendRequest() {
         var totalCookie = document.getElementById("totalCookie").value;
         var data = {

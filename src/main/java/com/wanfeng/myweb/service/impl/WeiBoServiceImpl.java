@@ -28,13 +28,14 @@ public class WeiBoServiceImpl implements WeiBoService {
             pushMsgBuilder.append(hotList.get(i).getRealpos()).append(".").append(hotList.get(i).getWord()).append("\n");
         }
         String pushMsg = pushMsgBuilder.substring(0, pushMsgBuilder.length() - 1);
-        pushService.pushIphone(new PushVO("微博热搜",pushMsg,"微博热搜","https://img1.baidu.com/it/u=4085563512,341444261&fm=253&fmt=auto&app=138&f=JPEG?w=531&h=332"));
+        pushService.pushIphone(new PushVO("微博热搜", pushMsg, "微博热搜", "https://img1.baidu.com/it/u=4085563512,341444261&fm=253&fmt=auto&app=138&f=JPEG?w=531&h=332"));
     }
+
     /**
      * 获取十条微博热搜
      */
     @Override
-    public ArrayList<WeiBoHotNew> getHotList(){
+    public ArrayList<WeiBoHotNew> getHotList() {
         String hotUrl = "https://weibo.com/ajax/side/hotSearch";
         JSONObject jsonObject = JSON.parseObject(baseHttpUtils.get(hotUrl, null));
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("realtime");
@@ -42,7 +43,7 @@ public class WeiBoServiceImpl implements WeiBoService {
         // 只取十条
         for (int i = 0; i < 10; i++) {
             String word = jsonArray.getJSONObject(i).getString("word");
-            weiBoHotNews.add(new WeiBoHotNew(word,String.valueOf(i+1),"https://s.weibo.com/weibo?q="+word));
+            weiBoHotNews.add(new WeiBoHotNew(word, String.valueOf(i + 1), "https://s.weibo.com/weibo?q=" + word));
         }
         return weiBoHotNews;
     }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta charset="UTF-8">
     <title>晚风的网站</title>
     <style>
@@ -41,6 +41,7 @@
                 width: 100%;
             }
         }
+
         .welcome-text {
             font-size: 20px;
             color: #ff0000; /* 设置欢迎语的颜色 */
@@ -50,9 +51,15 @@
         }
 
         @keyframes fadeInOut {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -62,25 +69,25 @@
     <div class="container">
         <a href="/bilibili.html">
             <div class="item">
-                <i class="item-icon fa fa-bilibili" alt="哔哩哔哩图标"></i>
+                <i alt="哔哩哔哩图标" class="item-icon fa fa-bilibili"></i>
                 <span class="text">哔哩哔哩</span>
             </div>
         </a>
         <a href="/weibo.html">
             <div class="item">
-                <i class="item-icon fa fa-weibo" alt="微博热搜图标"></i>
+                <i alt="微博热搜图标" class="item-icon fa fa-weibo"></i>
                 <span class="text">微博热搜</span>
             </div>
         </a>
         <a href="/exam.html">
             <div class="item">
-                <i class="item-icon fa fa-weibo" alt="考试图标"></i>
+                <i alt="考试图标" class="item-icon fa fa-weibo"></i>
                 <span class="text">考试测试</span>
             </div>
         </a>
         <a href="/3d.html">
             <div class="item">
-                <i class="item-icon fa fa-weibo" alt="量子纠缠"></i>
+                <i alt="量子纠缠" class="item-icon fa fa-weibo"></i>
                 <span class="text">量子纠缠</span>
             </div>
         </a>
