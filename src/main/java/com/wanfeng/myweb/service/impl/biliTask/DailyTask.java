@@ -5,7 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.SystemConfigService;
+import com.wanfeng.myweb.vo.PushVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class DailyTask implements Task {
     private BiliHttpUtils biliHttpUtils;
     @Autowired
     private SystemConfigService systemConfigService;
+    @Autowired
+    private PushService pushService;
 
     @Override
     public void run() {
@@ -117,28 +122,40 @@ public class DailyTask implements Task {
      */
     public void commentTask() throws InterruptedException {
         ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
+        pushService.pushIphone(new PushVO("哔哩哔哩","B站评论任务启动！","哔哩哔哩"));
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
-        for (int typeId : typeList) {
-            JSONArray regions = getRegions("10", String.valueOf(typeId));
-            for (int i = 0; i < regions.size(); i++) {
-                JSONObject video = regions.getJSONObject(i);
-                System.out.println(video);
-                String aid = video.getString("aid");
-                String desc = video.getString("desc");
-                String title = video.getString("title");
-                StringBuilder titleSb = new StringBuilder(title);
-                String titleRev = titleSb.reverse().toString();
-                StringBuilder descSb = new StringBuilder(desc);
-                String descRev = descSb.reverse().toString();
-                LocalDateTime now = LocalDateTime.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String formatDateTime = now.format(formatter);
-                formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
-                String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev + "\n[间时]->" + formatDateTime;
-                JSONObject jsonObject = setComment(total, aid);
-                LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
-                Thread.sleep(120000);
+        int count = 0;
+        try {
+            for (int typeId : typeList) {
+                JSONArray regions = getRegions("10", String.valueOf(typeId));
+                for (int i = 0; i < regions.size(); i++) {
+                    count++;
+                    JSONObject video = regions.getJSONObject(i);
+                    System.out.println(video);
+                    String aid = video.getString("aid");
+                    String desc = video.getString("desc");
+                    String title = video.getString("title");
+                    StringBuilder titleSb = new StringBuilder(title);
+                    String titleRev = titleSb.reverse().toString();
+                    StringBuilder descSb = new StringBuilder(desc);
+                    String descRev = descSb.reverse().toString();
+                    LocalDateTime now = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    String formatDateTime = now.format(formatter);
+                    formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
+                    String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev + "\n[间时]->" + formatDateTime;
+                    JSONObject jsonObject = setComment(total, aid);
+                    LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
+                    Thread.sleep(120000);
+                }
             }
+            LOGGER.info("评论任务完成，共执行[{}]次",count);
+            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务完成，共执行[\"+count+\"]次","哔哩哔哩"));
+        }catch (Exception e){
+            LOGGER.info("评论任务失败，共执行[{}]次",count);
+            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务失败，共执行[\"+count+\"]次","哔哩哔哩"));
+            throw new BizException("评论任务失败");
         }
+
     }
 }
