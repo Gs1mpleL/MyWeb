@@ -91,6 +91,7 @@ public class BiliServiceImpl implements BiliService {
             doRefresh();
         }else {
             LOGGER.info("不需要刷新！");
+            pushIphoneService.pushIphone(new PushVO("哔哩哔哩","B站Cookie今日无需刷新","哔哩哔哩"));
         }
     }
 

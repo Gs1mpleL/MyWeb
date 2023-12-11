@@ -31,54 +31,47 @@ public class ThrowCoinTask implements Task {
     public void run() {
         int maxAttempts = 3;
         BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
-        for (int attemptCount = 1; attemptCount <= maxAttempts; attemptCount++) {
-            try {
-                /* 今天投币获得了多少经验  此版本以及失效*/
-                Integer reward = getReward();
-                /* 计算今天需要投 num1 个硬币 */
-                Integer num1 = (50 - reward) / 10;
-                /* 还剩多少个硬币 */
-                Integer num2 = getCoin();
-                /* 配置类中设置投币数 */
-                Integer num3 = biliProperties.getCoin();
-                /* 避免设置投币数为负数异常 */
-                num3 = num3 < 0 ? 0 : num3;
-                /* 实际需要投 num个硬币 */
-                int num = (num2 >= num1 ? num1 : num2) >= num3 ? num3 : (num2 >= num1 ? num1 : num2);
-                if (num == 0) {
-                    LOGGER.info("今日已投币 -- 5");
-                    biliUserData.info("今日已投币 -- {}", String.valueOf(5));
-                    return;
-                }
-                /* 获取分区视频信息 */
-                JSONArray regions = getRegions("6", "1");
-                /* 给每个视频投 1 个币,点 1 个赞 */
-                for (int i = 0; i < num; i++) {
-                    /* 视频的aid */
-                    System.out.println(regions.getJSONObject(i));
-                    String aid = regions.getJSONObject(i).getString("aid");
-                    JSONObject json = throwCoin(aid, "1", "1");
-                    dailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
-                    /* 输出的日志消息 */
-                    String msg;
-                    if ("0".equals(json.getString("code"))) {
-                        msg = "硬币-1";
-                    } else {
-                        msg = json.getString("message");
-                    }
-                    LOGGER.info("投币给 -- av{} -- {}", aid, msg);
-                    biliUserData.info("投币给 -- av{}", aid + "-" + msg);
-                }
-                break;
-            } catch (Exception e) {
-                LOGGER.info("投币异常 -- " + e);
-                biliUserData.info("投币异常 -- " + e);
-                if (attemptCount < maxAttempts) {
-                    LOGGER.info("Retrying...");
-                } else {
-                    LOGGER.info("Max attempts reached. Exiting...");
-                }
+        try {
+            /* 今天投币获得了多少经验  此版本以及失效*/
+            Integer reward = getReward();
+            /* 计算今天需要投 num1 个硬币 */
+            Integer num1 = (50 - reward) / 10;
+            /* 还剩多少个硬币 */
+            Integer num2 = getCoin();
+            /* 配置类中设置投币数 */
+            Integer num3 = biliProperties.getCoin();
+            /* 避免设置投币数为负数异常 */
+            num3 = num3 < 0 ? 0 : num3;
+            /* 实际需要投 num个硬币 */
+            int num = (num2 >= num1 ? num1 : num2) >= num3 ? num3 : (num2 >= num1 ? num1 : num2);
+            if (num == 0) {
+                LOGGER.info("今日已投币 -- 5");
+                biliUserData.info("今日已投币 -- {}", String.valueOf(5));
+                return;
             }
+            /* 获取分区视频信息 */
+            JSONArray regions = getRegions("6", "1");
+            /* 给每个视频投 1 个币,点 1 个赞 */
+            for (int i = 0; i < num; i++) {
+                /* 视频的aid */
+                System.out.println(regions.getJSONObject(i));
+                String aid = regions.getJSONObject(i).getString("aid");
+                JSONObject json = throwCoin(aid, "1", "1");
+                dailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
+                /* 输出的日志消息 */
+                String msg;
+                if ("0".equals(json.getString("code"))) {
+                    msg = "硬币-1";
+                } else {
+                    msg = json.getString("message");
+                }
+                LOGGER.info("投币给 -- av{} -- {}", aid, msg);
+                biliUserData.info("投币给 -- av{}", aid + "-" + msg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.info("投币异常 -- " + e);
+            biliUserData.info("投币异常 -- " + e);
         }
     }
 

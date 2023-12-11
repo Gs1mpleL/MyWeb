@@ -14,7 +14,6 @@ public class ThreadLocalInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        LOGGER.info("来自:{}的访问", request.getRemoteAddr());
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
