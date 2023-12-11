@@ -50,7 +50,7 @@ public class DailyJob {
         biliService.biliTask(true);
     }
 
-    @Scheduled(cron = "0 0 23 * * ?")
+    @Scheduled(cron = "0 0 22 * * ?")
     public void nightTask() throws InterruptedException {
         biliService.refreshCookie();
         pushService.pushIphone(new PushVO("哔哩哔哩","B站评论任务启动！","哔哩哔哩"));
