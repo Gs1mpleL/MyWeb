@@ -143,7 +143,7 @@ public class DailyTask implements Task {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     String formatDateTime = now.format(formatter);
                     formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
-                    String total = "很好的视频，使我的字符串反转：\n[题标]->" + titleRev + "\n[介简]->" + descRev + "\n[间时]->" + formatDateTime;
+                    String total = "很好的视频，使我的字符串反转：\n[标题]->" + titleRev + "\n[简介]->" + descRev + "\n[时间]->" + formatDateTime;
                     JSONObject jsonObject = setComment(total, aid);
                     LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
                     Thread.sleep(120000);
