@@ -50,7 +50,7 @@ public class DailyJob {
         biliService.biliTask(true);
     }
 
-    @Scheduled(cron = "0 0 20* * ?")
+    @Scheduled(cron = "0 0 20 * * ?")
     public void nightTask() throws InterruptedException {
         biliService.refreshCookie();
         dailyTask.commentTask();
