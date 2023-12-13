@@ -35,6 +35,7 @@ public class BiliLiveTask implements Task {
             /* 直播签到后等待5秒 */
             Thread.sleep(5000);
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("直播签到等待中错误 -- " + e);
             biliUserData.info("直播签到等待中错误 -- " + e);
         }

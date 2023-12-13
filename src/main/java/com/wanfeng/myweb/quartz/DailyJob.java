@@ -22,8 +22,6 @@ public class DailyJob {
     private DailyTask dailyTask;
     @Autowired
     private WeiBoService weiBoService;
-    @Autowired
-    private YuanShenService yuanShenService;
 
     @Autowired
     private WeatherService weatherService;
@@ -51,7 +49,7 @@ public class DailyJob {
     }
 
     @Scheduled(cron = "0 0 20 * * ?")
-    public void nightTask() throws InterruptedException {
+    public void nightTask(){
         biliService.refreshCookie();
         dailyTask.commentTask();
     }

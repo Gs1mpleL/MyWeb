@@ -39,6 +39,7 @@ public class CollectVipGift implements Task {
                 vipPrivilege(2);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("领取年度大会员礼包错误 -- {} ", e.getMessage());
         }
     }

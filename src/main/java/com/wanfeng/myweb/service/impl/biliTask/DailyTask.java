@@ -49,6 +49,7 @@ public class DailyTask implements Task {
 
 
         } catch (Exception e) {
+            e.printStackTrace();
             BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
             e.printStackTrace();
             LOGGER.error("每日任务异常 -- " + e);
@@ -120,7 +121,7 @@ public class DailyTask implements Task {
     /**
      * 每2分钟秒评论一条视频
      */
-    public void commentTask() throws InterruptedException {
+    public void commentTask() {
         ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
         pushService.pushIphone(new PushVO("哔哩哔哩","B站评论任务启动！","哔哩哔哩"));
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
@@ -150,10 +151,11 @@ public class DailyTask implements Task {
                 }
             }
             LOGGER.info("评论任务完成，共执行[{}]次",count);
-            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务完成，共执行[\"+count+\"]次","哔哩哔哩"));
+            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务完成，共执行["+count+"]次","哔哩哔哩"));
         }catch (Exception e){
+            e.printStackTrace();
             LOGGER.info("评论任务失败，共执行[{}]次",count);
-            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务失败，共执行[\"+count+\"]次","哔哩哔哩"));
+            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务失败，共执行["+count+"]次","哔哩哔哩"));
             throw new BizException("评论任务失败");
         }
 

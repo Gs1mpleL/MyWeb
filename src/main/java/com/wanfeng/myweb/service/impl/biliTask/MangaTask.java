@@ -27,6 +27,7 @@ public class MangaTask implements Task {
             LOGGER.info("漫画签到 -- {}", "0".equals(jsonObject.getString("code")) ? "成功" : "今天已经签过了");
             biliUserData.info("漫画签到 -- {}", "0".equals(jsonObject.getString("code")) ? "成功" : "今天已经签过了");
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("漫画签到错误 -- " + e);
             biliUserData.info("漫画签到错误 -- " + e);
         }

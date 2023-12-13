@@ -40,6 +40,7 @@ public class CompetitionGuessTask implements Task {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.info("竞猜失败:{}", e.getMessage());
             biliUserData.info("竞猜失败:{}", e.getMessage());
         }

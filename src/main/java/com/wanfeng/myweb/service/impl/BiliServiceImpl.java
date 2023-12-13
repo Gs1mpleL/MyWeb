@@ -185,6 +185,7 @@ public class BiliServiceImpl implements BiliService {
                 LOGGER.info("推送Iphone失败");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("推送Iphone错误 -- " + e);
         }
     }
@@ -234,6 +235,7 @@ public class BiliServiceImpl implements BiliService {
             LOGGER.info("二维码过期");
             throw new BizException("二维码过期");
         } catch (Exception e) {
+            e.printStackTrace();
             e.printStackTrace();
             throw new BizException("扫码登陆失败");
         }

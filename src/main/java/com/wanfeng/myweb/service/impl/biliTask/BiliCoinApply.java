@@ -48,6 +48,7 @@ public class BiliCoinApply implements Task {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("使用B币卷部分异常 -- " + e);
             biliUserData.info("使用B币卷部分异常 -- " + e);
         }

@@ -44,6 +44,7 @@ public class YuanShenServiceImpl implements YuanShenService {
         try {
             pushIphoneService.pushIphone(new PushVO("原神", msgToIphone, "原神"));
         } catch (Exception e) {
+            e.printStackTrace();
             log.info("推送iPhone失败");
         } finally {
             msgToIphone = "";
@@ -134,6 +135,7 @@ public class YuanShenServiceImpl implements YuanShenService {
             }
             return list;
         } catch (Exception e) {
+            e.printStackTrace();
             map.put("flag", false);
             map.put("msg", "获取uid失败，未知异常：" + e.getMessage());
             msgToIphone += "获取uid失败，未知异常：" + e.getMessage();
