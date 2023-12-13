@@ -53,7 +53,8 @@ public class CompetitionGuessTask implements Task {
         double odds = Double.parseDouble(guessOptions.get(0).getTeamRate());
         GuessTeam chooseOpt = guessOptions.get(0);
         for (GuessTeam guessOption : guessOptions) {
-            if (odds > Double.parseDouble(guessOption.getTeamRate())) {
+            // 反向压
+            if (odds < Double.parseDouble(guessOption.getTeamRate())) {
                 odds = Double.parseDouble(guessOption.getTeamRate());
                 chooseOpt = guessOption;
             }
