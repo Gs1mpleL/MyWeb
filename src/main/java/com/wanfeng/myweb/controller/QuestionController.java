@@ -22,7 +22,7 @@ public class QuestionController {
 
     @GetMapping("/getOneQuestion/{subject}")
     public Result<List<QuestionVo>> getOneQuestion(@PathVariable String subject) {
-        return Result.ok(questionService.getOneQuestion(subject));
+        return Result.ok(questionService.getThreeRandQuestionBySubject(subject));
     }
 
     @GetMapping("/searchByKeywords/{keyword}")

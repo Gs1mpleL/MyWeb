@@ -11,7 +11,7 @@ public interface QuestionService extends IService<QuestionEntity> {
 
     List<String> getSubjectList();
 
-    List<QuestionVo> getOneQuestion(String subject);
+    List<QuestionVo> getThreeRandQuestionBySubject(String subject);
 
     List<QuestionVo> searchByKeywords(String keyword);
 }

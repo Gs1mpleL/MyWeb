@@ -130,7 +130,11 @@ public class DailyTask implements Task {
             for (int typeId : typeList) {
                 JSONArray regions = getRegions("10", String.valueOf(typeId));
                 for (int i = 0; i < regions.size(); i++) {
-                    count++;
+                    LocalTime currentTime = LocalTime.now();
+                    LocalTime sixThirtyAM = LocalTime.of(6, 30);
+                    // 早上六点半就结束
+                    if (currentTime.equals(sixThirtyAM)) {break;}
+                        count++;
                     JSONObject video = regions.getJSONObject(i);
                     System.out.println(video);
                     String aid = video.getString("aid");

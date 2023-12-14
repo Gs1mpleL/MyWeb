@@ -30,8 +30,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEnt
     }
 
     @Override
-    public List<QuestionVo> getOneQuestion(String subject) {
-        return questionMapper.getOneQuestion(subject);
+    public List<QuestionVo> getThreeRandQuestionBySubject(String subject) {
+        return questionMapper.getThreeRandQuestionBySubject(subject);
     }
 
     @Override
