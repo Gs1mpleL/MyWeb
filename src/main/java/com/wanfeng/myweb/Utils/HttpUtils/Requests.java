@@ -35,7 +35,6 @@ public class Requests {
 
     public JSONObject post(String url, Map<String, String> map,Map<String,String> headers) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-Type", "application/json;charset=UTF-8");
         if (headers != null) {
             headers.forEach(httpHeaders::add);
         }
