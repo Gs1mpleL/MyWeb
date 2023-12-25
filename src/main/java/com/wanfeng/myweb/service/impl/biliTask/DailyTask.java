@@ -32,7 +32,7 @@ public class DailyTask implements Task {
     @Override
     public void run() {
         try {
-            BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+            BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
             JSONArray regions = getRegions("6", "1");
             JSONObject report = report(regions.getJSONObject(5).getString("aid"),
                     regions.getJSONObject(5).getString("cid"), "300");
@@ -50,7 +50,7 @@ public class DailyTask implements Task {
 
         } catch (Exception e) {
             e.printStackTrace();
-            BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+            BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
             e.printStackTrace();
             LOGGER.error("每日任务异常 -- " + e);
             biliUserData.info("每日任务异常 -- " + e);
@@ -58,7 +58,7 @@ public class DailyTask implements Task {
     }
 
     public JSONObject setComment(String comment, String oid) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "oid=" + oid
                 + "&type=1"
                 + "&message=" + comment
@@ -98,7 +98,7 @@ public class DailyTask implements Task {
      * @param cid 视频 cid 号
      */
     public JSONObject report(String aid, String cid, String progres) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "aid=" + aid
                 + "&cid=" + cid
                 + "&progres=" + progres
@@ -112,7 +112,7 @@ public class DailyTask implements Task {
      * @param aid 视频的aid
      */
     public JSONObject share(String aid) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "aid=" + aid + "&csrf=" + biliUserData.getBiliJct() + "&eab_x=2&ramval=0&source=web_normal&ga=1";
         return biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/web-interface/share/add", body);
     }

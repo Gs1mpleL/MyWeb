@@ -22,7 +22,7 @@ public class BiliController {
             throw new BizException("totalCookie为空");
         }
         biliService.DailyTaskStart(biliVo.getTotalCookie());
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String sendMsg = biliUserData.getSendMsg() == null ? "" : biliUserData.getSendMsg();
         return Result.ok(sendMsg);
     }

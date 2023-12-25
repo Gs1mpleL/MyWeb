@@ -28,7 +28,7 @@ public class YuanShenServiceImpl implements YuanShenService {
     @Autowired
     private YuanShenHttpUtils yuanShenHttpUtils;
     @Autowired
-    private PushServiceImpl pushIphoneService;
+    private BarkPushService pushIphoneService;
 
     @Override
     public void signTaskStart() {

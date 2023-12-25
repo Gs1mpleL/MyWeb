@@ -24,7 +24,7 @@ public class Silver2CoinTask implements Task {
 
     @Override
     public void run() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         if (biliProperties.isS2c()) {
             try {
                 /* 获得银瓜子的数量 */
@@ -54,7 +54,7 @@ public class Silver2CoinTask implements Task {
      * @return JSONObject
      */
     public JSONObject silver2coin() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "csrf=" + biliUserData.getBiliJct();
         return biliHttpUtils.postWithTotalCookie("https://api.live.bilibili.com/xlive/revenue/v1/wallet/silver2coin", body);
     }

@@ -23,13 +23,12 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Objects;
 
 @Service
 public class BiliServiceImpl implements BiliService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliServiceImpl.class);
     @Autowired
-    private PushServiceImpl pushIphoneService;
+    private BarkPushService pushIphoneService;
     @Autowired
     private DailyTask dailyTask;
     @Autowired
@@ -176,18 +175,7 @@ public class BiliServiceImpl implements BiliService {
         String sendMsg = biliUserData.getSendMsg();
         String title = "哔哩哔哩";
         String groupName = "哔哩哔哩";
-        try {
-            String pushRep = pushIphoneService.pushIphone(new PushVO(title, sendMsg, groupName));
-            if (Objects.equals(pushRep, "推送成功")) {
-                LOGGER.info("推送Iphone正常");
-                biliUserData.info("推送Iphone正常");
-            } else {
-                LOGGER.info("推送Iphone失败");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("推送Iphone错误 -- " + e);
-        }
+        pushIphoneService.pushIphone(new PushVO(title, sendMsg, groupName));
     }
 
     void doRefresh() {

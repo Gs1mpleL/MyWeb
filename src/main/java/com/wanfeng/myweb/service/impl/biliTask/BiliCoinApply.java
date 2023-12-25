@@ -29,7 +29,7 @@ public class BiliCoinApply implements Task {
 
     @Override
     public void run() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
             int day = cal.get(Calendar.DATE);
@@ -58,7 +58,7 @@ public class BiliCoinApply implements Task {
      * 月底自动给自己充电。仅充会到期的B币券，低于2的时候不会充
      */
     public void doCharge(int couponBalance) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "pay_bp=" + couponBalance * 1000
                 + "&context_id=" + 12299272
                 + "&context_type=11"
@@ -102,7 +102,7 @@ public class BiliCoinApply implements Task {
      * @param token 订单id
      */
     public void chargeComments(String token) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String requestBody = "order_id=" + token
                 + "&message=" + "BilibiliTask自动充电"
                 + "&csrf=" + biliUserData.getBiliJct();
@@ -117,7 +117,7 @@ public class BiliCoinApply implements Task {
      * @param couponBalance 传入B币卷的数量
      */
     public void doMelonSeed(Integer couponBalance) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "platform=pc"
                 + "&pay_bp=" + couponBalance * 1000
                 + "&context_id=1"

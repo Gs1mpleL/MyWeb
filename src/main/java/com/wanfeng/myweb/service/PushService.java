@@ -2,8 +2,11 @@ package com.wanfeng.myweb.service;
 
 import com.wanfeng.myweb.vo.PushVO;
 
+/**
+ * 消息推送接口
+ */
 public interface PushService {
-    String pushIphone(PushVO pushVO);
-
-    String pushMac(PushVO pushVO);
+    boolean pushIphone(PushVO pushVO);
+    boolean pushIphone(String quickMsg);
+    void pushMac(PushVO pushVO);
 }

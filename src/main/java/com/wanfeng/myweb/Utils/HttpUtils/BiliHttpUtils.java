@@ -32,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +45,8 @@ public class BiliHttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliHttpUtils.class);
     @Autowired
     private SystemConfigService systemConfigService;
+    @Autowired
+    private Requests requests;
 
     private BiliHttpUtils() {
     }
@@ -83,7 +86,7 @@ public class BiliHttpUtils {
      * @param url 请求的地址，包括参数
      */
     public JSONObject getWithTotalCookie(String url) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         HttpClient client = createSSLClientDefault();
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("connection", "keep-alive");
@@ -111,13 +114,13 @@ public class BiliHttpUtils {
      * @param url 请求的地址，包括参数
      */
     public JSONObject getForUpdateCookie(String url) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         HttpClient client = createSSLClientDefault();
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("connection", "keep-alive");
         httpGet.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
         httpGet.addHeader("referer", "https://www.bilibili.com/");
-        httpGet.addHeader("Cookie", biliUserData.getTotalCookie()); // 不知道缺哪个字段，索性全部使用
+        httpGet.addHeader("Cookie", biliUserData.getTotalCookie());
         HttpResponse resp;
 
         String respContent = null;
@@ -156,7 +159,7 @@ public class BiliHttpUtils {
     }
 
     public String getHtml(String url) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         HttpClient client = createSSLClientDefault();
         HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("connection", "keep-alive");
@@ -167,7 +170,6 @@ public class BiliHttpUtils {
         String respContent = null;
         try {
             resp = client.execute(httpGet);
-
             HttpEntity entity = resp.getEntity();
             respContent = EntityUtils.toString(entity, "UTF-8");
             return respContent;
@@ -185,7 +187,7 @@ public class BiliHttpUtils {
      * @param body 携带的参数
      */
     public JSONObject postWithTotalCookie(String url, String body) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         StringEntity entityBody = new StringEntity(body, "UTF-8");
         HttpClient client = createSSLClientDefault();
         HttpPost httpPost = new HttpPost(url);
@@ -214,7 +216,7 @@ public class BiliHttpUtils {
 
 
     public JSONObject postForUpdateCookie(String url, String body) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         StringEntity entityBody = new StringEntity(body, "UTF-8");
         HttpClient client = createSSLClientDefault();
         HttpPost httpPost = new HttpPost(url);

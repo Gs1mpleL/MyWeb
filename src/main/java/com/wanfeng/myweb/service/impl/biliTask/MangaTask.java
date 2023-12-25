@@ -21,7 +21,7 @@ public class MangaTask implements Task {
 
     @Override
     public void run() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             JSONObject jsonObject = mangaClockIn(biliProperties.getPlatform());
             LOGGER.info("漫画签到 -- {}", "0".equals(jsonObject.getString("code")) ? "成功" : "今天已经签过了");

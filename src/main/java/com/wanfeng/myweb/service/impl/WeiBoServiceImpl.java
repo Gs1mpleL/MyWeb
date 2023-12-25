@@ -1,9 +1,8 @@
 package com.wanfeng.myweb.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.HttpUtils.BaseHttpUtils;
+import com.wanfeng.myweb.Utils.HttpUtils.Requests;
 import com.wanfeng.myweb.po.WeiBoHotNew;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.WeiBoService;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 @Service
 public class WeiBoServiceImpl implements WeiBoService {
     @Autowired
-    private BaseHttpUtils baseHttpUtils;
+    private Requests requests;
     @Autowired
     private PushService pushService;
 
@@ -37,7 +36,7 @@ public class WeiBoServiceImpl implements WeiBoService {
     @Override
     public ArrayList<WeiBoHotNew> getHotList() {
         String hotUrl = "https://weibo.com/ajax/side/hotSearch";
-        JSONObject jsonObject = JSON.parseObject(baseHttpUtils.get(hotUrl, null));
+        JSONObject jsonObject = requests.get(hotUrl, null,null);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("realtime");
         ArrayList<WeiBoHotNew> weiBoHotNews = new ArrayList<>();
         // 只取十条

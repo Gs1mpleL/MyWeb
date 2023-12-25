@@ -9,15 +9,12 @@ import java.util.Map;
 @UtilityClass
 public class ThreadLocalUtils {
 
-    /*使用常量定义一个key*/
-    public static final String USER_KEY = "USER_KEY";
-
+    public static final String BILI_USER_DATA = "biliUserData";
     private static final ThreadLocal<Map<String, Object>> THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 存储
      *
-     * @return void [返回类型说明]
      * @see [类、类#方法、类#成员]
      */
     public static void put(String key, Object value) {

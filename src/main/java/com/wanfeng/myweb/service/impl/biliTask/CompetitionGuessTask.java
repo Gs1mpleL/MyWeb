@@ -27,7 +27,7 @@ public class CompetitionGuessTask implements Task {
 
     @Override
     public void run() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             ArrayList<GuessGame> guessingList = getGuessingList();
             if (guessingList == null || guessingList.size() == 0) {
@@ -48,7 +48,7 @@ public class CompetitionGuessTask implements Task {
 
 
     private void doGuess(GuessGame guessGame) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         ArrayList<GuessTeam> guessOptions = guessGame.getGuessOptions();
         double odds = Double.parseDouble(guessOptions.get(0).getTeamRate());
         GuessTeam chooseOpt = guessOptions.get(0);

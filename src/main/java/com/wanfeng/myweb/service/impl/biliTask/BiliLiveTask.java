@@ -20,7 +20,7 @@ public class BiliLiveTask implements Task {
 
     @Override
     public void run() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             JSONObject json = xliveSign();
             String msg;

@@ -30,7 +30,7 @@ public class ThrowCoinTask implements Task {
     @Override
     public void run() {
         int maxAttempts = 3;
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             /* 今天投币获得了多少经验  此版本以及失效*/
             Integer reward = getReward();
@@ -84,7 +84,7 @@ public class ThrowCoinTask implements Task {
      * @return JSONObject
      */
     public JSONObject throwCoin(String aid, String num, String selectLike) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "aid=" + aid
                 + "&multiply=" + num
                 + "&select_like=" + selectLike

@@ -1,6 +1,6 @@
 package com.wanfeng.myweb.service.impl;
 
-import com.wanfeng.myweb.Utils.HttpUtils.BaseHttpUtils;
+import com.wanfeng.myweb.Utils.HttpUtils.Requests;
 import com.wanfeng.myweb.po.WeatherInfo;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.WeatherService;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class WeatherServiceImpl implements WeatherService {
     @Autowired
-    private BaseHttpUtils baseHttpUtils;
+    private Requests requests;
     @Autowired
     private PushService pushService;
 
@@ -52,7 +52,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     public List<WeatherInfo> getWeatherList() {
         String url = "http://www.weather.com.cn/weather/101100701.shtml";
-        String html = baseHttpUtils.get(url, null);
+        String html = requests.getForHtml(url, null,null);
         return parseWeatherInfo(html);
     }
 }

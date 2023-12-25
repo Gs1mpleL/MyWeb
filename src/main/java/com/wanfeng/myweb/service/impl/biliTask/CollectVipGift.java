@@ -50,7 +50,7 @@ public class CollectVipGift implements Task {
      * @param type [{1,领取大会员B币卷}, {2,领取大会员福利}]
      */
     public void vipPrivilege(Integer type) {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         String body = "type=" + type
                 + "&csrf=" + biliUserData.getBiliJct();
         JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/vip/privilege/receive", body);
@@ -80,7 +80,7 @@ public class CollectVipGift implements Task {
      * @return Integer
      */
     public String queryVipStatusType() {
-        BiliUserData biliUserData = ThreadLocalUtils.get("biliUserData", BiliUserData.class);
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         if (IS_VIP.equals(biliUserData.getVipStatus())) {
             return biliUserData.getVipType();
         } else {

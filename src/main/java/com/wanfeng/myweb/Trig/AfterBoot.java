@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.Trig;
 
 import com.wanfeng.myweb.config.SystemConfig;
-import com.wanfeng.myweb.service.impl.PushServiceImpl;
+import com.wanfeng.myweb.service.impl.BarkPushService;
 import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AfterBoot implements CommandLineRunner {
     @Autowired
-    private PushServiceImpl pushIphoneService;
+    private BarkPushService pushIphoneService;
     @Autowired
     private SystemConfig systemConfig;
 
