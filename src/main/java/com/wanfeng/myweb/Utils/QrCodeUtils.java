@@ -72,7 +72,7 @@ public class QrCodeUtils {
                                     boolean needCompress) throws Exception {
         File file = new File(logoPath);
         if (!file.exists()) {
-            System.err.println("" + logoPath + "   该文件不存在！");
+            System.err.println(logoPath + "   该文件不存在！");
             return;
         }
         Image src = ImageIO.read(new File(logoPath));

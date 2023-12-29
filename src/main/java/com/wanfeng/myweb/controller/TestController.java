@@ -1,7 +1,5 @@
 package com.wanfeng.myweb.controller;
 
-import com.wanfeng.myweb.Utils.ThreadLocalUtils;
-import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.TestService;
@@ -24,8 +22,7 @@ public class TestController {
 
     @PostMapping("/test")
     public Result<?> test(@RequestBody BiliVo biliVo) {
-        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
-        biliService.login();
+        int a = 10/0;
         return Result.ok();
     }
 }

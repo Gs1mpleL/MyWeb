@@ -10,8 +10,8 @@ import java.util.Map;
 public class BaiduFanYi {
     // 对接的api为百度翻译
     private static final String TRANS_API_HOST = "http://api.fanyi.baidu.com/api/trans/vip/translate";
-    private static String appid = "20210801000903395";
-    private static String securityKey = "j7qDDoErQpwLUqoelwgw";
+    private static final String appid = "20210801000903395";
+    private static final String securityKey = "j7qDDoErQpwLUqoelwgw";
 
     // 发送查询
     public static String getTranslateResult(String query) {

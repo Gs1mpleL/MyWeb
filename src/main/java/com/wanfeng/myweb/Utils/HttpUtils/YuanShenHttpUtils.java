@@ -63,7 +63,7 @@ public class YuanShenHttpUtils {
             }
             URI uri = uriBuilder.build();
             HttpGet httpGet = new HttpGet(uri);
-            if (headers != null && headers.length != 0) {
+            if (headers != null) {
                 for (Header header : headers) {
                     httpGet.addHeader(header);
                 }
@@ -93,7 +93,7 @@ public class YuanShenHttpUtils {
             StringEntity entity = new StringEntity(JSON.toJSONString(data), StandardCharsets.UTF_8);
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(entity);
-            if (headers != null && headers.length != 0) {
+            if (headers != null) {
                 for (Header header : headers) {
                     httpPost.addHeader(header);
                 }
@@ -175,7 +175,7 @@ public class YuanShenHttpUtils {
     }
 
     private String createDS(String n, String i, String r, String b) {
-        String c = DigestUtils.md5Hex("salt=" + n + "&t=" + i + "&r=" + r + "&b=" + b + "&q=" + "");
+        String c = DigestUtils.md5Hex("salt=" + n + "&t=" + i + "&r=" + r + "&b=" + b + "&q=");
         return String.format("%s,%s,%s", i, r, c);
     }
 
