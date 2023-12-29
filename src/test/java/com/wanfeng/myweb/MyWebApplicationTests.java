@@ -5,17 +5,18 @@ import com.wanfeng.myweb.service.PushService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
 
 
 @SpringBootTest
 class MyWebApplicationTests {
     private static final Logger LOGGER = LoggerFactory.getLogger(MyWebApplicationTests.class);
 
-    @Autowired
+    @Resource
     Requests requests;
-    @Autowired
+    @Resource
     PushService pushService;
     @Test
     void test() {

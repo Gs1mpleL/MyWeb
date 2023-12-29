@@ -5,15 +5,15 @@ import com.wanfeng.myweb.Entity.QuestionEntity;
 import com.wanfeng.myweb.mapper.QuestionMapper;
 import com.wanfeng.myweb.service.QuestionService;
 import com.wanfeng.myweb.vo.QuestionVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, QuestionEntity> implements QuestionService {
-    @Autowired
+    @Resource
     private QuestionMapper questionMapper;
 
     @Override

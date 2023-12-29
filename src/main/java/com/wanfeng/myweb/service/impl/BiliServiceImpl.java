@@ -17,9 +17,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,28 +27,28 @@ import java.io.File;
 @Service
 public class BiliServiceImpl implements BiliService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliServiceImpl.class);
-    @Autowired
+    @Resource
     private BarkPushService pushIphoneService;
-    @Autowired
+    @Resource
     private DailyTask dailyTask;
-    @Autowired
+    @Resource
     private MangaTask mangaTask;
-    @Autowired
+    @Resource
     private BiliLiveTask biliLiveTask;
-    @Autowired
+    @Resource
     private Silver2CoinTask silver2CoinTask;
-    @Autowired
+    @Resource
     private CollectVipGift collectVipGift;
-    @Autowired
+    @Resource
     private BiliCoinApply biliCoinApply;
-    @Autowired
+    @Resource
     private ThrowCoinTask throwCoinTask;
-    @Autowired
+    @Resource
     private BiliHttpUtils biliHttpUtils;
-    @Autowired
+    @Resource
     private CompetitionGuessTask competitionGuessTask;
 
-    @Autowired
+    @Resource
     private SystemConfigService systemConfigService;
 
     public static String getRefreshCsrf(String html) {
@@ -90,7 +90,6 @@ public class BiliServiceImpl implements BiliService {
             doRefresh();
         }else {
             LOGGER.info("不需要刷新！");
-            pushIphoneService.pushIphone(new PushVO("哔哩哔哩","B站Cookie今日无需刷新","哔哩哔哩"));
         }
     }
 
@@ -193,7 +192,6 @@ public class BiliServiceImpl implements BiliService {
         byId.setBiliRefreshToken(newRefreshToken);
         systemConfigService.updateById(byId);
         LOGGER.info("刷新Cookie完成！ [{}]", byId);
-        pushIphoneService.pushIphone(new PushVO("哔哩哔哩","Cookie自动更新完成","哔哩哔哩"));
     }
 
     String getCorrespondPath() {

@@ -3,7 +3,6 @@ package com.wanfeng.myweb.Utils.HttpUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,12 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 @Component
 public class Requests {
     private static final Logger LOGGER = LoggerFactory.getLogger(Requests.class);
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
     public JSONObject get(String url, Map<String, String> map, Map<String,String> headers) {

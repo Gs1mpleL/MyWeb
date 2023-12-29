@@ -21,9 +21,9 @@ import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import java.security.KeyManagementException;
@@ -32,7 +32,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,9 +42,9 @@ import java.util.regex.Pattern;
 public class BiliHttpUtils {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliHttpUtils.class);
-    @Autowired
+    @Resource
     private SystemConfigService systemConfigService;
-    @Autowired
+    @Resource
     private Requests requests;
 
     private BiliHttpUtils() {

@@ -7,16 +7,16 @@ import com.wanfeng.myweb.po.WeiBoHotNew;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.WeiBoService;
 import com.wanfeng.myweb.vo.PushVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 
 @Service
 public class WeiBoServiceImpl implements WeiBoService {
-    @Autowired
+    @Resource
     private Requests requests;
-    @Autowired
+    @Resource
     private PushService pushService;
 
     @Override

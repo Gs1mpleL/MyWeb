@@ -10,9 +10,9 @@ import com.wanfeng.myweb.po.GuessTeam;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ import java.util.ArrayList;
 @Service
 public class CompetitionGuessTask implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionGuessTask.class);
-    @Autowired
+    @Resource
     private BiliHttpUtils biliHttpUtils;
-    @Autowired
+    @Resource
     private BiliProperties biliProperties;
 
     @Override

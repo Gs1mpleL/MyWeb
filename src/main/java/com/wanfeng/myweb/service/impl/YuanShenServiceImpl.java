@@ -11,9 +11,9 @@ import com.wanfeng.myweb.vo.PushVO;
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +25,9 @@ public class YuanShenServiceImpl implements YuanShenService {
     private static final Logger log = LogManager.getLogger(YuanShenServiceImpl.class.getName());
     private static String msgToIphone = "";
 
-    @Autowired
+    @Resource
     private YuanShenHttpUtils yuanShenHttpUtils;
-    @Autowired
+    @Resource
     private BarkPushService pushIphoneService;
 
     @Override

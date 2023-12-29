@@ -3,18 +3,19 @@ package com.wanfeng.myweb.Trig;
 import com.wanfeng.myweb.config.SystemConfig;
 import com.wanfeng.myweb.service.impl.BarkPushService;
 import com.wanfeng.myweb.vo.PushVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 项目启动后调用
  */
 @Component
 public class AfterBoot implements CommandLineRunner {
-    @Autowired
+    @Resource
     private BarkPushService pushIphoneService;
-    @Autowired
+    @Resource
     private SystemConfig systemConfig;
 
     @Override

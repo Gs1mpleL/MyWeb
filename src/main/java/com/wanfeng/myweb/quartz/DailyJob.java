@@ -1,40 +1,32 @@
 package com.wanfeng.myweb.quartz;
 
-import com.wanfeng.myweb.Utils.ThreadLocalUtils;
-import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.service.*;
 import com.wanfeng.myweb.service.impl.BiliServiceImpl;
 import com.wanfeng.myweb.service.impl.biliTask.DailyTask;
-import com.wanfeng.myweb.vo.PushVO;
-import com.wanfeng.myweb.vo.QuestionVo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
 
 
 @Component
 public class DailyJob {
-    @Autowired
+    @Resource
     private BiliServiceImpl biliService;
-    @Autowired
+    @Resource
     private DailyTask dailyTask;
-    @Autowired
+    @Resource
     private WeiBoService weiBoService;
 
-    @Autowired
+    @Resource
     private WeatherService weatherService;
 
-    @Autowired
+    @Resource
     private PushService pushService;
 
-    @Autowired
+    @Resource
     private SystemConfigService systemConfigService;
-    @Autowired
+    @Resource
     private QuestionService questionService;
 
     @Scheduled(cron = "0 0 7 * * ?")

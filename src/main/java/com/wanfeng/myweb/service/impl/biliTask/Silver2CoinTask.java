@@ -7,8 +7,9 @@ import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 银瓜子兑换硬币
@@ -17,9 +18,9 @@ import org.springframework.stereotype.Component;
 public class Silver2CoinTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(Silver2CoinTask.class);
-    @Autowired
+    @Resource
     private BiliProperties biliProperties;
-    @Autowired
+    @Resource
     private BiliHttpUtils biliHttpUtils;
 
     @Override

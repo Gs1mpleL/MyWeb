@@ -11,9 +11,9 @@ import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.vo.PushVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -22,11 +22,11 @@ import java.time.format.DateTimeFormatter;
 public class DailyTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
-    @Autowired
+    @Resource
     private BiliHttpUtils biliHttpUtils;
-    @Autowired
+    @Resource
     private SystemConfigService systemConfigService;
-    @Autowired
+    @Resource
     private PushService pushService;
 
     @Override

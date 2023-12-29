@@ -6,8 +6,9 @@ import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class BiliLiveTask implements Task {
@@ -15,7 +16,7 @@ public class BiliLiveTask implements Task {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliLiveTask.class);
     /** 访问成功 */
     private static final String SUCCESS = "0";
-    @Autowired
+    @Resource
     private BiliHttpUtils biliHttpUtils;
 
     @Override

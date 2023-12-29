@@ -7,9 +7,9 @@ import com.wanfeng.myweb.properties.PushProperties;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.vo.PushVO;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,9 +20,9 @@ import java.util.Objects;
 @Service
 public class BarkPushService implements PushService {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BarkPushService.class);
-    @Autowired
+    @Resource
     private Requests requests;
-    @Autowired
+    @Resource
     private PushProperties pushProperties;
 
     @Override

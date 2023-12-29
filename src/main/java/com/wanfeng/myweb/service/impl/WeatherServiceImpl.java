@@ -9,17 +9,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
-    @Autowired
+    @Resource
     private Requests requests;
-    @Autowired
+    @Resource
     private PushService pushService;
 
     public static List<WeatherInfo> parseWeatherInfo(String html) {

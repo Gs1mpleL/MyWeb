@@ -7,9 +7,9 @@ import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -22,9 +22,9 @@ public class CollectVipGift implements Task {
     private static final String IS_VIP = "1";
     /** 年度大会员 */
     private static final String YEAR_VIP = "2";
-    @Autowired
+    @Resource
     private BiliHttpUtils biliHttpUtils;
-    @Autowired
+    @Resource
     private BiliProperties biliProperties;
 
     @Override
