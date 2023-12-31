@@ -42,7 +42,7 @@ public class Silver2CoinTask implements Task {
                     biliUserData.info("银瓜子兑换硬币 -- {}", jsonObject.getString("message"));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
                 LOGGER.error("银瓜子兑换硬币错误 -- " + e);
                 biliUserData.info("银瓜子兑换硬币错误 -- " + e);
             }

@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherServiceImpl.class);
     @Resource
     private Requests requests;
     @Resource
@@ -34,7 +37,7 @@ public class WeatherServiceImpl implements WeatherService {
                 weatherInfos.add(new WeatherInfo(date, weather, temperature));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return weatherInfos;
     }
@@ -52,7 +55,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     public List<WeatherInfo> getWeatherList() {
         String url = "http://www.weather.com.cn/weather/101100701.shtml";
-        String html = requests.getForHtml(url, null,null);
+        String html = requests.getForHtml(url, null, null);
         return parseWeatherInfo(html);
     }
 }

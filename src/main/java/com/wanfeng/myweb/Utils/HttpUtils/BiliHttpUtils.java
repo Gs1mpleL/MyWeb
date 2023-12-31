@@ -63,7 +63,7 @@ public class BiliHttpUtils {
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
             return HttpClients.custom().setSSLSocketFactory(sslsf).build();
         } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return HttpClients.createDefault();
 
@@ -101,7 +101,7 @@ public class BiliHttpUtils {
             respContent = EntityUtils.toString(entity, "UTF-8");
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("get请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }
@@ -151,7 +151,7 @@ public class BiliHttpUtils {
             respContent = EntityUtils.toString(entity, "UTF-8");
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("get请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }
@@ -173,7 +173,7 @@ public class BiliHttpUtils {
             respContent = EntityUtils.toString(entity, "UTF-8");
             return respContent;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("get请求错误 -- " + e);
             return respContent;
         }
@@ -207,7 +207,7 @@ public class BiliHttpUtils {
             respContent = EntityUtils.toString(entity, "UTF-8");
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("post请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }
@@ -258,7 +258,7 @@ public class BiliHttpUtils {
             respContent = EntityUtils.toString(entity, "UTF-8");
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("post请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }

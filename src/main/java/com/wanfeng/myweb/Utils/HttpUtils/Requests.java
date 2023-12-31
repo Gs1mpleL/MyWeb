@@ -19,46 +19,46 @@ public class Requests {
     @Resource
     private RestTemplate restTemplate;
 
-    public JSONObject get(String url, Map<String, String> map, Map<String,String> headers) {
+    public JSONObject get(String url, Map<String, String> map, Map<String, String> headers) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-Type", "application/json;charset=UTF-8");
         if (headers != null) {
             headers.forEach(httpHeaders::add);
         }
         HttpEntity<String> requestEntity = new HttpEntity<>(null, httpHeaders);
-        url = addParamToUrl(url,map);
-        LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]",url,map,httpHeaders);
+        url = addParamToUrl(url, map);
+        LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]", url, map, httpHeaders);
         ResponseEntity<JSONObject> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, JSONObject.class);
-        LOGGER.warn("结果->[{}]",response);
-        return  response.getBody();
+        LOGGER.warn("结果->[{}]", response);
+        return response.getBody();
     }
 
-    public JSONObject post(String url, Map<String, String> map,Map<String,String> headers) {
+    public JSONObject post(String url, Map<String, String> map, Map<String, String> headers) {
         HttpHeaders httpHeaders = new HttpHeaders();
         if (headers != null) {
             headers.forEach(httpHeaders::add);
         }
         HttpEntity<String> requestEntity = new HttpEntity<>(null, httpHeaders);
-        url = addParamToUrl(url,map);
-        LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]",url,map,httpHeaders);
+        url = addParamToUrl(url, map);
+        LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]", url, map, httpHeaders);
         ResponseEntity<JSONObject> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, JSONObject.class);
-        LOGGER.warn("结果->[{}]",response);
-        return  response.getBody();
+        LOGGER.warn("结果->[{}]", response);
+        return response.getBody();
     }
 
     public String getForHtml(String url, Map<String, String> map, Map<String, String> headers) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        if (headers!=null){
+        if (headers != null) {
             headers.forEach(httpHeaders::add);
         }
-        url = addParamToUrl(url,map);
-        LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]",url,map,httpHeaders);
+        url = addParamToUrl(url, map);
+        LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]", url, map, httpHeaders);
         String html = restTemplate.getForObject(url, String.class, httpHeaders);
-        LOGGER.warn("结果->[{}]",html);
+        LOGGER.warn("结果->[{}]", html);
         return html;
     }
 
-/****************************************实现结束***************************************************************/
+    /****************************************实现结束***************************************************************/
 
     public String addParamToUrl(String url, Map<String, String> params) {
         // 合并params到url上，如果存在的话

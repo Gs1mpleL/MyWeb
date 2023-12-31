@@ -6,6 +6,7 @@ import com.wanfeng.myweb.config.BizException;
 import com.wanfeng.myweb.properties.PushProperties;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.vo.PushVO;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
  */
 @Service
 public class BarkPushService implements PushService {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BarkPushService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BarkPushService.class);
     @Resource
     private Requests requests;
     @Resource
@@ -34,7 +35,7 @@ public class BarkPushService implements PushService {
     @Override
     public boolean pushIphone(String quickMsg) {
         String url = pushProperties.getIphoneBaseUrl();
-        return doPushUsingBark(new PushVO(quickMsg),url);
+        return doPushUsingBark(new PushVO(quickMsg), url);
     }
 
     @Override
@@ -60,11 +61,11 @@ public class BarkPushService implements PushService {
         } else if (pushProperties.getIcon() != null) {
             map.put("icon", pushProperties.getIcon());
         }
-        JSONObject post = requests.post(url, map,null);
-        if (post.getString("message").equals("success")){
+        JSONObject post = requests.post(url, map, null);
+        if (post.getString("message").equals("success")) {
             return true;
-        }else {
-            throw  new BizException("发送失败" + post);
+        } else {
+            throw new BizException("发送失败" + post);
         }
     }
 

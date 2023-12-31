@@ -36,15 +36,14 @@ public class DailyJob {
     }
 
 
-
     @Scheduled(cron = "0 0 14 * * ?")
-    public void afternoonTask() {
+    public void afternoonTask() throws Exception {
         biliService.refreshCookie();
         biliService.biliTask(true);
     }
 
     @Scheduled(cron = "0 0 20 * * ?")
-    public void nightTask(){
+    public void nightTask() throws Exception {
         biliService.refreshCookie();
         dailyTask.commentTask();
     }

@@ -7,6 +7,8 @@ import com.wanfeng.myweb.vo.PushVO;
  */
 public interface PushService {
     boolean pushIphone(PushVO pushVO);
+
     boolean pushIphone(String quickMsg);
+
     void pushMac(PushVO pushVO);
 }

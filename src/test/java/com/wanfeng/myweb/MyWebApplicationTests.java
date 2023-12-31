@@ -1,7 +1,9 @@
 package com.wanfeng.myweb;
 
-import com.wanfeng.myweb.Utils.HttpUtils.Requests;
-import com.wanfeng.myweb.service.PushService;
+import com.wanfeng.myweb.Utils.ThreadLocalUtils;
+import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.service.BiliService;
+import com.wanfeng.myweb.service.SystemConfigService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +17,14 @@ class MyWebApplicationTests {
     private static final Logger LOGGER = LoggerFactory.getLogger(MyWebApplicationTests.class);
 
     @Resource
-    Requests requests;
+    private BiliService biliService;
     @Resource
-    PushService pushService;
+    private SystemConfigService systemConfigService;
+
     @Test
     void test() {
-        System.out.println(requests.getForHtml("https://www.baidu.com", null, null));
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
+
+        biliService.login();
     }
 }

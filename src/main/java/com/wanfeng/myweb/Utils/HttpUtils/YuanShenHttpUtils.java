@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.config.YuanshenConfig;
 import com.wanfeng.myweb.service.SystemConfigService;
+import com.wanfeng.myweb.service.impl.BarkPushService;
 import lombok.Data;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.Header;
@@ -19,8 +20,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,8 +34,7 @@ import java.util.*;
 @Data
 @Component
 public class YuanShenHttpUtils {
-
-    private static final Logger logger = LogManager.getLogger(YuanShenHttpUtils.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BarkPushService.class);
     private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom().setConnectTimeout(35000)
             .setConnectionRequestTimeout(35000)
             .setSocketTimeout(60000)
@@ -74,11 +74,11 @@ public class YuanShenHttpUtils {
                 String result = EntityUtils.toString(response.getEntity());
                 resultJson = JSON.parseObject(result);
             } else {
-                logger.warn(response.getStatusLine().getStatusCode() + "配置已失效，请更新配置信息");
+                LOGGER.warn(response.getStatusLine().getStatusCode() + "配置已失效，请更新配置信息");
             }
             return resultJson;
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         } finally {
             closeResource(httpClient, response);
         }
@@ -104,11 +104,11 @@ public class YuanShenHttpUtils {
                 String result = EntityUtils.toString(response.getEntity());
                 resultJson = JSON.parseObject(result);
             } else {
-                logger.warn(response.getStatusLine().getStatusCode() + "配置已失效，请更新配置信息");
+                LOGGER.warn(response.getStatusLine().getStatusCode() + "配置已失效，请更新配置信息");
             }
             return resultJson;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         } finally {
             closeResource(httpClient, response);
         }
@@ -124,7 +124,7 @@ public class YuanShenHttpUtils {
             try {
                 httpClient.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }
     }
@@ -143,7 +143,7 @@ public class YuanShenHttpUtils {
                 .add("accept-encoding", "gzip, deflate")
 //                .add("x-requested-with", "com.mihoyo.hyperion")
                 .add("Host", "api-takumi.mihoyo.com")
-                .add("Origin","https://act.mihoyo.com").build();
+                .add("Origin", "https://act.mihoyo.com").build();
     }
 
     public Header[] getHeaders(String dsType) {

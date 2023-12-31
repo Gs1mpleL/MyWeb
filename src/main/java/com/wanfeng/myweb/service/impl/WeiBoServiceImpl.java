@@ -36,7 +36,7 @@ public class WeiBoServiceImpl implements WeiBoService {
     @Override
     public ArrayList<WeiBoHotNew> getHotList() {
         String hotUrl = "https://weibo.com/ajax/side/hotSearch";
-        JSONObject jsonObject = requests.get(hotUrl, null,null);
+        JSONObject jsonObject = requests.get(hotUrl, null, null);
         JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("realtime");
         ArrayList<WeiBoHotNew> weiBoHotNews = new ArrayList<>();
         // 只取十条

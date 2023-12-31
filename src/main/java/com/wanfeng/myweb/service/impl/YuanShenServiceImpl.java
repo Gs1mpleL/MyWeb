@@ -9,8 +9,8 @@ import com.wanfeng.myweb.config.YuanshenConfig;
 import com.wanfeng.myweb.service.YuanShenService;
 import com.wanfeng.myweb.vo.PushVO;
 import lombok.Data;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Service
 public class YuanShenServiceImpl implements YuanShenService {
-    private static final Logger log = LogManager.getLogger(YuanShenServiceImpl.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BarkPushService.class);
     private static String msgToIphone = "";
 
     @Resource
@@ -44,8 +44,8 @@ public class YuanShenServiceImpl implements YuanShenService {
         try {
             pushIphoneService.pushIphone(new PushVO("原神", msgToIphone, "原神"));
         } catch (Exception e) {
-            e.printStackTrace();
-            log.info("推送iPhone失败");
+            LOGGER.error(e.getMessage());
+            LOGGER.info("推送iPhone失败");
         } finally {
             msgToIphone = "";
         }
@@ -60,11 +60,11 @@ public class YuanShenServiceImpl implements YuanShenService {
         JSONObject signResult = YuanShenHttpUtils.doPost(YuanshenConfig.SIGN_URL, yuanShenHttpUtils.getHeaders(""), data);
         System.out.println(signResult);
         if (signResult.getInteger("retcode") == 0) {
-            log.info("原神签到成功：{}", signResult.get("message"));
+            LOGGER.info("原神签到成功：{}", signResult.get("message"));
             msgToIphone += "原神签到成功：「" + signResult.get("message") + "」\n";
             return "原神签到福利成功：" + signResult.get("message");
         } else {
-            log.info("原神签到失败：{}", signResult.get("message"));
+            LOGGER.info("原神签到失败：{}", signResult.get("message"));
             msgToIphone += "原神签到失败：「" + signResult.get("message") + "」\n";
             return "原神签到失败：" + signResult.get("message");
         }
@@ -88,8 +88,8 @@ public class YuanShenServiceImpl implements YuanShenService {
         msg.append(time.getMonth().getValue()).append("月已签到").append(totalSignDay).append("\n");
         msgToIphone += time.getMonth().getValue() + "月已签到: 「" + totalSignDay + "」天\n";
         msg.append(signInfoResult.getJSONObject("data").get("today")).append("签到获取").append(award.getCnt()).append(award.getName());
-        log.info("{}月已签到{}天", time.getMonth().getValue(), totalSignDay);
-        log.info("{}签到获取{}{}", signInfoResult.getJSONObject("data").get("today"), award.getCnt(), award.getName());
+        LOGGER.info("{}月已签到{}天", time.getMonth().getValue(), totalSignDay);
+        LOGGER.info("{}签到获取{}{}", signInfoResult.getJSONObject("data").get("today"), award.getCnt(), award.getName());
         msgToIphone += signInfoResult.getJSONObject("data").get("today") + "签到获取「" + award.getCnt() + award.getName() + "」";
         return msg.toString();
     }
@@ -121,9 +121,9 @@ public class YuanShenServiceImpl implements YuanShenService {
                 String nickname = userInfo.getString("nickname");
                 String regionName = userInfo.getString("region_name");
                 String region = userInfo.getString("region");
-                log.info("获取用户UID：{}", uid);
-                log.info("当前用户名称：{}", nickname);
-                log.info("当前用户服务器：{}", regionName);
+                LOGGER.info("获取用户UID：{}", uid);
+                LOGGER.info("当前用户名称：{}", nickname);
+                LOGGER.info("当前用户服务器：{}", regionName);
                 Map<String, Object> mapInfo = new HashMap<>();
                 mapInfo.put("uid", uid);
                 mapInfo.put("nickname", nickname);
@@ -135,7 +135,7 @@ public class YuanShenServiceImpl implements YuanShenService {
             }
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             map.put("flag", false);
             map.put("msg", "获取uid失败，未知异常：" + e.getMessage());
             msgToIphone += "获取uid失败，未知异常：" + e.getMessage();

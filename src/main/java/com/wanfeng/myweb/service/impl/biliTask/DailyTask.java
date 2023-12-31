@@ -49,9 +49,9 @@ public class DailyTask implements Task {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.error("每日任务异常 -- " + e);
             biliUserData.info("每日任务异常 -- " + e);
         }
@@ -123,7 +123,7 @@ public class DailyTask implements Task {
      */
     public void commentTask() {
         ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
-        pushService.pushIphone(new PushVO("哔哩哔哩","B站评论任务启动！","哔哩哔哩"));
+        pushService.pushIphone(new PushVO("哔哩哔哩", "B站评论任务启动！", "哔哩哔哩"));
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
         int count = 0;
         try {
@@ -133,8 +133,10 @@ public class DailyTask implements Task {
                     LocalTime currentTime = LocalTime.now();
                     LocalTime sixThirtyAM = LocalTime.of(6, 30);
                     // 早上六点半就结束
-                    if (currentTime.equals(sixThirtyAM)) {break;}
-                        count++;
+                    if (currentTime.equals(sixThirtyAM)) {
+                        break;
+                    }
+                    count++;
                     JSONObject video = regions.getJSONObject(i);
                     System.out.println(video);
                     String aid = video.getString("aid");
@@ -154,12 +156,12 @@ public class DailyTask implements Task {
                     Thread.sleep(120000);
                 }
             }
-            LOGGER.info("评论任务完成，共执行[{}]次",count);
-            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务完成，共执行["+count+"]次","哔哩哔哩"));
-        }catch (Exception e){
-            e.printStackTrace();
-            LOGGER.info("评论任务失败，共执行[{}]次",count);
-            pushService.pushIphone(new PushVO("哔哩哔哩","评论任务失败，共执行["+count+"]次","哔哩哔哩"));
+            LOGGER.info("评论任务完成，共执行[{}]次", count);
+            pushService.pushIphone(new PushVO("哔哩哔哩", "评论任务完成，共执行[" + count + "]次", "哔哩哔哩"));
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            LOGGER.info("评论任务失败，共执行[{}]次", count);
+            pushService.pushIphone(new PushVO("哔哩哔哩", "评论任务失败，共执行[" + count + "]次", "哔哩哔哩"));
             throw new BizException("评论任务失败");
         }
 

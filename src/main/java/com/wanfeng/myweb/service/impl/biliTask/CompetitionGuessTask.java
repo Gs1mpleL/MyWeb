@@ -40,7 +40,7 @@ public class CompetitionGuessTask implements Task {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("竞猜失败:{}", e.getMessage());
             biliUserData.info("竞猜失败:{}", e.getMessage());
         }
@@ -59,7 +59,7 @@ public class CompetitionGuessTask implements Task {
                 chooseOpt = guessOption;
             }
         }
-        // 投币给胜率高的队伍
+        // 投币给胜率低的队伍
         String body = "oid=" + guessGame.getContestId()
                 + "&main_id=" + guessGame.getMainId()
                 + "&detail_id=" + chooseOpt.getTeamId()

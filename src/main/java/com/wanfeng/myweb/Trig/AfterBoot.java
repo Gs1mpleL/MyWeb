@@ -14,14 +14,14 @@ import javax.annotation.Resource;
 @Component
 public class AfterBoot implements CommandLineRunner {
     @Resource
-    private BarkPushService pushIphoneService;
+    private BarkPushService barkPushService;
     @Resource
     private SystemConfig systemConfig;
 
     @Override
     public void run(String... args) throws Exception {
         if (systemConfig.getBootAlarm() == 1) {
-            pushIphoneService.pushIphone(new PushVO("MyWeb", "项目启动成功", "MyWeb"));
+            barkPushService.pushIphone(new PushVO("MyWeb", "项目启动成功", "MyWeb"));
         }
     }
 }

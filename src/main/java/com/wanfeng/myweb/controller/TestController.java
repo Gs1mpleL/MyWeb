@@ -22,7 +22,7 @@ public class TestController {
 
     @PostMapping("/test")
     public Result<?> test(@RequestBody BiliVo biliVo) {
-        int a = 10/0;
+        int a = 10 / 0;
         return Result.ok();
     }
 }

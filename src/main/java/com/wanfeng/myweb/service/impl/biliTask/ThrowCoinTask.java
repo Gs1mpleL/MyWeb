@@ -69,7 +69,7 @@ public class ThrowCoinTask implements Task {
                 biliUserData.info("投币给 -- av{}", aid + "-" + msg);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             LOGGER.info("投币异常 -- " + e);
             biliUserData.info("投币异常 -- " + e);
         }
