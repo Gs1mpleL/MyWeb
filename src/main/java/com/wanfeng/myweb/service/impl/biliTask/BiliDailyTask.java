@@ -194,6 +194,15 @@ public class BiliDailyTask implements Task {
                         if (comment.getContent().contains("原")){
                             replyComment(comment,"原神怎么你了");
                             LOGGER.info("检测到原P [{}]",comment.getContent());
+                        }else if (comment.getContent().contains("小米")){
+                            replyComment(comment,"不如华为（自动检测）");
+                            LOGGER.info("检测到小米用户 [{}]",comment.getContent());
+                        }else if (comment.getContent().contains("5g") || comment.getContent().contains("5G")){
+                            replyComment(comment,"5G用华为，华为是天，遥遥领先");
+                            LOGGER.info("检测到5G [{}]",comment.getContent());
+                        }else {
+                            replyComment(comment,"GIAO!");
+                            LOGGER.info("GIAO [{}]",comment.getContent());
                         }
                     }
                     Thread.sleep(120000);
