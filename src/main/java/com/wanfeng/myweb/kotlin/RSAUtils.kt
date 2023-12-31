@@ -10,7 +10,7 @@ import javax.crypto.spec.PSource
 
 class RSAUtils {
     fun encode(): String {
-        return getCorrespondPath(System.currentTimeMillis());
+        return getCorrespondPath(System.currentTimeMillis())
     }
 
     fun getCorrespondPath(timestamp: Long): String {

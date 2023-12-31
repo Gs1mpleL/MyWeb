@@ -46,7 +46,7 @@ public class WeatherServiceImpl implements WeatherService {
         for (WeatherInfo weatherInfo : weatherList) {
             pushMsg.append(weatherInfo.getDate()).append(":").append(weatherInfo.getWeather()).append(" ").append(weatherInfo.getTemperature()).append("\n");
         }
-        String msg = pushMsg.substring(0, pushMsg.length() - 1).toString();
+        String msg = pushMsg.substring(0, pushMsg.length() - 1);
         pushService.pushIphone(new PushVO("近日天气", msg, "近日天气"));
     }
 

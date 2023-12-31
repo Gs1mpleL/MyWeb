@@ -29,23 +29,7 @@ public enum StatusCodeEnum {
     /**
      * 参数校验失败
      */
-    VALID_ERROR(52000, "参数格式不正确"),
-    /**
-     * 用户名已存在
-     */
-    USERNAME_EXIST(52001, "用户名已存在"),
-    /**
-     * 用户名不存在
-     */
-    USERNAME_NOT_EXIST(52002, "用户名不存在"),
-    /**
-     * qq登录错误
-     */
-    QQ_LOGIN_ERROR(53001, "qq登录错误"),
-    /**
-     * 微博登录错误
-     */
-    WEIBO_LOGIN_ERROR(53002, "微博登录错误");
+    VALID_ERROR(52000, "参数格式不正确");
 
     /**
      * 状态码
