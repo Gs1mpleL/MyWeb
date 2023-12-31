@@ -201,7 +201,7 @@ public class BiliDailyTask implements Task {
                             replyComment(comment,"5G用华为，华为是天，遥遥领先");
                             LOGGER.info("检测到5G [{}]",comment.getContent());
                         }else {
-                            replyComment(comment,"GIAO!");
+                            replyComment(comment,"Giao!");
                             LOGGER.info("GIAO [{}]",comment.getContent());
                         }
                     }
