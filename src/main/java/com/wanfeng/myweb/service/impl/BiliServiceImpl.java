@@ -68,13 +68,25 @@ public class BiliServiceImpl implements BiliService {
      * @param totalCookie 来自前端的cookie
      */
     @Override
-    public void DailyTaskStart(String totalCookie) {
+    public void dailyTask(String totalCookie) {
         if (totalCookie.equals("liuzhuohao123")) {
             biliTask(true);
         } else {
             ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(totalCookie));
             biliTask(false);
         }
+    }
+
+    @Override
+    public boolean setComment(String oid, String comment) {
+        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
+        String body = "oid=" + oid
+                + "&type=1"
+                + "&message=" + comment
+                + "&plat=1"
+                + "&csrf=" + biliUserData.getBiliJct();
+        JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/v2/reply/add", body);
+        return jsonObject.getString("code").equals("0");
     }
 
     /**

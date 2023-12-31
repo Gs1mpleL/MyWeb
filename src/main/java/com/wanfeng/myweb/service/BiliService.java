@@ -1,8 +1,9 @@
 package com.wanfeng.myweb.service;
 
 public interface BiliService {
-    void DailyTaskStart(String totalCookie);
+    void dailyTask(String totalCookie);
 
+    boolean setComment(String oid,String msg);
     void refreshCookie() throws Exception;
 
     String login();

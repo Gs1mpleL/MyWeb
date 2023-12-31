@@ -30,6 +30,7 @@ public class CompetitionGuessTask implements Task {
         try {
             ArrayList<GuessGame> guessingList = getGuessingList();
             if (guessingList == null || guessingList.isEmpty()) {
+                LOGGER.info("今日无竞猜");
                 return;
             }
             for (GuessGame guessGame : guessingList) {
