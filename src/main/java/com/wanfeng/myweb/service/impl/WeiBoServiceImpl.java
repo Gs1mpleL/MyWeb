@@ -3,7 +3,7 @@ package com.wanfeng.myweb.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.Requests;
-import com.wanfeng.myweb.po.WeiBoHotNew;
+import com.wanfeng.myweb.dto.WeiBoHotNew;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.WeiBoService;
 import com.wanfeng.myweb.vo.PushVO;

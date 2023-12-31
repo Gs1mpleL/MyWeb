@@ -1,13 +1,14 @@
 package com.wanfeng.myweb.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
-import com.wanfeng.myweb.service.impl.biliTask.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.QrCodeUtils;
 import com.wanfeng.myweb.Utils.RSAUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.dto.Comment;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.impl.biliTask.*;
@@ -23,6 +24,8 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BiliServiceImpl implements BiliService {
@@ -30,7 +33,7 @@ public class BiliServiceImpl implements BiliService {
     @Resource
     private BarkPushService pushIphoneService;
     @Resource
-    private DailyTask dailyTask;
+    private BiliDailyTask biliDailyTask;
     @Resource
     private MangaTask mangaTask;
     @Resource
@@ -77,18 +80,6 @@ public class BiliServiceImpl implements BiliService {
         }
     }
 
-    @Override
-    public boolean setComment(String oid, String comment) {
-        BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
-        String body = "oid=" + oid
-                + "&type=1"
-                + "&message=" + comment
-                + "&plat=1"
-                + "&csrf=" + biliUserData.getBiliJct();
-        JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/v2/reply/add", body);
-        return jsonObject.getString("code").equals("0");
-    }
-
     /**
      * 刷新Cookie
      */
@@ -104,6 +95,7 @@ public class BiliServiceImpl implements BiliService {
             LOGGER.info("不需要刷新！");
         }
     }
+
 
     /**
      * 实现了使用二维码登陆,但需要手动扫二维码
@@ -137,7 +129,7 @@ public class BiliServiceImpl implements BiliService {
             biliUserData.info("硬币: {}", biliUserData.getMoney());
             LOGGER.info("经验: {}", biliUserData.getCurrentExp());
             biliUserData.info("经验: {}", biliUserData.getCurrentExp());
-            dailyTask.run();
+            biliDailyTask.run();
             mangaTask.run();
             silver2CoinTask.run();
             collectVipGift.run();

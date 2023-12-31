@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.po;
+package com.wanfeng.myweb.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

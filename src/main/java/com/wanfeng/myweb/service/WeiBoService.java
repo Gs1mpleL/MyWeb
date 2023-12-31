@@ -1,6 +1,6 @@
 package com.wanfeng.myweb.service;
 
-import com.wanfeng.myweb.po.WeiBoHotNew;
+import com.wanfeng.myweb.dto.WeiBoHotNew;
 
 import java.util.ArrayList;
 

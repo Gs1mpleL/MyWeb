@@ -20,7 +20,7 @@ public class ThrowCoinTask implements Task {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(ThrowCoinTask.class);
     @Resource
-    private DailyTask dailyTask;
+    private BiliDailyTask biliDailyTask;
     @Resource
     private BiliHttpUtils biliHttpUtils;
     @Resource
@@ -55,7 +55,7 @@ public class ThrowCoinTask implements Task {
                 System.out.println(regions.getJSONObject(i));
                 String aid = regions.getJSONObject(i).getString("aid");
                 JSONObject json = throwCoin(aid, "1", "1");
-                dailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
+                biliDailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
                 /* 输出的日志消息 */
                 String msg;
                 if ("0".equals(json.getString("code"))) {

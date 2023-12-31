@@ -1,7 +1,7 @@
 package com.wanfeng.myweb.service.impl;
 
 import com.wanfeng.myweb.Utils.HttpUtils.Requests;
-import com.wanfeng.myweb.po.WeatherInfo;
+import com.wanfeng.myweb.dto.WeatherInfo;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.WeatherService;
 import com.wanfeng.myweb.vo.PushVO;

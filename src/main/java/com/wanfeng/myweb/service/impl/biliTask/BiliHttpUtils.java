@@ -2,7 +2,6 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
-import com.wanfeng.myweb.Utils.HttpUtils.Requests;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.service.SystemConfigService;
@@ -18,7 +17,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +28,6 @@ import javax.net.ssl.SSLContext;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -93,6 +89,7 @@ public class BiliHttpUtils {
             resp = client.execute(httpGet);
             HttpEntity entity = resp.getEntity();
             respContent = EntityUtils.toString(entity, "UTF-8");
+            LOGGER.info("请求[{}],结果[{}]",url,respContent);
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
@@ -199,7 +196,7 @@ public class BiliHttpUtils {
             HttpEntity entity;
             entity = resp.getEntity();
             respContent = EntityUtils.toString(entity, "UTF-8");
-            LOGGER.info("Bili请求:[{}],结果[{}]",url,respContent);
+            LOGGER.info("Bili请求:[{}],结果[{}]", url, respContent);
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());

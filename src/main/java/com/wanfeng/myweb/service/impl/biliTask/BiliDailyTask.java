@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.dto.Comment;
+import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.vo.PushVO;
@@ -16,11 +18,14 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class DailyTask implements Task {
+public class BiliDailyTask implements Task {
     /** 获取日志记录器对象 */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DailyTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BiliDailyTask.class);
     @Resource
     private BiliHttpUtils biliHttpUtils;
     @Resource
@@ -65,7 +70,30 @@ public class DailyTask implements Task {
                 + "&csrf=" + biliUserData.getBiliJct();
         return biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/v2/reply/add", body);
     }
+    public List<Comment> getCommentsByOid(String oid) {
+        JSONObject jsonObject = biliHttpUtils.getWithTotalCookie("https://api.bilibili.com/x/v2/reply" + "?oid=" + oid + "&type=1");
+        ArrayList<Comment> comments = new ArrayList<>();
+        JSONArray replies = jsonObject.getJSONObject("data").getJSONArray("replies");
+        for (int i = 0; i < replies.size(); i++) {
+            JSONObject jsonObject1 = replies.getJSONObject(i);
+            comments.add(new Comment(jsonObject1, oid));
+        }
+        return comments;
+    }
 
+    public boolean replyComment(Comment comment, String replyMsg) {
+        BiliUserData biliUserData = ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class);
+        String body = "csrf=" + biliUserData.getBiliJct() +
+                "&oid=" + comment.getOid() +
+                "&type=1" +
+                "&message=" + replyMsg +
+                "&plat=1" +
+                "&root=" + comment.getReplyId() +
+                "&parent=" + comment.getReplyId();
+        JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/v2/reply/add", body);
+        System.out.printf(String.valueOf(jsonObject));
+        return jsonObject.getString("code").equals("0");
+    }
     /**
      * 获取B站推荐视频
      *
@@ -125,19 +153,27 @@ public class DailyTask implements Task {
         pushService.pushIphone(new PushVO("哔哩哔哩", "B站评论任务启动！", "哔哩哔哩"));
         int[] typeList = new int[]{1, 3, 4, 5, 11, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 47, 51, 59, 65, 71, 75, 76, 83, 85, 86, 95};
         int count = 0;
+        boolean flag = false;
         try {
             for (int typeId : typeList) {
+                if (flag){
+                    break;
+                }
                 JSONArray regions = getRegions("10", String.valueOf(typeId));
                 for (int i = 0; i < regions.size(); i++) {
-                    LocalTime currentTime = LocalTime.now();
+                    // 获取当前时间
+                    LocalTime now = LocalTime.now();
+                    // 早上6点半的时间
                     LocalTime sixThirtyAM = LocalTime.of(6, 30);
-                    // 早上六点半就结束
-                    if (currentTime.equals(sixThirtyAM)) {
+                    // 计算时间差
+                    long minutesDifference = ChronoUnit.MINUTES.between(now, sixThirtyAM);
+                    // 判断时间差是否小于10分钟
+                    if (Math.abs(minutesDifference) < 10) {
+                        flag = true;
                         break;
                     }
                     count++;
                     JSONObject video = regions.getJSONObject(i);
-                    System.out.println(video);
                     String aid = video.getString("aid");
                     String desc = video.getString("desc");
                     String title = video.getString("title");
@@ -145,13 +181,21 @@ public class DailyTask implements Task {
                     String titleRev = titleSb.reverse().toString();
                     StringBuilder descSb = new StringBuilder(desc);
                     String descRev = descSb.reverse().toString();
-                    LocalDateTime now = LocalDateTime.now();
+                    LocalDateTime cur = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    String formatDateTime = now.format(formatter);
+                    String formatDateTime = cur.format(formatter);
                     formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
-                    String total = "很好的视频，使我的字符串反转：\n[标题]->" + titleRev + "\n[简介]->" + descRev + "\n[时间]->" + formatDateTime;
+                    String total = "很好的视频，使我的字符串反转：\n[标题]->" + titleRev + "\n[简介]->" + descRev + "\n[评论时间]->" + formatDateTime;
                     JSONObject jsonObject = setComment(total, aid);
                     LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
+                    List<Comment> commentsByOid = getCommentsByOid(aid);
+                    for (Comment comment : commentsByOid) {
+                        LOGGER.info("检测评论[{}]",comment.getContent());
+                        if (comment.getContent().contains("原")){
+                            replyComment(comment,"原神怎么你了");
+                            LOGGER.info("检测到原P [{}]",comment.getContent());
+                        }
+                    }
                     Thread.sleep(120000);
                 }
             }

@@ -2,7 +2,7 @@ package com.wanfeng.myweb.quartz;
 
 import com.wanfeng.myweb.service.*;
 import com.wanfeng.myweb.service.impl.BiliServiceImpl;
-import com.wanfeng.myweb.service.impl.biliTask.DailyTask;
+import com.wanfeng.myweb.service.impl.biliTask.BiliDailyTask;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class DailyJob {
     @Resource
     private BiliServiceImpl biliService;
     @Resource
-    private DailyTask dailyTask;
+    private BiliDailyTask biliDailyTask;
     @Resource
     private WeiBoService weiBoService;
 
@@ -45,7 +45,7 @@ public class DailyJob {
     @Scheduled(cron = "0 0 20 * * ?")
     public void nightTask() throws Exception {
         biliService.refreshCookie();
-        dailyTask.commentTask();
+        biliDailyTask.commentTask();
     }
 
 }
