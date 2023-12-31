@@ -2,7 +2,6 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.po.GuessGame;
@@ -30,7 +29,7 @@ public class CompetitionGuessTask implements Task {
         BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             ArrayList<GuessGame> guessingList = getGuessingList();
-            if (guessingList == null || guessingList.size() == 0) {
+            if (guessingList == null || guessingList.isEmpty()) {
                 return;
             }
             for (GuessGame guessGame : guessingList) {

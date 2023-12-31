@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
-import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
+import com.wanfeng.myweb.service.impl.biliTask.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.QrCodeUtils;
 import com.wanfeng.myweb.Utils.RSAUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;

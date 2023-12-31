@@ -1,7 +1,8 @@
-package com.wanfeng.myweb.Utils.HttpUtils;
+package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
+import com.wanfeng.myweb.Utils.HttpUtils.Requests;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.service.SystemConfigService;
@@ -36,7 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 封装的网络请求请求工具类
+ * 封装的Bilibili网络请求请求工具类
  */
 @Component
 public class BiliHttpUtils {
@@ -44,21 +45,14 @@ public class BiliHttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliHttpUtils.class);
     @Resource
     private SystemConfigService systemConfigService;
-    @Resource
-    private Requests requests;
 
     private BiliHttpUtils() {
     }
 
     public static CloseableHttpClient createSSLClientDefault() {
         try {
-            SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-                // 信任所有
-                @Override
-                public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                    return true;
-                }
-            }).build();
+            // 信任所有
+            SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain, authType) -> true).build();
             HostnameVerifier hostnameVerifier = NoopHostnameVerifier.INSTANCE;
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
             return HttpClients.custom().setSSLSocketFactory(sslsf).build();
@@ -152,7 +146,7 @@ public class BiliHttpUtils {
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            LOGGER.info("get请求错误 -- " + e);
+            LOGGER.info("Bili Get请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }
     }
@@ -174,7 +168,7 @@ public class BiliHttpUtils {
             return respContent;
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            LOGGER.info("get请求错误 -- " + e);
+            LOGGER.info("Bili Get请求错误 -- " + e);
             return respContent;
         }
     }
@@ -205,10 +199,11 @@ public class BiliHttpUtils {
             HttpEntity entity;
             entity = resp.getEntity();
             respContent = EntityUtils.toString(entity, "UTF-8");
+            LOGGER.info("Bili请求:[{}],结果[{}]",url,respContent);
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            LOGGER.info("post请求错误 -- " + e);
+            LOGGER.info("Bili Post请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }
     }
@@ -259,7 +254,7 @@ public class BiliHttpUtils {
             return JSONObject.parseObject(respContent);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            LOGGER.info("post请求错误 -- " + e);
+            LOGGER.info("Bili Post请求错误 -- " + e);
             return JSONObject.parseObject(respContent);
         }
     }

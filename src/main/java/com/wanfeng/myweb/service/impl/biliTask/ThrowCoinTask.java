@@ -2,7 +2,6 @@ package com.wanfeng.myweb.service.impl.biliTask;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wanfeng.myweb.Utils.HttpUtils.BiliHttpUtils;
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.properties.BiliProperties;
@@ -29,7 +28,6 @@ public class ThrowCoinTask implements Task {
 
     @Override
     public void run() {
-        int maxAttempts = 3;
         BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
         try {
             /* 今天投币获得了多少经验  此版本以及失效*/

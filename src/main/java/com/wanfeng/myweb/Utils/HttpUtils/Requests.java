@@ -29,7 +29,7 @@ public class Requests {
         url = addParamToUrl(url, map);
         LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]", url, map, httpHeaders);
         ResponseEntity<JSONObject> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, JSONObject.class);
-        LOGGER.warn("结果->[{}]", response);
+        LOGGER.warn("结果->[{}]", response.getBody());
         return response.getBody();
     }
 
@@ -42,7 +42,7 @@ public class Requests {
         url = addParamToUrl(url, map);
         LOGGER.warn("发送请求->[{}],参数->[{}],Header->[{}]", url, map, httpHeaders);
         ResponseEntity<JSONObject> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, JSONObject.class);
-        LOGGER.warn("结果->[{}]", response);
+        LOGGER.warn("结果->[{}]", response.getBody());
         return response.getBody();
     }
 
