@@ -62,7 +62,6 @@ public class BarkPushService implements PushService {
         }
         JSONObject post = requests.post(url, map,null);
         if (post.getString("message").equals("success")){
-            LOGGER.info("发送成功[{}]",pushVO);
             return true;
         }else {
             throw  new BizException("发送失败" + post);
