@@ -42,7 +42,7 @@ public class DailyJob {
         biliService.biliTask(true);
     }
 
-    @Scheduled(cron = "0 0 22 * * ?")
+    @Scheduled(cron = "0 5 22 * * ?")
     public void nightTask() throws Exception {
         biliService.refreshCookie();
         biliDailyTask.commentTask();

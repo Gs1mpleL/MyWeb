@@ -49,7 +49,6 @@ public class QuestionController {
 
     @PostMapping("/updateQuestion")
     public Result<?> updateQuestion(@RequestBody QuestionVo questionVo) {
-        System.out.println(questionVo);
         QuestionEntity questionEntity = new QuestionEntity();
         BeanUtils.copyProperties(questionVo, questionEntity);
         return Result.ok(questionService.updateById(questionEntity));

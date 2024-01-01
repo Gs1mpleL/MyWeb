@@ -28,7 +28,6 @@ public class BaiduFanYi {
         // 加密前的原文
         params.put("sign", SecureUtil.md5(src));
         JSONObject jsonObject = JSONObject.parseObject(HttpUtil.get(TRANS_API_HOST, params));
-        System.out.println(jsonObject);
         return jsonObject.getJSONArray("trans_result").getJSONObject(0).getString("dst");
     }
 }

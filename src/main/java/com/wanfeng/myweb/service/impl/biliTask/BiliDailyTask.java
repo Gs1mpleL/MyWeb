@@ -6,7 +6,6 @@ import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.config.BizException;
 import com.wanfeng.myweb.dto.Comment;
-import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.vo.PushVO;
@@ -91,7 +90,6 @@ public class BiliDailyTask implements Task {
                 "&root=" + comment.getReplyId() +
                 "&parent=" + comment.getReplyId();
         JSONObject jsonObject = biliHttpUtils.postWithTotalCookie("https://api.bilibili.com/x/v2/reply/add", body);
-        System.out.printf(String.valueOf(jsonObject));
         return jsonObject.getString("code").equals("0");
     }
     /**
@@ -186,8 +184,7 @@ public class BiliDailyTask implements Task {
                     String formatDateTime = cur.format(formatter);
                     formatDateTime = new StringBuilder(formatDateTime).reverse().toString();
                     String total = "很好的视频，使我的字符串反转：\n[标题]->" + titleRev + "\n[简介]->" + descRev + "\n[评论时间]->" + formatDateTime;
-                    JSONObject jsonObject = setComment(total, aid);
-                    LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(jsonObject.getString("code")) ? "成功" : "失败", jsonObject.getString("message"));
+                    setComment(total, aid);
                     List<Comment> commentsByOid = getCommentsByOid(aid);
                     for (Comment comment : commentsByOid) {
                         LOGGER.info("检测评论[{}]",comment.getContent());
@@ -198,11 +195,8 @@ public class BiliDailyTask implements Task {
                             replyComment(comment,"不如华为（自动检测）");
                             LOGGER.info("检测到小米用户 [{}]",comment.getContent());
                         }else if (comment.getContent().contains("5g") || comment.getContent().contains("5G")){
-                            replyComment(comment,"5G用华为，华为是天，遥遥领先");
+                            replyComment(comment,"5G用华为，遥遥领先");
                             LOGGER.info("检测到5G [{}]",comment.getContent());
-                        }else {
-                            replyComment(comment,"Giao!");
-                            LOGGER.info("GIAO [{}]",comment.getContent());
                         }
                     }
                     Thread.sleep(120000);

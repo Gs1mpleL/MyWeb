@@ -52,7 +52,6 @@ public class ThrowCoinTask implements Task {
             /* 给每个视频投 1 个币,点 1 个赞 */
             for (int i = 0; i < num; i++) {
                 /* 视频的aid */
-                System.out.println(regions.getJSONObject(i));
                 String aid = regions.getJSONObject(i).getString("aid");
                 JSONObject json = throwCoin(aid, "1", "1");
                 biliDailyTask.setComment("我来投币了，我也不知道我在干什么，因为我只是一个机器人", aid);
