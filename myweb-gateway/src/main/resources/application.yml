@@ -1,0 +1,12 @@
+server:
+  port: 9000
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: bilibili
+          uri: lb://myweb-bilibili
+          predicates:
+            - Path=/mall-auth/**
+          filters:
+            - StripPrefix=1
