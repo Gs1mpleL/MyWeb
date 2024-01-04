@@ -1,4 +1,4 @@
-package com.wanfeng.common.entity;
+package com.wanfeng.myweb.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

@@ -1,4 +1,4 @@
-package com.wanfeng.exception;
+package com.wanfeng.common.exception;
 
 import org.springframework.stereotype.Component;
 

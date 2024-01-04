@@ -1,4 +1,4 @@
-package com.wanfeng.common.Utils;
+package com.wanfeng.myweb.bilibili.utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.OAEPParameterSpec;
@@ -26,10 +26,10 @@ public class RSAUtils {
 
         byte[] decodedBytes = Base64.getDecoder().decode(publicKeyPEM.replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "").replace("\n", "").trim());
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(decodedBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSAUtils");
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
 
-        Cipher cipher = Cipher.getInstance("RSAUtils/ECB/OAEPWithSHA-256AndMGF1Padding");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
         OAEPParameterSpec spec = new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey, spec);
 

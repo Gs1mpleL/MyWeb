@@ -1,8 +1,8 @@
 package com.wanfeng.myweb.bilibili.config;
 
 
-import com.wanfeng.common.entity.SystemConfigEntity;
-import com.wanfeng.exception.BizException;
+import com.wanfeng.common.exception.BizException;
+import com.wanfeng.myweb.api.dto.SystemConfigDto;
 import lombok.Data;
 
 import java.util.regex.Matcher;
@@ -37,7 +37,7 @@ public class BiliUserData {
     /**
      * token可刷新
      */
-    public BiliUserData(SystemConfigEntity systemConfig) throws BizException {
+    public BiliUserData(SystemConfigDto systemConfig) throws BizException {
         totalCookie = systemConfig.getBiliCookie();
         setCookie(systemConfig.getBiliCookie());
         this.refreshToken = systemConfig.getBiliRefreshToken();

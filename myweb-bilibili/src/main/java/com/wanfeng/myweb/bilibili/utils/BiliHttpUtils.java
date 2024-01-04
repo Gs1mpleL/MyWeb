@@ -3,8 +3,8 @@ package com.wanfeng.myweb.bilibili.utils;
 import com.alibaba.fastjson.JSONObject;
 
 import com.wanfeng.common.Utils.ThreadLocalUtils;
-import com.wanfeng.common.entity.SystemConfigEntity;
-import com.wanfeng.common.service.SystemConfigService;
+import com.wanfeng.myweb.api.client.UserClient;
+import com.wanfeng.myweb.api.dto.SystemConfigDto;
 import com.wanfeng.myweb.bilibili.config.BiliUserData;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -21,6 +21,7 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -40,8 +41,8 @@ import java.util.regex.Pattern;
 public class BiliHttpUtils {
     /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliHttpUtils.class);
-    @Resource
-    private SystemConfigService systemConfigService;
+    @Autowired
+    private UserClient userClient;
 
     private BiliHttpUtils() {
     }
@@ -132,9 +133,9 @@ public class BiliHttpUtils {
             if (SESSDATA != null && bili_jct != null && DedeUserID != null && DedeUserID__ckMd5 != null && sid != null) {
                 String newTotalCookie = "SESSDATA=" + SESSDATA + "; " + "bili_jct=" + bili_jct + "; " + "DedeUserID=" + DedeUserID + "; " + "DedeUserID__ckMd5=" + DedeUserID__ckMd5 + "sid=" + sid;
                 LOGGER.info("登陆获得新Cookie [{}]", newTotalCookie);
-                SystemConfigEntity byId = systemConfigService.getById(1);
+                SystemConfigDto byId = userClient.getSystemConfig();
                 byId.setBiliCookie(newTotalCookie);
-                systemConfigService.updateById(byId);
+                userClient.updateSystemConfig(byId);
                 LOGGER.info("更新数据库中Cookie");
                 ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(byId));
                 LOGGER.info("修改ThreadLocal中的Cookie:[{}]", ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class).getTotalCookie());
@@ -239,9 +240,9 @@ public class BiliHttpUtils {
             if (SESSDATA != null && bili_jct != null && DedeUserID != null && DedeUserID__ckMd5 != null && sid != null) {
                 String newTotalCookie = "SESSDATA=" + SESSDATA + "; " + "bili_jct=" + bili_jct + "; " + "DedeUserID=" + DedeUserID + "; " + "DedeUserID__ckMd5=" + DedeUserID__ckMd5 + "sid=" + sid;
                 LOGGER.info("登陆获得新Cookie [{}]", newTotalCookie);
-                SystemConfigEntity byId = systemConfigService.getById(1);
+                SystemConfigDto byId = userClient.getSystemConfig();
                 byId.setBiliCookie(newTotalCookie);
-                systemConfigService.updateById(byId);
+                userClient.updateSystemConfig(byId);
                 LOGGER.info("更新数据库中Cookie");
                 ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(byId));
                 LOGGER.info("修改ThreadLocal中的Cookie:[{}]", ThreadLocalUtils.get(BiliUserData.BILI_USER_DATA, BiliUserData.class).getTotalCookie());
