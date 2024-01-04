@@ -4,8 +4,10 @@ import com.wanfeng.myweb.Utils.ThreadLocalUtils;
 import com.wanfeng.myweb.config.BiliUserData;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;
+import com.wanfeng.myweb.service.impl.biliTask.BiliCoinApply;
 import com.wanfeng.myweb.service.impl.biliTask.BiliHttpUtils;
 import com.wanfeng.myweb.service.impl.biliTask.BiliDailyTask;
+import com.wanfeng.myweb.service.impl.biliTask.ThrowCoinTask;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +24,14 @@ class MyWebApplicationTests {
     @Resource
     BiliDailyTask dailyTask;
     @Resource
-    private BiliService biliService;
-    @Resource
     private SystemConfigService systemConfigService;
+    @Resource
+    ThrowCoinTask throwCoinTask;
 
     @Test
     void test() {
-        dailyTask.commentTask();
+        ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
+
+        throwCoinTask.run();
     }
 }

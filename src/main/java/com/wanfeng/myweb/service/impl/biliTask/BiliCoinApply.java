@@ -14,7 +14,7 @@ import java.util.TimeZone;
 
 @Component
 public class BiliCoinApply implements Task {
-    /** 获取日志记录器对象 */
+//    /** 获取日志记录器对象 */
     private static final Logger LOGGER = LoggerFactory.getLogger(BiliCoinApply.class);
     /** 28号代表月底 */
     private static final int END_OF_MONTH = 28;
@@ -136,5 +136,4 @@ public class BiliCoinApply implements Task {
         LOGGER.info("B币卷兑换金瓜子 -- " + msg);
         biliUserData.info("B币卷兑换金瓜子 -- " + msg);
     }
-
 }
