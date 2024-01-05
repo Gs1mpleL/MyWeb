@@ -14,11 +14,6 @@
     <description>基础模块</description>
 
     <dependencies>
-        <!--redis-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
         <!--远程调用-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

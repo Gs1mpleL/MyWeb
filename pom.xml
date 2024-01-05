@@ -11,7 +11,7 @@
     <!--此处添加modules-->
     <modules>
         <module>myweb-gateway</module>
-        <module>myweb-bilibili</module>
+        <module>myweb-crawler</module>
         <module>myweb-common</module>
         <module>myweb-user</module>
         <module>myweb-api</module>

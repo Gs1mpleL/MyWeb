@@ -17,5 +17,8 @@ spring:
 #        login-password: druid
 #        enabled: true
 
-  redis:
-    host: 192.168.31.45
+push:
+  iphone: # IosApp：bark
+    iphoneBaseUrl: https://api.day.app/4P5DC6jXnLT6Dsm2n9BENe/
+    macBaseUrl: https://api.day.app/x6zYYJu4LB8cw6SNWqQ6Ee/
+    icon: https://wanfeng-oss.oss-cn-beijing.aliyuncs.com/photos/9bdfc9cc03deddb267edf76f9840f6e7.jpg # 未提供icon时，使用该默认晚风icon～

@@ -32,6 +32,6 @@ class MyWebApplicationTests {
     void test() {
         ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(systemConfigService.getById(1)));
 
-        throwCoinTask.run();
+        Da
     }
 }
