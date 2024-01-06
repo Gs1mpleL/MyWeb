@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.config;
+package com.wanfeng.myweb.gateway.config;
 
 import com.wanfeng.myweb.Entity.SystemConfigEntity;
 import lombok.Data;

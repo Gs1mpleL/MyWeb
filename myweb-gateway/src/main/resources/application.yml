@@ -5,8 +5,18 @@ spring:
     gateway:
       routes:
         - id: bilibili
-          uri: lb://myweb-bilibili
+          uri: lb://myweb-crawler
           predicates:
-            - Path=/mall-auth/**
+            - Path=/myweb-crawler/**
           filters:
             - StripPrefix=1
+        - id: user
+          uri: lb://myweb-user
+          predicates:
+            - Path=/myweb-user/**
+          filters:
+            - StripPrefix=1
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG

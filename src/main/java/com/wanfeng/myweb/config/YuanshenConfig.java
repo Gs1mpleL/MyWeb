@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.config;
+package com.wanfeng.myweb.gateway.config;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.wanfeng.myweb;
 
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
-import com.wanfeng.myweb.config.BiliUserData;
+import com.wanfeng.myweb.gateway.config.BiliUserData;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;
 import com.wanfeng.myweb.service.impl.biliTask.BiliCoinApply;

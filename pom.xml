@@ -37,9 +37,9 @@
         <hutool.version>5.8.0</hutool.version>
         <mybatis.version>3.5.9</mybatis.version>
         <mysql-connector.version>8.0.29</mysql-connector.version>
-        <knife4j.version>2.0.7</knife4j.version>
         <swagger2.version>2.7.0</swagger2.version>
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <knife4j.version>3.0.3</knife4j.version>
     </properties>
 
     <dependencies>
@@ -123,12 +123,6 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
-            <!--Knife4j API文档生产工具-->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
             <!--Mysql数据库驱动-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -140,6 +134,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--API文档-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

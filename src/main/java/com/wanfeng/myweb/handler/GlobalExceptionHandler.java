@@ -1,6 +1,6 @@
 package com.wanfeng.myweb.handler;
 
-import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.gateway.config.BizException;
 import com.wanfeng.myweb.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

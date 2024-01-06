@@ -2,7 +2,7 @@ package com.wanfeng.myweb.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wanfeng.myweb.Utils.HttpUtils.Requests;
-import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.gateway.config.BizException;
 import com.wanfeng.myweb.properties.PushProperties;
 import com.wanfeng.myweb.service.PushService;
 import com.wanfeng.myweb.vo.PushVO;

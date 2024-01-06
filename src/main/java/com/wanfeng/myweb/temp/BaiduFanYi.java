@@ -14,7 +14,7 @@ public class BaiduFanYi {
     private static final String securityKey = "j7qDDoErQpwLUqoelwgw";
 
     // 发送查询
-    public static String getTranslateResult(String query) {
+    public static String Translate(String query) {
         Map<String, Object> params = new HashMap();
         params.put("q", query);
         params.put("from", "auto");

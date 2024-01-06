@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.controller;
+package com.wanfeng.myweb.gateway.controller;
 
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.service.SystemConfigService;

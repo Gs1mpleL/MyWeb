@@ -7,3 +7,7 @@ bili:
   autoBiCoin: 1 # 月底自动使用B币卷。[{0,自己会使用},{1,给自己充电},{2,兑换成金瓜子}]
   platform: ios # 用户设备的标识[android,ios]
   guessCoin: 10
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

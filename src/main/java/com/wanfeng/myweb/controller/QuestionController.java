@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.controller;
+package com.wanfeng.myweb.gateway.controller;
 
 import com.wanfeng.myweb.Entity.QuestionEntity;
 import com.wanfeng.myweb.service.QuestionService;

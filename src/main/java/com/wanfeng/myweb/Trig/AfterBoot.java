@@ -1,6 +1,6 @@
 package com.wanfeng.myweb.Trig;
 
-import com.wanfeng.myweb.config.SystemConfig;
+import com.wanfeng.myweb.gateway.config.SystemConfig;
 import com.wanfeng.myweb.service.impl.BarkPushService;
 import com.wanfeng.myweb.vo.PushVO;
 import org.springframework.boot.CommandLineRunner;

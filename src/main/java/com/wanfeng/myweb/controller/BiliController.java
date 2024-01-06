@@ -1,8 +1,8 @@
-package com.wanfeng.myweb.controller;
+package com.wanfeng.myweb.gateway.controller;
 
 import com.wanfeng.myweb.Utils.ThreadLocalUtils;
-import com.wanfeng.myweb.config.BiliUserData;
-import com.wanfeng.myweb.config.BizException;
+import com.wanfeng.myweb.gateway.config.BiliUserData;
+import com.wanfeng.myweb.gateway.config.BizException;
 import com.wanfeng.myweb.service.BiliService;
 import com.wanfeng.myweb.vo.BiliVo;
 import com.wanfeng.myweb.vo.Result;

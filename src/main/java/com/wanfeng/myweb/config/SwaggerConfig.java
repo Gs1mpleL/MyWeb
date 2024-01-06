@@ -1,4 +1,4 @@
-package com.wanfeng.myweb.config;
+package com.wanfeng.myweb.gateway.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.wanfeng.myweb.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.wanfeng.myweb.gateway.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
