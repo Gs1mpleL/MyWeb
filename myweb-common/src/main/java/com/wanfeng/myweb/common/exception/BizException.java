@@ -1,7 +1,11 @@
 package com.wanfeng.myweb.common.exception;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+@Setter
+@Getter
 @Component
 public class BizException extends RuntimeException {
 
@@ -34,22 +38,6 @@ public class BizException extends RuntimeException {
     public BizException(String errorCode, String errorMsg, Throwable cause) {
         super(errorCode, cause);
         this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
 
