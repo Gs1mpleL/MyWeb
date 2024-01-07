@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: myweb-learn
+  main:
+    allow-bean-definition-overriding: true # 不知道什么情况啊

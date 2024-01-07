@@ -15,6 +15,7 @@
         <module>myweb-common</module>
         <module>myweb-user</module>
         <module>myweb-api</module>
+        <module>myweb-learn</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

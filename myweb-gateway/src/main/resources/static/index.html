@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="UTF-8">
+    <title>晚风的网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            flex: 0 0 100%;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            text-align: center;
+        }
+
+        .item-icon {
+            font-size: 20px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .item {
+                flex-direction: column;
+                width: 100%;
+            }
+        }
+
+        .welcome-text {
+            font-size: 20px;
+            color: #ff0000; /* 设置欢迎语的颜色 */
+            text-align: center; /* 设置欢迎语的文本对齐方式 */
+            margin-top: 30px; /* 设置欢迎语与顶部的距离 */
+            animation: fadeInOut 5s infinite; /* 设置动画效果 */
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<p class="welcome-text">欢迎来到晚风的网站！</p>
+<nav>
+    <div class="container">
+        <a href="/bilibili.html">
+            <div class="item">
+                <i alt="哔哩哔哩图标" class="item-icon fa fa-bilibili"></i>
+                <span class="text">哔哩哔哩</span>
+            </div>
+        </a>
+        <a href="/weibo.html">
+            <div class="item">
+                <i alt="微博热搜图标" class="item-icon fa fa-weibo"></i>
+                <span class="text">微博热搜</span>
+            </div>
+        </a>
+        <a href="/exam.html">
+            <div class="item">
+                <i alt="考试图标" class="item-icon fa fa-weibo"></i>
+                <span class="text">考试测试</span>
+            </div>
+        </a>
+    </div>
+    <div id="result-container"></div>
+</nav>
+
+</body>
+</html>

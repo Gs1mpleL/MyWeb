@@ -29,8 +29,7 @@ public class BiliDailyTask implements Task {
         try {
             BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);
             JSONArray regions = getRegions("6", "1");
-            JSONObject report = report(regions.getJSONObject(5).getString("aid"),
-                    regions.getJSONObject(5).getString("cid"), "300");
+            JSONObject report = report(regions.getJSONObject(5).getString("aid"), regions.getJSONObject(5).getString("cid"), "300");
             LOGGER.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
             biliUserData.info("模拟观看视频 -- {}", "0".equals(report.getString("code")) ? "成功" : "失败");
             Thread.sleep(1000); // 这样好像分享视频成功率高点
@@ -41,8 +40,6 @@ public class BiliDailyTask implements Task {
             JSONObject commentRet = setComment("我点开了你的视频，我也不知道我在干什么，因为我只是一个机器人", aid);
             LOGGER.info("视频评论 [{}:{}]->{}", aid, "0".equals(commentRet.getString("code")) ? "成功" : "失败", commentRet.getString("message"));
             biliUserData.info("视频评论 -- {}", "0".equals(commentRet.getString("code")) ? "成功" : "失败");
-
-
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             BiliUserData biliUserData = ThreadLocalUtils.get(ThreadLocalUtils.BILI_USER_DATA, BiliUserData.class);

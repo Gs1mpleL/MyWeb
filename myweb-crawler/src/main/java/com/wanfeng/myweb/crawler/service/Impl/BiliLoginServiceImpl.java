@@ -49,12 +49,12 @@ public class BiliLoginServiceImpl implements BiliLoginService {
     private CompetitionGuessTask competitionGuessTask;
 
     @Override
-    public void dailyTask(String totalCookie) {
+    public String  dailyTask(String totalCookie) {
         if (totalCookie.equals("liuzhuohao123")) {
-            biliTask(true);
+            return biliTask(true);
         } else {
             ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(totalCookie));
-            biliTask(false);
+            return biliTask(false);
         }
     }
     @Override
@@ -152,7 +152,7 @@ public class BiliLoginServiceImpl implements BiliLoginService {
      *
      * @param isInnerJob 是否是系统内部定时任务
      */
-    public void biliTask(boolean isInnerJob) {
+    public String biliTask(boolean isInnerJob) {
         if (isInnerJob) {
             ThreadLocalUtils.put(BiliUserData.BILI_USER_DATA, new BiliUserData(userClient.getSystemConfig()));
         }
@@ -178,6 +178,7 @@ public class BiliLoginServiceImpl implements BiliLoginService {
             biliSend();
             throw new BizException("账户已失效，请在Secrets重新绑定你的信息");
         }
+        return biliUserData.getSendMsg();
     }
 
     /**

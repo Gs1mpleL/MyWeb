@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Bili Task</title>
+    <style>
+        input {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Bili Task</h1>
+
+<input id="totalCookie" placeholder="Enter Your Cookies" type="text">
+<button id="myButton" onclick="sendRequest()">Start Job</button>
+<div id="res"></div>
+<script>
+    function sendRequest() {
+        var totalCookie = document.getElementById("totalCookie").value;
+        var data = {
+            totalCookie: totalCookie
+        };
+        fetch("/myweb-crawler/bilibili/dailyTask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                var elementById = document.getElementById("res");
+                elementById.innerText = data.data;
+            })
+            .catch((error) => {
+                alert("Error: " + error.message);
+            });
+        document.getElementById("myButton").disabled = true;
+        setTimeout(function () {
+            document.getElementById("myButton").disabled = false;
+        }, 5000);
+    }
+</script>
+</body>
+</html>

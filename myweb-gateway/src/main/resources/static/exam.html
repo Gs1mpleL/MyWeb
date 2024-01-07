@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="UTF-8">
+    <title>Question List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* 表单样式 */
+        form {
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        /* 表单输入框样式 */
+        input[type="text"], input[type="submit"] {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        /* 表单下拉框样式 */
+        select {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        /* 表单按钮样式 */
+        button[type="submit"], button[id="updateButton"], button[id="subjectButton"], button[id='deleteButton'] {
+            height: 30px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[id=deleteButton] {
+            background-color: #fd0000;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin-top: 20px;
+            height: 40px;
+            display: flex;
+        }
+
+        table {
+            width: 100%;
+            table-layout: fixed; /* 设置表格布局为固定宽度 */
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .question-cell {
+            cursor: pointer;
+        }
+
+        .answer-display {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="subject_button"></div>
+
+<table id="question-table">
+    <tr>
+        <th style="width: 1px">Subject</th>
+        <th style="width: 80px">Question</th>
+        <th style="width: 10px">Operation</th>
+    </tr>
+</table>
+
+<form id="question-form">
+    <input id="question" placeholder="Enter question" required style="size: 1000px" type="text"/>
+    <input id="answer" placeholder="Enter answer" required type="text"/>
+    <select id="subject"></select>
+    <input id="custom-subject" oninput="updateSubjectOptions()" placeholder="Enter custom subject" type="text"/>
+    <button type="submit">Send</button>
+</form>
+<form id="searchForm">
+    <input id="searchText" placeholder="Enter KeyWords" required style="size: 1000px" type="text"/>
+    <button type="submit">Search</button>
+</form>
+<script>
+    // 用于测试Test按钮
+    let curSubjectSelect;
+    // 随机获取15条问题
+    getQuestionList("all")
+    // 打开网页获得科目列表并生成按钮
+    setSubjectData();
+    initUpdateForm();
+    searchFormAddListen();
+
+    /*-------------------------------------函数部分-------------------------------------*/
+    function initUpdateForm() {
+        // 调用函数，动态生成选项内容
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('question-form');
+            var questionInput = document.getElementById('question');
+            var answerInput = document.getElementById('answer');
+            var subjectInput = document.getElementById('subject');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // 阻止表单默认提交行为
+                var question = questionInput.value;
+                var answer = answerInput.value;
+                var subject = subjectInput.value;
+                form.reset(); // 重置表单输入字段
+                form["subject"].value = subject;
+                // 发送请求并处理返回结果
+                var data = {question: question, answer: answer, subject: subject};
+                var jsonData = JSON.stringify(data);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/myweb-learn/question/addQuestion', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        console.log(response.data); // 显示返回的JSON数据中的data字段
+                    }
+                };
+                xhr.send(jsonData);
+            });
+        });
+    }
+
+    function setSubjectData() {
+        fetch('/myweb-learn/question/getSubjectList')
+            .then(response => response.json())
+            .then(data => {
+                data = data.data
+                generateSubjectButton(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function generateSubjectButton(data) {
+        // 获取下拉框元素
+        const subjectSelect = document.getElementById('subject');
+        // 创建一行按钮
+        const subjectRow = document.createElement('div');
+        subjectRow.classList.add('subject-row');
+        curSubjectSelect = data[0];
+        // 先单独创建一个Test按钮
+        const subjectButton = document.createElement('button');
+        subjectButton.textContent = "Test";
+        subjectButton.id = "subjectButton";
+        subjectButton.addEventListener('click', () => {
+            getQuestionList(curSubjectSelect, true);
+        });
+        // 将按钮添加到行中
+        subjectRow.appendChild(subjectButton);
+        // 遍历subject数组并创建按钮
+        data.forEach(subject => {
+            const subjectButton = document.createElement('button');
+            subjectButton.textContent = subject;
+            subjectButton.id = "subjectButton";
+            subjectButton.addEventListener('click', () => {
+                // 执行新的函数
+                getQuestionList(subject, false);
+                curSubjectSelect = subject;
+            });
+            // 将按钮添加到行中
+            subjectRow.appendChild(subjectButton);
+            // 创建选项元素
+            const optionElement = document.createElement('option');
+            optionElement.text = subject;
+            // 将选项添加到下拉框中
+            subjectSelect.appendChild(optionElement);
+        });
+        // 将行添加到网页中
+        const elementById = document.getElementById("subject_button");
+        elementById.appendChild(subjectRow);
+    }
+
+    function generateTable(data) {
+        const questionTable = document.getElementById('question-table');
+        if (document.querySelector('table tr') !== null) {
+            const table = document.querySelector('table');
+            const rows = table.querySelectorAll('tr:not(:first-child)');
+            rows.forEach(row => {
+                table.removeChild(row);
+            });
+        }
+        data = data.data
+        data.forEach(question => {
+            const row = document.createElement('tr');
+            const subjectCell = document.createElement('td');
+            subjectCell.textContent = question.subject;
+            row.appendChild(subjectCell);
+            const questionCell = document.createElement('td');
+            questionCell.textContent = question.question;
+            row.appendChild(questionCell);
+            questionCell.addEventListener('click', () => {
+                if (questionCell.textContent === question.answer) {
+                    questionCell.textContent = question.question;
+                    questionCell.classList.remove("answer-display");
+                } else {
+                    questionCell.textContent = question.answer;
+                    questionCell.classList.add("answer-display");
+                }
+            });
+            row.addEventListener("mouseover", function () {
+                this.style.backgroundColor = "#f0f0f0";
+            });
+            row.addEventListener("mouseout", function () {
+                this.style.backgroundColor = "";
+            });
+            // 创建修改按钮
+            const buttonCell = document.createElement("td");
+            const editButton = document.createElement('button');
+            const deleteButton = document.createElement('button');
+            buttonCell.appendChild(editButton);
+            buttonCell.appendChild(deleteButton);
+            row.appendChild(buttonCell);
+            editButton.textContent = 'update';
+            editButton.id = "updateButton";
+            editButton.style.textAlign = "center";
+            editButton.style.marginLeft = "20px";
+            deleteButton.textContent = 'delete';
+            deleteButton.id = "deleteButton";
+            deleteButton.style.textAlign = "center";
+            deleteButton.style.marginLeft = "20px";
+            deleteButton.addEventListener('click', () => {
+                const r = confirm("确定删除此信息？");
+                if (r) {
+                    url = "/myweb-learn/question/deleteQuestion/" + question.id
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'} // 设置数据类型为表单序列化数据
+                    })
+                    questionTable.removeChild(row);
+                }
+            })
+            editButton.addEventListener('click', () => {
+                // 弹出一个表单进行设置，这里可以根据需要自定义表单内容及提交方式
+                const form = document.createElement('form');
+                form.innerHTML = `
+      <input type="text" name="subject" value="${question.subject}" required>
+      <input type="text" name="question" value="${question.question}" required>
+      <input type="text" name="answer" value="${question.answer}" required>
+      <button type="submit">update</button>
+    `;
+                document.body.appendChild(form);
+                form.addEventListener('submit', () => {
+                    // 提交表单时调用/updateQuestion接口携带Json数据
+                    const data = {
+                        id: question.id,
+                        subject: form.elements["subject"].value,
+                        question: form.elements["question"].value,
+                        answer: form.elements["answer"].value,
+                    };
+                    const jsonData = JSON.stringify(data);
+                    fetch('/myweb-learn/question/updateQuestion', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'}, // 设置数据类型为表单序列化数据
+                        body: jsonData  // 使用表单序列化方式传递数据
+                    })
+                    subjectCell.textContent = data.subject;
+                    questionCell.textContent = data.question;
+                    question.answer = data.answer;
+                    document.body.removeChild(form);
+                });
+            })
+            questionTable.appendChild(row);
+        });
+    }
+
+    function getQuestionList(subject, isOne) {
+        let url;
+        if (isOne) {
+            url = "/myweb-learn/question/getOneQuestion/" + subject
+        } else {
+            url = "/myweb-learn/question/getQuestionList/" + subject;
+        }
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                generateTable(data, url);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function updateSubjectOptions() {
+        const customSubject = document.getElementById('custom-subject').value;
+        const subjectSelect = document.getElementById('subject');
+        const option = document.createElement('option');
+        option.text = customSubject;
+        option.value = customSubject;
+        subjectSelect.appendChild(option);
+        subjectSelect.selectedIndex = subjectSelect.length - 1; // Select the new option
+    }
+
+    function searchFormAddListen() {
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+            var keyword = document.getElementById('searchText').value;
+            var url = '/myweb-learn/question/searchByKeywords/' + keyword;
+
+            fetch(url) // 使用fetch API发送请求
+                .then(response => response.json()) // 将响应解析为JSON
+                .then(data => {
+                    // 在这里处理返回的JSON数据
+                    console.log(data);
+                    generateTable(data);
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+        });
+    }
+</script>
+</body>
+</html>

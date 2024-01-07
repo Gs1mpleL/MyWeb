@@ -5,5 +5,5 @@ public interface BiliLoginService {
 
     void login();
 
-    void dailyTask(String totalCookie);
+    String dailyTask(String totalCookie);
 }

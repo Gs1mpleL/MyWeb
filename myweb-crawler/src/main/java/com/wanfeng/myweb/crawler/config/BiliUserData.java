@@ -58,7 +58,7 @@ public class BiliUserData {
         if (matcher.find()) {
             biliJct = matcher.group(0).replace("bili_jct=", "").replace("; ", "");
         } else {
-            throw new BizException("cookie中未解析出bili_jct字段");
+            throw new BizException("cookie解析失败");
         }
     }
 
