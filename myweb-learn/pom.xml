@@ -12,6 +12,8 @@
     <artifactId>myweb-learn</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>学习模块</description>
+    <packaging>jar</packaging>
+
     <dependencies>
         <!--common-->
         <dependency>

@@ -12,6 +12,7 @@
     <artifactId>myweb-crawler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>哔哩哔哩模块</description>
+    <packaging>jar</packaging>
     <dependencies>
         <!--common-->
         <dependency>
@@ -38,7 +39,6 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

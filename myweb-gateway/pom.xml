@@ -11,6 +11,7 @@
     <artifactId>myweb-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>路由模块</description>
+    <packaging>jar</packaging>
     <dependencies>
         <!--Knife4j API文档生产工具-->
         <dependency>

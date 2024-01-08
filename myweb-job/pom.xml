@@ -12,6 +12,7 @@
     <artifactId>myweb-job</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>定时任务模块</description>
+    <packaging>jar</packaging>
     <dependencies>
         <!--nacos-->
         <dependency>
