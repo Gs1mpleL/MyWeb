@@ -2,4 +2,4 @@ spring:
   profiles:
     active: dev
   application:
-    name: myweb-crawler
+    name: myweb-job
